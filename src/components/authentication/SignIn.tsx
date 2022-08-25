@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import {
   email,
@@ -13,6 +13,7 @@ import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
 import { Link } from 'react-router-dom';
+import { IconMail, IconLock } from '@tabler/icons';
 
 const initialValues = {
   email: '',
@@ -38,24 +39,25 @@ const SignIn = () => {
   });
 
   const handleSignIn = useCallback(async () => {
-    setError('');
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     signInMutation.mutate(form.values);
   }, [form]);
 
   return (
-    <Stack sx={{ width: 300 }} mx='auto'>
+    <Stack sx={{ width: 320 }} mx='auto'>
       <TextInput
         label='Email'
         placeholder='vasile.dulgheru@gmail.com'
         withAsterisk
+        icon={<IconMail size='20' />}
         {...form.getInputProps('email')}
       />
       <PasswordInput
         label='Password'
         placeholder='Password'
         withAsterisk
+        icon={<IconLock size='16' />}
         {...form.getInputProps('password')}
       />
       <Text color='red' size='sm'>

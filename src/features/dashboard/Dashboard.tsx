@@ -1,14 +1,11 @@
 import { Button } from '@mantine/core';
 import { useAuthentication } from '../authentication/AuthContext';
+import ColorSchemeToggler from '../general/ColorSchemeToggler';
 
 const Dashboard = () => {
-  const { signOut: signout } = useAuthentication();
+  const { signOut } = useAuthentication();
 
-  return (
-    <Button variant='outline' onClick={signout}>
-      Logout
-    </Button>
-  );
+  return <>This is a dashboard</>;
 };
 
 export default Dashboard;

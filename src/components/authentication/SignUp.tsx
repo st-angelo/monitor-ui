@@ -21,6 +21,7 @@ import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
 import { Link } from 'react-router-dom';
+import { IconMail, IconLock, IconUser } from '@tabler/icons';
 
 const initialValues = {
   firstName: '',
@@ -55,6 +56,7 @@ const SignUp = () => {
   });
 
   const handleSignUp = useCallback(async () => {
+    setError('');
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     signUpMutation.mutate(form.values);
@@ -65,26 +67,31 @@ const SignUp = () => {
       <TextInput
         label='First name'
         placeholder='Vasile'
+        icon={<IconUser size='16' />}
         {...form.getInputProps('firstName')}
       />
       <TextInput
         label='Last name'
         placeholder='Dulgheru'
+        icon={<IconUser size='16' />}
         {...form.getInputProps('lastName')}
       />
       <TextInput
         label='Email'
         placeholder='vasile.dulgheru@gmail.com'
+        icon={<IconMail size='20' />}
         {...form.getInputProps('email')}
       />
       <PasswordInput
         label='Password'
         placeholder='Password'
+        icon={<IconLock size='16' />}
         {...form.getInputProps('password')}
       />
       <PasswordInput
         label='Confirm password'
         placeholder='Confirm password'
+        icon={<IconLock size='16' />}
         {...form.getInputProps('passwordConfirm')}
       />
       <Text color='red' size='sm'>
