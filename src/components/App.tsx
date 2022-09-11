@@ -2,7 +2,9 @@ import { MantineProvider } from '@mantine/core';
 import AppRoutes from './Routes';
 import { useColorScheme } from '../features/general/hooks/useColorScheme';
 import { useAuthentication } from '../features/authentication/AuthContext';
-import Navigation from './layout/Navigation';
+import Navigation from '../features/general/Navigation';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const { colorScheme } = useColorScheme();
@@ -25,10 +27,17 @@ function App() {
         },
       }}
     >
-      <div className='min-h-screen'>
+      <main className='min-h-screen'>
         {isAuthenticated && <Navigation />}
         <AppRoutes />
-      </div>
+        <ToastContainer
+          position='bottom-center'
+          newestOnTop
+          pauseOnHover
+          theme={'colored'}
+          limit={7}
+        />
+      </main>
     </MantineProvider>
   );
 }

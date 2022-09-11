@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuthentication } from '../features/authentication/AuthContext';
 import Dashboard from '../features/dashboard/Dashboard';
-import SignIn from './authentication/SignIn';
-import SignUp from './authentication/SignUp';
+import SignIn from '../features/authentication/SignIn';
+import SignUp from '../features/authentication/SignUp';
 
 export default function AppRoutes() {
   const { isAuthenticated } = useAuthentication();

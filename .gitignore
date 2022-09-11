@@ -28,3 +28,6 @@ dist-ssr
 
 # Tailwind script
 tailwind.css
+
+# Other
+palette.txt

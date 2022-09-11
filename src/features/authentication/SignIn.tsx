@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from '@mantine/form';
 import {
   email,
@@ -8,7 +8,7 @@ import {
 } from '../../utils/validation';
 import { Stack, PasswordInput, Button, TextInput, Text } from '@mantine/core';
 import { SignInData } from '../../models/authentication';
-import { useAuthentication } from '../../features/authentication/AuthContext';
+import { useAuthentication } from './AuthContext';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
@@ -26,14 +26,14 @@ const validate = {
 };
 
 const SignIn = () => {
-  const { signIn: signin } = useAuthentication();
+  const { signIn } = useAuthentication();
   const form = useForm<SignInData>({
     initialValues,
     validate,
   });
   const [error, setError] = useState<string>();
 
-  const signInMutation = useMutation(signin, {
+  const signInMutation = useMutation(signIn, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       setError(err.response?.data.message),
   });
@@ -43,7 +43,7 @@ const SignIn = () => {
     if (hasErrors) return;
     signInMutation.mutate(form.values);
   }, [form]);
-
+  
   return (
     <Stack sx={{ width: 320 }} mx='auto'>
       <TextInput

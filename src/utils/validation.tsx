@@ -12,11 +12,19 @@ export const minLenght = (length: number) => (value: string) => {
   return null;
 };
 
-export const matches = (field: string, message: string) => (value: any, values: any) => {
+export const maxLength = (length: number) => (value: string) => {
   if (!value) return null;
-  if (value === values[field]) return null;
-  return message;
+  if (value.length > length)
+    return `This should have at most ${length} characters.`;
+  return null;
 };
+
+export const matches =
+  (field: string, message: string) => (value: any, values: any) => {
+    if (!value) return null;
+    if (value === values[field]) return null;
+    return message;
+  };
 
 export const email = (value: string) => {
   if (!value) return null;

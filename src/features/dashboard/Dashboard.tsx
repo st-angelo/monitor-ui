@@ -1,11 +1,8 @@
-import { Button } from '@mantine/core';
-import { useAuthentication } from '../authentication/AuthContext';
-import ColorSchemeToggler from '../general/ColorSchemeToggler';
+import AddCategoryComponent from '../user/AddCategoryComponent';
+import CategoriesComponent from '../user/CategoriesComponent';
 
 const Dashboard = () => {
-  const { signOut } = useAuthentication();
-
-  return <>This is a dashboard</>;
+  return <CategoriesComponent />;
 };
 
 export default Dashboard;

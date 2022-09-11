@@ -1,12 +1,16 @@
-import { Anchor, Avatar, Container, Group, Image } from '@mantine/core';
+import { ActionIcon, Anchor, Avatar, Container, Group } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import ColorSchemeToggler from '../../features/general/ColorSchemeToggler';
+import { IconLogout } from '@tabler/icons';
+import ColorSchemeToggler from './ColorSchemeToggler';
+import { useAuthentication } from '../authentication/AuthContext';
 
 const Navigation = () => {
+  const { signOut } = useAuthentication();
+
   return (
     <Container py={'sm'} size={'lg'}>
       <Group position='apart'>
-        <Image alt='logo' src='/logo.png' width={60} height={60} />
+        <img alt='logo' src='/logo.svg' className='w-16' />
         <Group>
           <Anchor component={Link} to='/dashboard'>
             Dashboard
@@ -22,6 +26,9 @@ const Navigation = () => {
             size={'sm'}
           />
           <ColorSchemeToggler />
+          <ActionIcon variant='light' size='md' onClick={signOut}>
+            <IconLogout />
+          </ActionIcon>
         </Group>
       </Group>
     </Container>
