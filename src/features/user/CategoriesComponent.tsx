@@ -1,32 +1,22 @@
 import axios from '../../utils/axios';
-import { useCallback, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
-import LoadingLines from '../../components/common/LoadingLines';
+import { useCallback, useMemo } from 'react';
+import { Category, CollectionResponse } from '../../models/common';
+import ListBrowser from '../../components/common/list-browser/ListBrowser';
+import categoriesListStore from './categoriesListStore';
+import CategoryComponent from './CategoryComponent';
 
 const CategoriesComponent = () => {
-  const getUserCategories = useCallback(() => {
-    return axios({
-      method: 'GET',
-      url: '/user/category',
-    });
+  const getUserCategories = useCallback(async () => {
+    const response = await axios.get<CollectionResponse<Category>>('/user/category');
+    return response.data;
   }, []);
 
-  const { data, isFetching, isLoading } = useQuery(
-    'user-categories',
-    getUserCategories
-  );
+  const queryData = useMemo(() => ({
+    name: 'user-categories',
+    getter: getUserCategories
+  }), [getUserCategories])
 
-  const loading = useMemo(
-    () => isFetching || isLoading,
-    [isFetching, isLoading]
-  );
-
-  return (
-    <>
-      {loading && <LoadingLines />}
-      {!loading && console.log(data?.data.data)}
-    </>
-  );
+  return <ListBrowser store={categoriesListStore} queryData={queryData} ItemComponent={CategoryComponent} />;
 };
 
 export default CategoriesComponent;

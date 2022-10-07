@@ -40,38 +40,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
   //#region Handlers
 
   const signIn = useCallback(async ({ email, password }: SignInData) => {
-    return await axios({
-      method: 'POST',
-      url: `signin`,
-      data: {
+    return await axios
+      .post('signin', {
         email,
         password,
-      },
-    }).then(result => {
-      if (result && result.data && result.data.token) {
-        setToken(result.data.token);
-        localStorage.setItem(auth_jwtName, result.data.token);
-      }
-    });
-  }, []);
-
-  const signUp = useCallback(
-    async ({ firstName, lastName, email, password }: SignUpData) => {
-      return axios({
-        method: 'POST',
-        url: `signup`,
-        data: {
-          firstName,
-          lastName,
-          email,
-          password,
-        },
-      }).then(result => {
+      })
+      .then(result => {
         if (result && result.data && result.data.token) {
           setToken(result.data.token);
           localStorage.setItem(auth_jwtName, result.data.token);
         }
       });
+  }, []);
+
+  const signUp = useCallback(
+    async ({ firstName, lastName, email, password }: SignUpData) => {
+      return axios
+        .post('signup', {
+          firstName,
+          lastName,
+          email,
+          password,
+        })
+        .then(result => {
+          if (result && result.data && result.data.token) {
+            setToken(result.data.token);
+            localStorage.setItem(auth_jwtName, result.data.token);
+          }
+        });
     },
     []
   );

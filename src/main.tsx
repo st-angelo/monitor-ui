@@ -6,14 +6,20 @@ import { AuthProvider } from './features/authentication/AuthContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import './index.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-            <App />
+          <App />
         </QueryClientProvider>
       </BrowserRouter>
     </AuthProvider>

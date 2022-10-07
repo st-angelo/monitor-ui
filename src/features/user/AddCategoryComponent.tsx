@@ -33,9 +33,7 @@ const AddCategoryComponent = () => {
   const [error, setError] = useState<string>();
 
   const addCategory = (input: AddCategoryData) => {
-    return axios({
-      method: 'POST',
-      url: '/user/category',
+    return axios.post('/user/category', {
       data: {
         ...input,
       },

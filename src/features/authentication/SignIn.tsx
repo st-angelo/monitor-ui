@@ -22,7 +22,7 @@ const initialValues = {
 
 const validate = {
   email: stopOnFirstFailure([required, email]),
-  password: stopOnFirstFailure([required, minLenght(8)]),
+  password: stopOnFirstFailure([required, minLenght(7)]),
 };
 
 const SignIn = () => {
@@ -43,7 +43,7 @@ const SignIn = () => {
     if (hasErrors) return;
     signInMutation.mutate(form.values);
   }, [form]);
-  
+
   return (
     <Stack sx={{ width: 320 }} mx='auto'>
       <TextInput
