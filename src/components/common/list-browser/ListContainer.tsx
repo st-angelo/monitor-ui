@@ -35,8 +35,6 @@ const ListContainer = <T extends ListBrowserStore>({
     [isFetching, isLoading]
   );
 
-  console.log(loading, values, data);
-
   return (
     <>
       {loading && <LoadingLines />}
