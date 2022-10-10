@@ -20,7 +20,7 @@ const ListBrowser = <T extends ListBrowserStore>({
 }: ListBrowserProps<T>) => {
   return (
     <>
-      <ListFilers />
+      <ListFilers store={store} />
       <ListContainer
         store={store}
         queryData={queryData}

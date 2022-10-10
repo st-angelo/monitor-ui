@@ -1,8 +1,8 @@
 import { Container, Sx } from '@mantine/core';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { useWritable, Writable } from 'react-use-svelte-store';
-import LoadingLines from '../LoadingLines';
+import LoadingLines from '../loading/LoadingLines';
 import { ListBrowserStore, QueryData } from './metadata';
 
 interface ListContainerProps<T> {
@@ -18,22 +18,39 @@ const ListContainer = <T extends ListBrowserStore>({
   ItemComponent,
   listContainerStyles,
 }: ListContainerProps<T>) => {
-  const [$store, , updateValues] = useWritable(store);
+  const [
+    {
+      filters: { fullText },
+      pager: { orderBy, direction, page, size },
+    },
+    ,
+    $update,
+  ] = useWritable(store);
 
   const { data, isFetching, isLoading } = useQuery(
-    queryData.name,
-    queryData.getter,
-    {
-      onSuccess: data => updateValues(prev => ({ ...prev, total: data.total })),
-    }
+    [queryData.name, fullText, orderBy, direction, page, size],
+    () =>
+      queryData.getter({
+        fullText,
+        orderBy,
+        direction,
+        page,
+        size,
+      })
   );
 
   const values = useMemo(() => data?.values || [], [data]);
+
+  const total = useMemo(() => data?.total || 0, [data]);
 
   const loading = useMemo(
     () => !data || isFetching || isLoading,
     [isFetching, isLoading]
   );
+
+  useEffect(() => {
+    $update(prev => ({ ...prev, total }));
+  }, [total]);
 
   return (
     <>

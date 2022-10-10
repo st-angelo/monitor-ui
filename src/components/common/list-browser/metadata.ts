@@ -8,6 +8,7 @@ interface ListBrowserPager {
   page: number;
   size: number;
   orderBy: string;
+  orderByFields: { value: string; label: string }[];
   direction: 'asc' | 'desc';
 }
 
@@ -22,15 +23,27 @@ export class ListBrowserStore {
     };
     this.pager = {
       page: 1,
-      size: 10,
-      orderBy: 'id',
-      direction: 'asc',
+      size: 1,
+      orderBy: '',
+      orderByFields: [],
+      direction: 'desc',
     };
     this.total = 0;
   }
 }
 
 export interface QueryData {
-  getter: () => Promise<CollectionResponse>;
+  getter: (params?: any) => Promise<CollectionResponse>;
   name: string;
 }
+
+export const directionOptions = [
+  {
+    value: 'asc',
+    label: 'Ascending',
+  },
+  {
+    value: 'desc',
+    label: 'Descending',
+  },
+];

@@ -1,3 +1,4 @@
+import { Updater } from 'react-use-svelte-store';
 import { ColorScheme } from './constants';
 
 export const parseJwt = (token: string) => {
@@ -15,4 +16,20 @@ export const getColorSchemeOrDefault = () => {
   if (Object.values(ColorScheme).includes(colorScheme as ColorScheme))
     return colorScheme as ColorScheme;
   return ColorScheme.Light;
+};
+
+export const setNestedProperty = (target: any, path: string, value: any) => {
+  if (!path || !target) {
+    console.error("[setNestedProperty] invalid 'path' or 'target'");
+    return;
+  }
+  const segments = path.split('.');
+  const property = segments.pop();
+  if (!property) {
+    console.error("[setNestedProperty] invalid 'property'");
+    return;
+  }
+  let _target = target;
+  segments.forEach(segment => (_target = target[segment]));
+  _target[property] = value;
 };
