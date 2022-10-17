@@ -8,6 +8,7 @@ import { ListBrowserStore, QueryData } from './metadata';
 interface ListBrowserProps<T> {
   store: Writable<T>;
   queryData: QueryData;
+  HeaderComponent?: () => JSX.Element;
   ItemComponent: (props: { data: any }) => JSX.Element;
   listContainerStyles?: Sx;
 }
@@ -15,12 +16,14 @@ interface ListBrowserProps<T> {
 const ListBrowser = <T extends ListBrowserStore>({
   store,
   queryData,
+  HeaderComponent,
   ItemComponent,
   listContainerStyles,
 }: ListBrowserProps<T>) => {
   return (
     <>
       <ListFilers store={store} />
+      {HeaderComponent && <HeaderComponent />}
       <ListContainer
         store={store}
         queryData={queryData}

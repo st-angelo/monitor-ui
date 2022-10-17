@@ -2,6 +2,7 @@ import { CollectionResponse } from '../../../models/common';
 
 interface ListBrowserFilters {
   fullText: string;
+  [key: string]: any;
 }
 
 interface ListBrowserPager {
@@ -23,7 +24,7 @@ export class ListBrowserStore {
     };
     this.pager = {
       page: 1,
-      size: 1,
+      size: 10,
       orderBy: '',
       orderByFields: [],
       direction: 'desc',

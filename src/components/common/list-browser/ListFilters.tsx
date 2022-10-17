@@ -1,5 +1,5 @@
 import { Select, Grid } from '@mantine/core';
-import { IconSearch } from '@tabler/icons';
+import { IconSearch, IconX } from '@tabler/icons';
 import { useWritable, Writable } from 'react-use-svelte-store';
 import DebouncedTextInput from '../inputs/DebouncedTextInput';
 import { ListBrowserStore, directionOptions } from './metadata';

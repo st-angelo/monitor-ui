@@ -1,18 +1,21 @@
 import { Card, Text } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons';
-import { Category } from '../../models/common';
+import { Transaction } from '../../models/transaction';
 
-interface CategoryComponentProps {
-  data: Category;
+interface TransactionComponentProps {
+  data: Transaction;
 }
 
-const CategoryComponent = ({ data }: CategoryComponentProps) => {
+const TransactionComponent = ({ data }: TransactionComponentProps) => {
+  console.log(data.date, typeof data.date);
   return (
     <Card p={'md'} className={'w-full shadow-md'}>
       <div className='flex justify-between items-center'>
         <div>
-          <Text weight={'bold'}>{data.name}</Text>
-          <Text size={'sm'}>{data.description}</Text>
+          <Text
+            weight={'bold'}
+          >{`${data.category?.name}, ${data.amount} ${data.currency}`}</Text>
+          <Text size={'sm'}>{new Date(data.date).toLocaleString()}</Text>
         </div>
         <div className='flex gap-2'>
           <IconEdit className='cursor-pointer text-teal-600' size={20} />
@@ -23,4 +26,4 @@ const CategoryComponent = ({ data }: CategoryComponentProps) => {
   );
 };
 
-export default CategoryComponent;
+export default TransactionComponent;

@@ -34,7 +34,7 @@ const ListPagination = <T extends ListBrowserStore>({
           <Select
             value={$store.pager.size.toString()}
             onChange={handleChange('pager.size')}
-            data={['1', '5', '10', '25', '50', '100']}
+            data={['5', '10', '25', '50', '100']}
           />
         </div>
       </div>

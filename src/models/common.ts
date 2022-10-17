@@ -17,4 +17,3 @@ export interface Category {
   description: string | null;
   color: string;
 }
-

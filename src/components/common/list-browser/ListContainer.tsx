@@ -20,7 +20,7 @@ const ListContainer = <T extends ListBrowserStore>({
 }: ListContainerProps<T>) => {
   const [
     {
-      filters: { fullText },
+      filters,
       pager: { orderBy, direction, page, size },
     },
     ,
@@ -28,10 +28,10 @@ const ListContainer = <T extends ListBrowserStore>({
   ] = useWritable(store);
 
   const { data, isFetching, isLoading } = useQuery(
-    [queryData.name, fullText, orderBy, direction, page, size],
+    [queryData.name, { ...filters }, orderBy, direction, page, size],
     () =>
       queryData.getter({
-        fullText,
+        ...filters,
         orderBy,
         direction,
         page,
@@ -54,16 +54,23 @@ const ListContainer = <T extends ListBrowserStore>({
 
   return (
     <>
-      {loading && <LoadingLines />}
+      {loading && (
+        <div className='my-4'>
+          <LoadingLines />
+        </div>
+      )}
       {!loading && (
         <>
           {values.length === 0 && <span>No entries </span>}
           {values.length > 0 && (
             <Container
+              fluid
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '.5rem',
+                gap: '.75rem',
+                padding: 0,
+                marginBlock: '1rem',
                 ...listContainerStyles,
               }}
             >

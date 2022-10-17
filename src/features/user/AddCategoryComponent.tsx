@@ -8,10 +8,10 @@ import {
 import { AddCategoryData } from '../../models/userProfile';
 import { useForm } from '@mantine/form';
 import { useMutation } from 'react-query';
-import axios from '../../utils/axios';
 import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
 import { toast } from 'react-toastify';
+import { addCategory } from '../../repository/categoryRepository';
 
 const initialValues = {
   name: '',
@@ -31,14 +31,6 @@ const AddCategoryComponent = () => {
     validate,
   });
   const [error, setError] = useState<string>();
-
-  const addCategory = (input: AddCategoryData) => {
-    return axios.post('/user/category', {
-      data: {
-        ...input,
-      },
-    });
-  };
 
   const signUpMutation = useMutation(addCategory, {
     onError: (err: AxiosError<MonitorErrorData>) =>
