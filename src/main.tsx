@@ -4,13 +4,14 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import { AuthProvider } from './features/authentication/AuthContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import './utils/i18next';
 import './index.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 60000,
+      staleTime: 60 * 1000,
     },
   },
 });

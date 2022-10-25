@@ -1,0 +1,53 @@
+{
+  "Language": {
+    "Romanian": "Romanian",
+    "English": "English"
+  },
+  "Common": {
+    "Save": "Save",
+    "RowsOnPage": "Rows on page",
+    "NoEntries": "No entries"
+  },
+  "Navigation": {
+    "Home": "Home",
+    "ManageWallet": "Manage Wallet",
+    "AccountSettings": "Account settings",
+    "LogOut": "Log Out"
+  },
+  "Label": {
+    "Sort": {
+      "OrderBy": "Order by",
+      "Direction": "Direction"
+    },
+    "Filter": {
+      "DateFrom": "Date from",
+      "DateTo": "Date to",
+      "Category": "Category",
+      "Currency": "Currency",
+      "AmountFrom": "Amount from",
+      "AmountTo": "Amount to"
+    }
+  },
+  "Value": {
+    "Ascending": "Ascending",
+    "Descending": "Descending",
+    "Date": "Date",
+    "Amount": "Amount",
+    "Currency": "Currency",
+    "Spending": "Spending",
+    "Earning": "Earning",
+    "RON": "Romanian leu",
+    "EUR": "Euro",
+    "USD": "United States Dollar",
+    "Grocery": "Grocery",
+    "Transport": "Transport",
+    "Houseware": "Houseware",
+    "Health": "Health",
+    "Rent": "Rent",
+    "Utility": "Utility",
+    "Subscription": "Subscription",
+    "Entertainment": "Entertainment",
+    "Investment": "Investment",
+    "Salary": "Salary"
+  }
+}

@@ -1,5 +1,6 @@
 import { Container, Sx } from '@mantine/core';
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useWritable, Writable } from 'react-use-svelte-store';
 import LoadingLines from '../loading/LoadingLines';
@@ -18,6 +19,7 @@ const ListContainer = <T extends ListBrowserStore>({
   ItemComponent,
   listContainerStyles,
 }: ListContainerProps<T>) => {
+  const { t } = useTranslation();
   const [
     {
       filters,
@@ -53,15 +55,13 @@ const ListContainer = <T extends ListBrowserStore>({
   }, [total]);
 
   return (
-    <>
-      {loading && (
-        <div className='my-4'>
-          <LoadingLines />
-        </div>
-      )}
+    <div className='my-4'>
+      {loading && <LoadingLines />}
       {!loading && (
         <>
-          {values.length === 0 && <span>No entries </span>}
+          {values.length === 0 && (
+            <span className={'italic'}>{t('Common.NoEntries')}</span>
+          )}
           {values.length > 0 && (
             <Container
               fluid
@@ -70,7 +70,6 @@ const ListContainer = <T extends ListBrowserStore>({
                 flexDirection: 'column',
                 gap: '.75rem',
                 padding: 0,
-                marginBlock: '1rem',
                 ...listContainerStyles,
               }}
             >
@@ -81,7 +80,7 @@ const ListContainer = <T extends ListBrowserStore>({
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

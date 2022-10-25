@@ -1,7 +1,6 @@
 import { CollectionResponse } from '../../../models/common';
 
 interface ListBrowserFilters {
-  fullText: string;
   [key: string]: any;
 }
 
@@ -19,9 +18,7 @@ export class ListBrowserStore {
   total: number;
 
   constructor() {
-    this.filters = {
-      fullText: '',
-    };
+    this.filters = {};
     this.pager = {
       page: 1,
       size: 10,

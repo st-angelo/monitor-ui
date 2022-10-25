@@ -1,8 +1,8 @@
 import { MantineProvider } from '@mantine/core';
 import AppRoutes from './Routes';
-import { useColorScheme } from '../features/general/hooks/useColorScheme';
+import { useColorScheme } from '../features/common/hooks/useColorScheme';
 import { useAuthentication } from '../features/authentication/AuthContext';
-import Navigation from '../features/general/Navigation';
+import Navigation from '../features/common/Navigation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

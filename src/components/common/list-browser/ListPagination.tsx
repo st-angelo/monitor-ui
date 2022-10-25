@@ -1,5 +1,6 @@
 import { Pagination, Select } from '@mantine/core';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWritable, Writable } from 'react-use-svelte-store';
 import { ListBrowserStore } from './metadata';
 import useListBrowserUtils from './useListBrowserUtils';
@@ -11,6 +12,7 @@ interface ListPaginationProps<T> {
 const ListPagination = <T extends ListBrowserStore>({
   store,
 }: ListPaginationProps<T>) => {
+  const { t } = useTranslation();
   const [$store, , $update] = useWritable(store);
   const { handleChange } = useListBrowserUtils($update);
 
@@ -29,7 +31,7 @@ const ListPagination = <T extends ListBrowserStore>({
         />
       </div>
       <div className='flex gap-2 items-center'>
-        <span className='text-sm'>Rows on page:</span>
+        <span className='text-sm'>{t('Common.RowsOnPage')}:</span>
         <div className='w-24'>
           <Select
             value={$store.pager.size.toString()}

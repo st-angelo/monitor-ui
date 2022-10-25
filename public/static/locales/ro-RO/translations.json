@@ -1,0 +1,53 @@
+{
+  "Language": {
+    "Romanian": "Română",
+    "English": "Engleză"
+  },
+  "Common": {
+    "Save": "Salvează",
+    "RowsOnPage": "Rânduri pe pagină",
+    "NoEntries": "Niciun rezultat"
+  },
+  "Navigation": {
+    "Home": "Acasă",
+    "ManageWallet": "Gestionează portofel",
+    "AccountSettings": "Setări cont",
+    "LogOut": "Deconectare"
+  },
+  "Label": {
+    "Sort": {
+      "OrderBy": "Ordonează după",
+      "Direction": "Direcție"
+    },
+    "Filter": {
+      "DateFrom": "Dată de la",
+      "DateTo": "Dată până la",
+      "Category": "Categorie",
+      "Currency": "Valută",
+      "AmountFrom": "Sumă de la",
+      "AmountTo": "Sumă până la"
+    }
+  },
+  "Value": {
+    "Ascending": "Ascendentă",
+    "Descending": "Descendentă",
+    "Date": "Dată",
+    "Amount": "Sumă",
+    "Currency": "Valută",
+    "Spending": "Cheltuială",
+    "Earning": "Câștig",
+    "RON": "Leu românesc",
+    "EUR": "Euro",
+    "USD": "Dolar american",
+    "Grocery": "Cumpărături",
+    "Transport": "Transport",
+    "Houseware": "Casnic",
+    "Health": "Sănătate",
+    "Rent": "Întreținere",
+    "Utility": "Utilități",
+    "Subscription": "Abonament",
+    "Entertainment": "Divertisment",
+    "Investment": "Investiție",
+    "Salary": "Salariu"
+  }
+}

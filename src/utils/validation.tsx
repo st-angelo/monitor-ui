@@ -19,6 +19,18 @@ export const maxLength = (length: number) => (value: string) => {
   return null;
 };
 
+export const max = (amount: number) => (value: number) => {
+  if (!value) return null;
+  if (value > amount) return `Value cannot exceed ${amount}.`;
+  return null;
+};
+
+export const min = (amount: number) => (value: number) => {
+  if (!value) return null;
+  if (value < amount) return `Value cannot be lower than ${amount}.`;
+  return null;
+};
+
 export const matches =
   (field: string, message: string) => (value: any, values: any) => {
     if (!value) return null;

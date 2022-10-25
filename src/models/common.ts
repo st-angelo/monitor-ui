@@ -4,7 +4,6 @@ export interface CollectionResponse<T = any> {
 }
 
 export interface GetCollectionParams {
-  fullText: string;
   orderBy: string;
   direction: number;
   page: number;
@@ -13,7 +12,20 @@ export interface GetCollectionParams {
 
 export interface Category {
   id: string;
+  code: string;
   name: string;
   description: string | null;
   color: string;
+}
+
+export interface Currency {
+  id: string;
+  code: string;
+}
+
+export interface MiscellaneousInfo {
+  lastTransactionTypeId?: string;
+  implicitTransactionTypeId?: string;
+  lastCurrencyId?: string;
+  implicitCurrencyId?: string;
 }

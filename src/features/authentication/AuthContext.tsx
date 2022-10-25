@@ -35,7 +35,9 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [token, setToken] = useState<string | null>();
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem(auth_jwtName)
+  );
 
   //#region Handlers
 
@@ -88,7 +90,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setToken(jwt);
     };
 
-    pollLocalStorage();
     const interval = setInterval(pollLocalStorage, 1000);
 
     return () => clearInterval(interval);

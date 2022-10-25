@@ -25,14 +25,18 @@ const validate = {
   color: required,
 };
 
-const AddCategoryComponent = () => {
+interface CategoryDetailComponentProps {
+  id?: number;
+}
+
+const CategoryDetailComponent = ({ id }: CategoryDetailComponentProps) => {
   const form = useForm<AddCategoryData>({
     initialValues,
     validate,
   });
   const [error, setError] = useState<string>();
 
-  const signUpMutation = useMutation(addCategory, {
+  const mutateCategory = useMutation(addCategory, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       setError(err.response?.data.message),
     onSuccess: () => {
@@ -44,7 +48,7 @@ const AddCategoryComponent = () => {
     setError('');
     const { hasErrors } = form.validate();
     if (hasErrors) return;
-    signUpMutation.mutate(form.values);
+    mutateCategory.mutate(form.values);
   }, [form]);
 
   return (
@@ -74,4 +78,4 @@ const AddCategoryComponent = () => {
   );
 };
 
-export default AddCategoryComponent;
+export default CategoryDetailComponent;

@@ -13,7 +13,7 @@ const ColorSchemeToggler = () => {
   );
 
   return (
-    <ActionIcon variant='light' size='md' onClick={toggle}>
+    <ActionIcon variant='light' size='lg' onClick={toggle}>
       {icon}
     </ActionIcon>
   );

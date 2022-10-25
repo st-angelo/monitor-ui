@@ -98,7 +98,7 @@ const SignUp = () => {
         {error}
       </Text>
       <Button onClick={handleSignUp}>Submit</Button>
-      <Link to='/signin'>
+      <Link to='/sign-in'>
         <Button className={'w-full'}>Go to sign in</Button>
       </Link>
     </Stack>

@@ -3,6 +3,7 @@ import ListBrowser from '../../components/common/list-browser/ListBrowser';
 import transactionsListStore from './transactionsListStore';
 import TransactionComponent from './TransactionComponent';
 import { getTransactions } from '../../repository/transactionRepository';
+import TransactionFiltersComponent from './TransactionFiltersComponent';
 
 const TransactionsComponent = () => {
   const queryData = useMemo(
@@ -17,6 +18,7 @@ const TransactionsComponent = () => {
     <ListBrowser
       store={transactionsListStore}
       queryData={queryData}
+      HeaderComponent={TransactionFiltersComponent}
       ItemComponent={TransactionComponent}
     />
   );

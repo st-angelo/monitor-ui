@@ -33,3 +33,6 @@ export const setNestedProperty = (target: any, path: string, value: any) => {
   segments.forEach(segment => (_target = target[segment]));
   _target[property] = value;
 };
+
+export const formatNumberWithCommas = (value: string | undefined) =>
+  value ? value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : '';
