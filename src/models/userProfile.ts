@@ -6,4 +6,8 @@ export interface AddCategoryData {
   color: string;
 }
 
-export interface GetCategoriesParams extends GetCollectionParams {}
+export interface GetCategoriesParams extends GetCollectionParams {
+  name: string;
+  description: string;
+  transactionTypeId: string;
+}

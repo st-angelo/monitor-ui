@@ -37,3 +37,7 @@ export const addTransaction = (input: MutateTransactionData) => {
 export const updateTransaction = (input: MutateTransactionData) => {
   return axios.patch(`/transaction/${input.id}`, { ...input });
 };
+
+export const deleteTransaction = (transactionId: string) => {
+  return axios.delete(`/transaction/${transactionId}`);
+};

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from '@mantine/form';
 import {
   email,
@@ -7,14 +7,7 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import {
-  Box,
-  PasswordInput,
-  Button,
-  TextInput,
-  Text,
-  Stack,
-} from '@mantine/core';
+import { PasswordInput, Button, TextInput, Text, Stack } from '@mantine/core';
 import { SignUpData } from '../../models/authentication';
 import { useAuthentication } from '../../features/authentication/AuthContext';
 import { useMutation } from 'react-query';
@@ -22,6 +15,7 @@ import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
 import { Link } from 'react-router-dom';
 import { IconMail, IconLock, IconUser } from '@tabler/icons';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   firstName: '',
@@ -43,6 +37,7 @@ const validate = {
 };
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const { signUp } = useAuthentication();
   const form = useForm<SignUpData & { passwordConfirm: string }>({
     initialValues,
@@ -60,36 +55,36 @@ const SignUp = () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     signUpMutation.mutate(form.values);
-  }, [form]);
+  }, [form, signUpMutation]);
 
   return (
     <Stack sx={{ width: 320 }} mx='auto'>
       <TextInput
-        label='First name'
-        placeholder='Vasile'
+        label={t('Label.Field.FirstName')}
+        placeholder='John'
         icon={<IconUser size='16' />}
         {...form.getInputProps('firstName')}
       />
       <TextInput
-        label='Last name'
-        placeholder='Dulgheru'
+        label={t('Label.Field.LastName')}
+        placeholder='Doe'
         icon={<IconUser size='16' />}
         {...form.getInputProps('lastName')}
       />
       <TextInput
-        label='Email'
-        placeholder='vasile.dulgheru@gmail.com'
+        label={t('Label.Field.Email')}
+        placeholder='john.doe@gmail.com'
         icon={<IconMail size='20' />}
         {...form.getInputProps('email')}
       />
       <PasswordInput
-        label='Password'
-        placeholder='Password'
+        label={t('Label.Field.Password')}
+        placeholder={t('Label.Field.Password')}
         icon={<IconLock size='16' />}
         {...form.getInputProps('password')}
       />
       <PasswordInput
-        label='Confirm password'
+        label={t('Label.Field.ConfirmPassword')}
         placeholder='Confirm password'
         icon={<IconLock size='16' />}
         {...form.getInputProps('passwordConfirm')}
@@ -97,9 +92,9 @@ const SignUp = () => {
       <Text color='red' size='sm'>
         {error}
       </Text>
-      <Button onClick={handleSignUp}>Submit</Button>
+      <Button onClick={handleSignUp}>{t('Common.Submit')}</Button>
       <Link to='/sign-in'>
-        <Button className={'w-full'}>Go to sign in</Button>
+        <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>
       </Link>
     </Stack>
   );

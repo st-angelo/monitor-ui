@@ -1,4 +1,11 @@
+import { ReactNode } from 'react';
 import { CollectionResponse } from '../../../models/common';
+import i18next from 'i18next';
+
+interface ListBrowserData {
+  id: string;
+  [key: string]: any;
+}
 
 interface ListBrowserFilters {
   [key: string]: any;
@@ -12,12 +19,22 @@ interface ListBrowserPager {
   direction: 'asc' | 'desc';
 }
 
+export interface ListBrowserAction {
+  name: string;
+  visible: boolean;
+  component: ReactNode;
+}
+
 export class ListBrowserStore {
+  data: ListBrowserData[];
   filters: ListBrowserFilters;
   pager: ListBrowserPager;
   total: number;
+  actions: ListBrowserAction[];
+  selection: string[];
 
   constructor() {
+    this.data = [];
     this.filters = {};
     this.pager = {
       page: 1,
@@ -27,6 +44,8 @@ export class ListBrowserStore {
       direction: 'desc',
     };
     this.total = 0;
+    this.actions = [];
+    this.selection = [];
   }
 }
 
@@ -35,13 +54,13 @@ export interface QueryData {
   name: string;
 }
 
-export const directionOptions = [
+export const getDirectionOptions = () => [
   {
     value: 'asc',
-    label: 'Ascending',
+    label: i18next.t('Value.Ascending'),
   },
   {
     value: 'desc',
-    label: 'Descending',
+    label: i18next.t('Value.Descending'),
   },
 ];

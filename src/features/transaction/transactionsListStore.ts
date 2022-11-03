@@ -2,13 +2,26 @@ import { writable } from 'react-use-svelte-store';
 import { ListBrowserStore } from '../../components/common/list-browser/metadata';
 
 interface TransactionFilters {
-  name: string;
-  description: string;
-  color: string;
+  dateFrom: Date | null;
+  dateTo: Date | null;
+  typeId: string | null;
+  categoryId: string | null;
+  currencyId: string | null;
+  amountFrom: number | null;
+  amountTo: number | null;
 }
 
+export const defaultTransactionFilters: TransactionFilters = {
+  dateFrom: null,
+  dateTo: null,
+  typeId: null,
+  categoryId: null,
+  currencyId: null,
+  amountFrom: null,
+  amountTo: null,
+};
+
 class TransactionListStore extends ListBrowserStore {
-  transactionFilters: TransactionFilters;
   constructor() {
     super();
     this.pager.orderByFields = [
@@ -17,10 +30,9 @@ class TransactionListStore extends ListBrowserStore {
       { value: 'currency', label: 'Currency' },
     ];
     this.pager.orderBy = 'date';
-    this.transactionFilters = {
-      name: '',
-      description: '',
-      color: '',
+    this.pager.size = 5;
+    this.filters = {
+      ...defaultTransactionFilters,
     };
   }
 }

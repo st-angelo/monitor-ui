@@ -6,15 +6,13 @@ import { useAuthentication } from '../authentication/AuthContext';
 
 const UserMenu = () => {
   const { t } = useTranslation();
-  const { signOut } = useAuthentication();
+  const { signOut, user } = useAuthentication();
 
   return (
     <Menu>
       <Menu.Target>
         <Avatar
-          src={
-            'https://media-exp1.licdn.com/dms/image/D4D03AQGQCdpKyswojg/profile-displayphoto-shrink_800_800/0/1666023406882?e=1672272000&v=beta&t=PayzDFT5EDfgSWFUiWCmh7O6hustMCoDQPijTyWcyu8'
-          }
+          src={user?.photoUrl}
           className='cursor-pointer'
         />
       </Menu.Target>

@@ -3,9 +3,11 @@ import { TransactionType } from '../models/transaction';
 import axios from '../utils/axios';
 
 export const getTransactionTypes = async () => {
-  const response = await axios.get<TransactionType[]>('/dictionary/transactionType');
+  const response = await axios.get<TransactionType[]>(
+    '/dictionary/transactionType'
+  );
   return response.data;
-}
+};
 
 export const getCategories = async () => {
   const response = await axios.get<Category[]>('/dictionary/category');

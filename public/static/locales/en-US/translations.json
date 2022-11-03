@@ -6,7 +6,13 @@
   "Common": {
     "Save": "Save",
     "RowsOnPage": "Rows on page",
-    "NoEntries": "No entries"
+    "NoEntries": "No entries",
+    "Confirm": "Do you want to proceed?",
+    "Yes": "Yes",
+    "No": "No",
+    "SelectPage": "Select page ({{selections}} selections in total)",
+    "DeselectAll": "Deselect all",
+    "Submit": "Submit"
   },
   "Navigation": {
     "Home": "Home",
@@ -20,12 +26,27 @@
       "Direction": "Direction"
     },
     "Filter": {
+      "Name": "Name",
+      "Description": "Description",
       "DateFrom": "Date from",
       "DateTo": "Date to",
+      "Type": "Type",
+      "TransactionType": "Transaction type",
       "Category": "Category",
       "Currency": "Currency",
       "AmountFrom": "Amount from",
       "AmountTo": "Amount to"
+    },
+    "Field": {
+      "Email": "Email",
+      "FirstName": "First name",
+      "LastName": "Last name",
+      "Password": "Password",
+      "ConfirmPassword": "Confirm password"
+    },
+    "Button": {
+      "GoToSignUp": "Go to sign up",
+      "GoToSignIn": "Go to sign in"
     }
   },
   "Value": {

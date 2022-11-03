@@ -1,8 +1,6 @@
-import { Anchor, Avatar, Container, Group, Menu } from '@mantine/core';
+import { Anchor, Container, Group } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { IconLogout, IconUser } from '@tabler/icons';
 import ColorSchemeToggler from './ColorSchemeToggler';
-import { useAuthentication } from '../authentication/AuthContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import UserMenu from './UserMenu';

@@ -2,10 +2,16 @@ import { writable } from 'react-use-svelte-store';
 import { ListBrowserStore } from '../../components/common/list-browser/metadata';
 
 interface CategoryFilters {
-  name: string;
-  description: string;
-  color: string;
+  name: string | null;
+  description: string | null;
+  transactionTypeId: string | null;
 }
+
+export const defaultCategoryFilters: CategoryFilters = {
+  name: null,
+  description: null,
+  transactionTypeId: null,
+};
 
 class CategoryListStore extends ListBrowserStore {
   categoryFilters: CategoryFilters;
@@ -17,9 +23,7 @@ class CategoryListStore extends ListBrowserStore {
     ];
     this.pager.orderBy = 'name';
     this.categoryFilters = {
-      name: '',
-      description: '',
-      color: '',
+      ...defaultCategoryFilters,
     };
   }
 }

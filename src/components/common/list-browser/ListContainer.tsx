@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useWritable, Writable } from 'react-use-svelte-store';
 import LoadingLines from '../loading/LoadingLines';
+import { Refresh } from './ListAction';
 import { ListBrowserStore, QueryData } from './metadata';
 
 interface ListContainerProps<T> {
@@ -29,7 +30,7 @@ const ListContainer = <T extends ListBrowserStore>({
     $update,
   ] = useWritable(store);
 
-  const { data, isFetching, isLoading } = useQuery(
+  const { data, isFetching, isLoading, refetch } = useQuery(
     [queryData.name, { ...filters }, orderBy, direction, page, size],
     () =>
       queryData.getter({
@@ -47,16 +48,37 @@ const ListContainer = <T extends ListBrowserStore>({
 
   const loading = useMemo(
     () => !data || isFetching || isLoading,
-    [isFetching, isLoading]
+    [data, isFetching, isLoading]
   );
 
   useEffect(() => {
+    $update(prev => ({ ...prev, data: values }));
+  }, [$update, values]);
+
+  useEffect(() => {
+    $update(prev => {
+      if (prev.actions.some(action => action.name === 'Refresh')) return prev;
+      return {
+        ...prev,
+        actions: [
+          ...prev.actions,
+          {
+            name: 'Refresh',
+            visible: true,
+            component: <Refresh handler={refetch} />,
+          },
+        ],
+      };
+    });
+  }, [$update, refetch]);
+
+  useEffect(() => {
     $update(prev => ({ ...prev, total }));
-  }, [total]);
+  }, [$update, total]);
 
   return (
     <div className='my-4'>
-      {loading && <LoadingLines />}
+      {loading && <LoadingLines size={8} />}
       {!loading && (
         <>
           {values.length === 0 && (

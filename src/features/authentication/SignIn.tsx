@@ -14,6 +14,7 @@ import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
 import { Link } from 'react-router-dom';
 import { IconMail, IconLock } from '@tabler/icons';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   email: '',
@@ -26,6 +27,7 @@ const validate = {
 };
 
 const SignIn = () => {
+  const { t } = useTranslation();
   const { signIn } = useAuthentication();
   const form = useForm<SignInData>({
     initialValues,
@@ -42,20 +44,20 @@ const SignIn = () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     signInMutation.mutate(form.values);
-  }, [form]);
+  }, [form, signInMutation]);
 
   return (
     <Stack sx={{ width: 320 }} mx='auto'>
       <TextInput
-        label='Email'
-        placeholder='vasile.dulgheru@gmail.com'
+        label={t('Label.Field.Email')}
+        placeholder='john.doe@gmail.com'
         withAsterisk
         icon={<IconMail size='20' />}
         {...form.getInputProps('email')}
       />
       <PasswordInput
-        label='Password'
-        placeholder='Password'
+        label={t('Label.Field.Password')}
+        placeholder={t('Label.Field.Password')}
         withAsterisk
         icon={<IconLock size='16' />}
         {...form.getInputProps('password')}
@@ -63,9 +65,9 @@ const SignIn = () => {
       <Text color='red' size='sm'>
         {error}
       </Text>
-      <Button onClick={handleSignIn}>Submit</Button>
+      <Button onClick={handleSignIn}>{t('Common.Submit')}</Button>
       <Link to='/sign-up'>
-        <Button className={'w-full'}>Go to sign up</Button>
+        <Button className={'w-full'}>{t('Label.Button.GoToSignUp')}</Button>
       </Link>
     </Stack>
   );

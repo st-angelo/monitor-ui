@@ -5,6 +5,7 @@ import { useAuthentication } from '../features/authentication/AuthContext';
 import Navigation from '../features/common/Navigation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GlobalComponents from './GlobalComponents';
 
 function App() {
   const { colorScheme } = useColorScheme();
@@ -24,12 +25,18 @@ function App() {
               color: import.meta.env.VITE_MANTINE_APP_COLOR,
             },
           },
+          Avatar: {
+            defaultProps: {
+              color: import.meta.env.VITE_MANTINE_APP_COLOR,
+            },
+          },
         },
       }}
     >
       <main className='min-h-screen'>
         {isAuthenticated && <Navigation />}
         <AppRoutes />
+        <GlobalComponents />
         <ToastContainer
           position='bottom-center'
           newestOnTop

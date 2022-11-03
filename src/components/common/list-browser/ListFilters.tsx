@@ -1,7 +1,7 @@
 import { Select, Grid } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { useWritable, Writable } from 'react-use-svelte-store';
-import { ListBrowserStore, directionOptions } from './metadata';
+import { useReadable, Writable } from 'react-use-svelte-store';
+import { ListBrowserStore, getDirectionOptions } from './metadata';
 import useListBrowserUtils from './useListBrowserUtils';
 
 interface ListFilersProps<T> {
@@ -12,8 +12,8 @@ const ListFilers = <T extends ListBrowserStore>({
   store,
 }: ListFilersProps<T>) => {
   const { t } = useTranslation();
-  const [$store, , $update] = useWritable(store);
-  const { handleChange } = useListBrowserUtils($update);
+  const $store = useReadable(store);
+  const { handleChange } = useListBrowserUtils(store);
 
   return (
     <Grid>
@@ -22,7 +22,10 @@ const ListFilers = <T extends ListBrowserStore>({
           value={$store.pager.orderBy}
           onChange={handleChange('pager.orderBy')}
           label={t('Label.Sort.OrderBy')}
-          data={$store.pager.orderByFields}
+          data={$store.pager.orderByFields.map(({ value, label }) => ({
+            value,
+            label: t(`Value.${label}`),
+          }))}
         />
       </Grid.Col>
       <Grid.Col span={6}>
@@ -30,7 +33,7 @@ const ListFilers = <T extends ListBrowserStore>({
           value={$store.pager.direction}
           onChange={handleChange('pager.direction')}
           label={t('Label.Sort.Direction')}
-          data={directionOptions}
+          data={getDirectionOptions()}
         />
       </Grid.Col>
     </Grid>

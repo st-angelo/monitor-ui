@@ -1,5 +1,12 @@
 import { useCallback, useState } from 'react';
-import { Button, ColorInput, Stack, Text, TextInput } from '@mantine/core';
+import {
+  Button,
+  ColorInput,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+} from '@mantine/core';
 import {
   maxLength,
   required,
@@ -12,16 +19,14 @@ import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
 import { toast } from 'react-toastify';
 import { addCategory } from '../../repository/categoryRepository';
-
-const initialValues = {
-  name: '',
-  description: '',
-  color: '',
-};
+import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
+import { getTransactionTypes } from '../../repository/dictionaryRepository';
+import { useLoader } from '../common/loader/useLoader';
 
 const validate = {
   name: stopOnFirstFailure([required, maxLength(50)]),
   description: stopOnFirstFailure([maxLength(500)]),
+  transactionTypeId: required,
   color: required,
 };
 
@@ -30,15 +35,22 @@ interface CategoryDetailComponentProps {
 }
 
 const CategoryDetailComponent = ({ id }: CategoryDetailComponentProps) => {
+  const [openLoader, closeLoader] = useLoader();
+
   const form = useForm<AddCategoryData>({
-    initialValues,
     validate,
   });
   const [error, setError] = useState<string>();
 
+  const transactionTypes = useDictionaryWithTranslation(
+    ['transactionTypes'],
+    getTransactionTypes
+  );
+
   const mutateCategory = useMutation(addCategory, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       setError(err.response?.data.message),
+    onSettled: closeLoader,
     onSuccess: () => {
       toast.success('Your category was added');
     },
@@ -49,7 +61,8 @@ const CategoryDetailComponent = ({ id }: CategoryDetailComponentProps) => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     mutateCategory.mutate(form.values);
-  }, [form]);
+    openLoader();
+  }, [form, openLoader, mutateCategory]);
 
   return (
     <Stack sx={{ width: 320 }} mx='auto'>
@@ -63,6 +76,13 @@ const CategoryDetailComponent = ({ id }: CategoryDetailComponentProps) => {
         label='Description'
         placeholder='Description'
         {...form.getInputProps('description')}
+      />
+      <Select
+        label='Transaction type'
+        placeholder='Transaction type'
+        clearable
+        {...form.getInputProps('transactionTypeId')}
+        data={transactionTypes}
       />
       <ColorInput
         label='Color'

@@ -11,11 +11,15 @@ import {
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { AxiosError } from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { MonitorErrorData } from '../../dto';
-import { MutateTransactionData, Transaction } from '../../models/transaction';
+import {
+  getMutateTransactionInitialData,
+  MutateTransactionData,
+  Transaction,
+} from '../../models/transaction';
 import {
   getCategories,
   getCurrencies,
@@ -28,11 +32,7 @@ import {
 import { max, min, required, stopOnFirstFailure } from '../../utils/validation';
 import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
 import { useMiscellaneousInfo } from '../common/hooks/useMiscellaneousInfo';
-
-const initialValues = {
-  date: new Date(),
-  isRecurrent: false,
-};
+import { useLoader } from '../common/loader/useLoader';
 
 const validate = {
   typeId: required,
@@ -50,62 +50,67 @@ const TransactionDetailComponent = ({
   transaction,
 }: TransactionDetailComponentProps) => {
   const client = useQueryClient();
-  // #region Load dictionaries and auxiliary data
-
-  const categories = useDictionaryWithTranslation(
-    ['categories'],
-    getCategories
-  );
-  const currencies = useDictionaryWithTranslation(
-    ['currencies'],
-    getCurrencies
-  );
-  const transactionTypes = useDictionaryWithTranslation(
-    ['transactionTypes'],
-    getTransactionTypes
-  );
-  const miscellaneousInfo = useMiscellaneousInfo();
-
-  // #endregion
+  const [openLoader, closeLoader] = useLoader();
 
   const form = useForm<MutateTransactionData>({
     initialValues: transaction
       ? new MutateTransactionData(transaction)
-      : initialValues,
+      : getMutateTransactionInitialData(),
     validate,
   });
   const [error, setError] = useState<string>();
 
-  useEffect(() => {
+  // #region Load dictionaries and auxiliary data
+
+  const categories = useDictionaryWithTranslation(
+    ['categories'],
+    getCategories,
+    { additionalFields: ['transactionTypeId'] }
+  );
+
+  const currencies = useDictionaryWithTranslation(
+    ['currencies'],
+    getCurrencies
+  );
+
+  const transactionTypes = useDictionaryWithTranslation(
+    ['transactionTypes'],
+    getTransactionTypes
+  );
+
+  useMiscellaneousInfo(data =>
     form.setValues(prev => ({
       ...prev,
-      typeId:
-        miscellaneousInfo?.lastTransactionTypeId ||
-        miscellaneousInfo?.implicitTransactionTypeId,
-      currencyId:
-        miscellaneousInfo?.lastCurrencyId ||
-        miscellaneousInfo?.implicitCurrencyId,
-    }));
-  }, [miscellaneousInfo]);
+      typeId: prev.typeId ?? data?.implicitTransactionTypeId,
+      currencyId: prev.currencyId ?? data?.implicitCurrencyId,
+    }))
+  );
+
+  // #endregion
 
   const mutateTransaction = useMutation(
     !transaction ? addTransaction : updateTransaction,
     {
       onError: (err: AxiosError<MonitorErrorData>) =>
         setError(err.response?.data.message),
+      onSettled: closeLoader,
       onSuccess: () => {
         client.invalidateQueries(['miscellaneous-info']);
+        client.invalidateQueries(['transactions']);
         toast.success('Your transaction was updated');
+        localStorage.setItem('lastTransactionTypeId', form.values.typeId || '');
+        localStorage.setItem('lastCurrencyId', form.values.currencyId || '');
       },
     }
   );
 
-  const handleMutateTransaction = useCallback(async () => {
+  const handleMutateTransaction = useCallback(() => {
     setError('');
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     mutateTransaction.mutate(form.values);
-  }, [form]);
+    openLoader();
+  }, [form, openLoader, mutateTransaction]);
 
   return (
     <Stack>
@@ -136,7 +141,9 @@ const TransactionDetailComponent = ({
             placeholder='Category'
             clearable
             {...form.getInputProps('categoryId')}
-            data={categories}
+            data={categories.filter(
+              category => category.transactionTypeId === form.values.typeId
+            )}
           />
         </Grid.Col>
         <Grid.Col>

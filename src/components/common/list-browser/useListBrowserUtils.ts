@@ -1,11 +1,13 @@
 import { useCallback } from 'react';
-import { Updater } from 'react-use-svelte-store';
+import { useWritable, Writable } from 'react-use-svelte-store';
 import { setNestedProperty } from '../../../utils/functions';
-import { ListBrowserStore } from './metadata';
+import { ListBrowserAction, ListBrowserStore } from './metadata';
 
 const useListBrowserUtils = <T extends ListBrowserStore>(
-  $update: Updater<T>
+  store: Writable<T>
 ) => {
+  const [$store, , $update] = useWritable(store);
+
   const handleChange = useCallback(
     (path: string) => (value: any) => {
       $update(prev => {
@@ -14,10 +16,46 @@ const useListBrowserUtils = <T extends ListBrowserStore>(
         return newValue;
       });
     },
-    []
+    [$update]
   );
 
-  return { handleChange };
+  const addOrUpdateActions = useCallback(
+    (actions: ListBrowserAction[]) =>
+      $update(prev => {
+        const newActions = actions.filter(
+          action => !prev.actions.some(({ name }) => name === action.name)
+        );
+        return {
+          ...prev,
+          actions: [
+            ...prev.actions.map(
+              action =>
+                actions.find(({ name }) => name === action.name) ?? action
+            ),
+            ...newActions,
+          ],
+        };
+      }),
+    [$update]
+  );
+
+  const getIsSelected = useCallback(
+    (key: string) => $store.selection.some(selection => selection === key),
+    [$store]
+  );
+
+  const handleSelect = useCallback(
+    (key: string) =>
+      $update(prev => ({
+        ...prev,
+        selection: getIsSelected(key)
+          ? prev.selection.filter(selection => selection !== key)
+          : [...prev.selection, key],
+      })),
+    [$update, getIsSelected]
+  );
+
+  return { handleChange, addOrUpdateActions, getIsSelected, handleSelect };
 };
 
 export default useListBrowserUtils;

@@ -11,7 +11,7 @@ const TransactionsComponent = () => {
       name: 'transactions',
       getter: getTransactions,
     }),
-    [getTransactions]
+    []
   );
 
   return (
@@ -20,6 +20,7 @@ const TransactionsComponent = () => {
       queryData={queryData}
       HeaderComponent={TransactionFiltersComponent}
       ItemComponent={TransactionComponent}
+      withSelection
     />
   );
 };

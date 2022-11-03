@@ -15,6 +15,7 @@ export interface Category {
   code: string;
   name: string;
   description: string | null;
+  transactionTypeId: string;
   color: string;
 }
 
@@ -24,8 +25,6 @@ export interface Currency {
 }
 
 export interface MiscellaneousInfo {
-  lastTransactionTypeId?: string;
   implicitTransactionTypeId?: string;
-  lastCurrencyId?: string;
   implicitCurrencyId?: string;
 }

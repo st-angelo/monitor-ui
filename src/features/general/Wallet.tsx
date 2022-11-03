@@ -5,7 +5,7 @@ import TransactionDetailComponent from '../transaction/TransactionDetailComponen
 
 const Wallet = () => {
   return (
-    <div className='w-1/2 m-auto'>
+    <div className='w-2/3 m-auto'>
       <TransactionDetailComponent />
     </div>
   );

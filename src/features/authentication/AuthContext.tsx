@@ -109,7 +109,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       signUp,
       signOut,
     }),
-    [user, token]
+    [user, token, signIn, signOut, signUp]
   );
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

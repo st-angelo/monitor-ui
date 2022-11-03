@@ -6,7 +6,13 @@
   "Common": {
     "Save": "Salvează",
     "RowsOnPage": "Rânduri pe pagină",
-    "NoEntries": "Niciun rezultat"
+    "NoEntries": "Niciun rezultat",
+    "Confirm": "Doriți să continuați?",
+    "Yes": "Da",
+    "No": "Nu",
+    "SelectPage": "Selectați pagina ({{selections}} selecții în total)",
+    "DeselectAll": "Deselectați tot",
+    "Submit": "Trimite"
   },
   "Navigation": {
     "Home": "Acasă",
@@ -20,12 +26,27 @@
       "Direction": "Direcție"
     },
     "Filter": {
+      "Name": "Nume",
+      "Description": "Descriere",
       "DateFrom": "Dată de la",
       "DateTo": "Dată până la",
+      "Type": "Tip",
+      "TransactionType": "Tip tranzacție",
       "Category": "Categorie",
       "Currency": "Valută",
       "AmountFrom": "Sumă de la",
       "AmountTo": "Sumă până la"
+    },
+    "Field": {
+      "Email": "Email",
+      "FirstName": "Prenume",
+      "LastName": "Nume",
+      "Password": "Parolă",
+      "ConfirmPassword": "Confirmare parolă"
+    },
+    "Button": {
+      "GoToSignUp": "Du-te la înregistrare",
+      "GoToSignIn": "Du-te la logare"
     }
   },
   "Value": {

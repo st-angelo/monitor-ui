@@ -1,20 +1,20 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-
-// Cache dictionary values for 6 hours
-const dictionaryCacheTime = 6 * 60 * 60 * 1000;
+import { longCacheTime } from '../../../utils/constants';
 
 const defaultOptions = {
   valueField: 'id',
   labelField: 'code',
   fallbackLabelField: 'name',
+  additionalFields: [],
 };
 
 interface TranslationOptions {
   valueField: string;
   labelField: string;
   fallbackLabelField: string;
+  additionalFields: string[];
 }
 
 export const useDictionary = <T extends Record<string, any>>(
@@ -22,8 +22,8 @@ export const useDictionary = <T extends Record<string, any>>(
   getter: () => Promise<T[]>
 ) => {
   const { data } = useQuery(key, getter, {
-    cacheTime: dictionaryCacheTime,
-    staleTime: dictionaryCacheTime,
+    cacheTime: longCacheTime,
+    staleTime: longCacheTime,
   });
 
   return data || [];
@@ -47,5 +47,9 @@ export const useDictionaryWithTranslation = <T extends Record<string, any>>(
     label: !i18n.exists(`Value.${item[_options.labelField]}`)
       ? item[_options.fallbackLabelField]
       : t(`Value.${item[_options.labelField]}`),
-  }));
+    ..._options.additionalFields.reduce(
+      (fields, field) => ({ ...fields, [field]: item[field] }),
+      {}
+    ),
+  })) as { value: any; label: any, [key: string]: any }[];
 };
