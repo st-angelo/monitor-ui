@@ -3,7 +3,6 @@ import { IconEdit, IconTrash } from '@tabler/icons';
 import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
 import { MonitorErrorData } from '../../dto';
 import { Transaction } from '../../models/transaction';
 import { deleteTransaction } from '../../repository/transactionRepository';
@@ -12,6 +11,7 @@ import { useLoader } from '../common/loader/useLoader';
 import { getTranslatedCategory } from './utils';
 import transactionsListStore from './transactionsListStore';
 import useListBrowserUtils from '../../components/common/list-browser/useListBrowserUtils';
+import { showError, showSuccess } from '../common/notifications';
 
 interface TransactionComponentProps {
   data: Transaction;
@@ -21,16 +21,22 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
   const client = useQueryClient();
   const openConfirmDialog = useConfirmDialog();
   const [openLoader, closeLoader] = useLoader();
-  const { getIsSelected, handleSelect } = useListBrowserUtils(transactionsListStore);
+  const { getIsSelected, handleSelect } = useListBrowserUtils(
+    transactionsListStore
+  );
 
   const deleteTransactionMutation = useMutation(deleteTransaction, {
     onError: (err: AxiosError<MonitorErrorData>) => {
-      toast.error(err.response?.data.message);
+      showError({
+        message: err.response?.data.message,
+      });
     },
     onSettled: closeLoader,
     onSuccess: () => {
       client.invalidateQueries(['transactions']);
-      toast.success('Your transaction was deleted');
+      showSuccess({
+        message: 'Your transaction was deleted',
+      });
     },
   });
 
@@ -42,7 +48,10 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
   return (
     <Card p={'md'} className={'w-full shadow-md'}>
       <div className='flex gap-3 items-center'>
-        <Checkbox checked={getIsSelected(data.id)} onChange={() => handleSelect(data.id)} />
+        <Checkbox
+          checked={getIsSelected(data.id)}
+          onChange={() => handleSelect(data.id)}
+        />
         <div className='flex basis-full justify-between items-center'>
           <div>
             <Text weight={'bold'}>{`${getTranslatedCategory(

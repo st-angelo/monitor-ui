@@ -11,9 +11,8 @@ import {
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { AxiosError } from 'axios';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
 import { MonitorErrorData } from '../../dto';
 import {
   getMutateTransactionInitialData,
@@ -31,8 +30,9 @@ import {
 } from '../../repository/transactionRepository';
 import { max, min, required, stopOnFirstFailure } from '../../utils/validation';
 import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
-import { useMiscellaneousInfo } from '../common/hooks/useMiscellaneousInfo';
+import { useImplicitValues } from '../common/hooks/useImplicitValues';
 import { useLoader } from '../common/loader/useLoader';
+import { showSuccess } from '../common/notifications';
 
 const validate = {
   typeId: required,
@@ -78,15 +78,19 @@ const TransactionDetailComponent = ({
     getTransactionTypes
   );
 
-  useMiscellaneousInfo(data =>
-    form.setValues(prev => ({
-      ...prev,
-      typeId: prev.typeId ?? data?.implicitTransactionTypeId,
-      currencyId: prev.currencyId ?? data?.implicitCurrencyId,
-    }))
-  );
+  const implicitValues = useImplicitValues();
 
   // #endregion
+
+  useEffect(() => {
+    if (!implicitValues) return;
+    form.setValues(prev => ({
+      ...prev,
+      typeId: prev.typeId ?? implicitValues.transactionTypeId,
+      currencyId: prev.currencyId ?? implicitValues.currencyId,
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [implicitValues]);
 
   const mutateTransaction = useMutation(
     !transaction ? addTransaction : updateTransaction,
@@ -95,9 +99,10 @@ const TransactionDetailComponent = ({
         setError(err.response?.data.message),
       onSettled: closeLoader,
       onSuccess: () => {
-        client.invalidateQueries(['miscellaneous-info']);
         client.invalidateQueries(['transactions']);
-        toast.success('Your transaction was updated');
+        showSuccess({
+          message: 'Your transaction was updated',
+        });
         localStorage.setItem('lastTransactionTypeId', form.values.typeId || '');
         localStorage.setItem('lastCurrencyId', form.values.currencyId || '');
       },
@@ -111,6 +116,14 @@ const TransactionDetailComponent = ({
     mutateTransaction.mutate(form.values);
     openLoader();
   }, [form, openLoader, mutateTransaction]);
+
+  const categoriesByTransactionId = useMemo(
+    () =>
+      categories
+        .filter(category => category.transactionTypeId === form.values.typeId)
+        .map(({ value, label }) => ({ value, label })),
+    [categories, form]
+  );
 
   return (
     <Stack>
@@ -141,9 +154,8 @@ const TransactionDetailComponent = ({
             placeholder='Category'
             clearable
             {...form.getInputProps('categoryId')}
-            data={categories.filter(
-              category => category.transactionTypeId === form.values.typeId
-            )}
+            searchable
+            data={categoriesByTransactionId}
           />
         </Grid.Col>
         <Grid.Col>
@@ -152,6 +164,7 @@ const TransactionDetailComponent = ({
             placeholder='Currency'
             clearable
             {...form.getInputProps('currencyId')}
+            searchable
             data={currencies}
           />
         </Grid.Col>

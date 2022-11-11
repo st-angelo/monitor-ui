@@ -15,6 +15,15 @@ export interface Transaction {
   isRecurrent?: boolean;
 }
 
+export interface TransactionForSummary {
+  id: string;
+  typeId: string;
+  amount: number;
+  date: string;
+  currencyCode: string;
+  categoryId: string;
+}
+
 export class MutateTransactionData {
   id?: string;
   typeId: string | null;

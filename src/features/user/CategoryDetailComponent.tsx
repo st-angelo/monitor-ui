@@ -14,14 +14,14 @@ import {
 } from '../../utils/validation';
 import { AddCategoryData } from '../../models/userProfile';
 import { useForm } from '@mantine/form';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
 import { MonitorErrorData } from '../../dto';
-import { toast } from 'react-toastify';
 import { addCategory } from '../../repository/categoryRepository';
 import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
 import { getTransactionTypes } from '../../repository/dictionaryRepository';
 import { useLoader } from '../common/loader/useLoader';
+import { showSuccess } from '../common/notifications';
 
 const validate = {
   name: stopOnFirstFailure([required, maxLength(50)]),
@@ -35,6 +35,7 @@ interface CategoryDetailComponentProps {
 }
 
 const CategoryDetailComponent = ({ id }: CategoryDetailComponentProps) => {
+  const client = useQueryClient();
   const [openLoader, closeLoader] = useLoader();
 
   const form = useForm<AddCategoryData>({
@@ -52,7 +53,10 @@ const CategoryDetailComponent = ({ id }: CategoryDetailComponentProps) => {
       setError(err.response?.data.message),
     onSettled: closeLoader,
     onSuccess: () => {
-      toast.success('Your category was added');
+      client.invalidateQueries(['categories']);
+      showSuccess({
+        message: 'Your category was added',
+      });
     },
   });
 

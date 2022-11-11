@@ -6,7 +6,14 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import { Stack, PasswordInput, Button, TextInput, Text } from '@mantine/core';
+import {
+  Stack,
+  PasswordInput,
+  Button,
+  TextInput,
+  Text,
+  Center,
+} from '@mantine/core';
 import { SignInData } from '../../models/authentication';
 import { useAuthentication } from './AuthContext';
 import { useMutation } from 'react-query';
@@ -47,29 +54,31 @@ const SignIn = () => {
   }, [form, signInMutation]);
 
   return (
-    <Stack sx={{ width: 320 }} mx='auto'>
-      <TextInput
-        label={t('Label.Field.Email')}
-        placeholder='john.doe@gmail.com'
-        withAsterisk
-        icon={<IconMail size='20' />}
-        {...form.getInputProps('email')}
-      />
-      <PasswordInput
-        label={t('Label.Field.Password')}
-        placeholder={t('Label.Field.Password')}
-        withAsterisk
-        icon={<IconLock size='16' />}
-        {...form.getInputProps('password')}
-      />
-      <Text color='red' size='sm'>
-        {error}
-      </Text>
-      <Button onClick={handleSignIn}>{t('Common.Submit')}</Button>
-      <Link to='/sign-up'>
-        <Button className={'w-full'}>{t('Label.Button.GoToSignUp')}</Button>
-      </Link>
-    </Stack>
+    <Center className='w-screen h-screen'>
+      <Stack sx={{ width: 320 }} mx='auto'>
+        <TextInput
+          label={t('Label.Field.Email')}
+          placeholder='john.doe@gmail.com'
+          withAsterisk
+          icon={<IconMail size='20' />}
+          {...form.getInputProps('email')}
+        />
+        <PasswordInput
+          label={t('Label.Field.Password')}
+          placeholder={t('Label.Field.Password')}
+          withAsterisk
+          icon={<IconLock size='16' />}
+          {...form.getInputProps('password')}
+        />
+        <Text color='red' size='sm'>
+          {error}
+        </Text>
+        <Button onClick={handleSignIn}>{t('Common.Submit')}</Button>
+        <Link to='/sign-up'>
+          <Button className={'w-full'}>{t('Label.Button.GoToSignUp')}</Button>
+        </Link>
+      </Stack>
+    </Center>
   );
 };
 

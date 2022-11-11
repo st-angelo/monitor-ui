@@ -3,9 +3,8 @@ import AppRoutes from './Routes';
 import { useColorScheme } from '../features/common/hooks/useColorScheme';
 import { useAuthentication } from '../features/authentication/AuthContext';
 import Navigation from '../features/common/Navigation';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import GlobalComponents from './GlobalComponents';
+import { NotificationsProvider } from '@mantine/notifications';
 
 function App() {
   const { colorScheme } = useColorScheme();
@@ -33,18 +32,13 @@ function App() {
         },
       }}
     >
-      <main className='min-h-screen'>
-        {isAuthenticated && <Navigation />}
-        <AppRoutes />
-        <GlobalComponents />
-        <ToastContainer
-          position='bottom-center'
-          newestOnTop
-          pauseOnHover
-          theme={'colored'}
-          limit={7}
-        />
-      </main>
+      <NotificationsProvider position='bottom-center'>
+        <main className='min-h-screen'>
+          {isAuthenticated && <Navigation />}
+          <AppRoutes />
+          <GlobalComponents />
+        </main>
+      </NotificationsProvider>
     </MantineProvider>
   );
 }

@@ -52,6 +52,8 @@
   "Value": {
     "Ascending": "Ascending",
     "Descending": "Descending",
+    "Name": "Name",
+    "Description": "Description",
     "Date": "Date",
     "Amount": "Amount",
     "Currency": "Currency",

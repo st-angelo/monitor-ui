@@ -3,6 +3,7 @@ import {
   MutateTransactionData,
   GetTransactionsParams,
   Transaction,
+  TransactionForSummary,
 } from '../models/transaction';
 import axios from '../utils/axios';
 
@@ -26,6 +27,16 @@ export const getTransactions = async ({
     }&amountFrom=${amountFrom || 0}&amountTo=${amountTo || ''}&$orderBy=${
       orderBy || ''
     }&$direction=${direction || ''}&$page=${page || ''}&$size=${size || ''}`
+  );
+  return response.data;
+};
+
+export const getTransactionsForSummary = async (
+  dateFrom: Date,
+  dateTo: Date
+) => {
+  const response = await axios.get<TransactionForSummary[]>(
+    `/transaction/summary?dateFrom=${dateFrom || ''}&dateTo=${dateTo || ''}`
   );
   return response.data;
 };

@@ -9,6 +9,7 @@ import { SignInData, SignUpData, User } from '../../models/authentication';
 import { parseJwt } from '../../utils/functions';
 import { auth_jwtName } from '../../utils/constants';
 import axios from '../../utils/axios';
+import { useQueryClient } from 'react-query';
 
 interface AuthContextData {
   isAuthenticated: boolean;
@@ -35,6 +36,7 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const client = useQueryClient();
   const [token, setToken] = useState<string | null>(
     localStorage.getItem(auth_jwtName)
   );
@@ -77,7 +79,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = useCallback(() => {
     localStorage.removeItem(auth_jwtName);
     setToken(null);
-  }, []);
+    client.invalidateQueries();
+  }, [client]);
 
   //#endregion
 

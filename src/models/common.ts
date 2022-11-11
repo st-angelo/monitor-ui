@@ -24,7 +24,7 @@ export interface Currency {
   code: string;
 }
 
-export interface MiscellaneousInfo {
-  implicitTransactionTypeId?: string;
-  implicitCurrencyId?: string;
+export interface ImplicitValues {
+  transactionTypeId: string | null;
+  currencyId: string | null;
 }

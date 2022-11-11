@@ -7,7 +7,14 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import { PasswordInput, Button, TextInput, Text, Stack } from '@mantine/core';
+import {
+  PasswordInput,
+  Button,
+  TextInput,
+  Text,
+  Stack,
+  Center,
+} from '@mantine/core';
 import { SignUpData } from '../../models/authentication';
 import { useAuthentication } from '../../features/authentication/AuthContext';
 import { useMutation } from 'react-query';
@@ -58,45 +65,47 @@ const SignUp = () => {
   }, [form, signUpMutation]);
 
   return (
-    <Stack sx={{ width: 320 }} mx='auto'>
-      <TextInput
-        label={t('Label.Field.FirstName')}
-        placeholder='John'
-        icon={<IconUser size='16' />}
-        {...form.getInputProps('firstName')}
-      />
-      <TextInput
-        label={t('Label.Field.LastName')}
-        placeholder='Doe'
-        icon={<IconUser size='16' />}
-        {...form.getInputProps('lastName')}
-      />
-      <TextInput
-        label={t('Label.Field.Email')}
-        placeholder='john.doe@gmail.com'
-        icon={<IconMail size='20' />}
-        {...form.getInputProps('email')}
-      />
-      <PasswordInput
-        label={t('Label.Field.Password')}
-        placeholder={t('Label.Field.Password')}
-        icon={<IconLock size='16' />}
-        {...form.getInputProps('password')}
-      />
-      <PasswordInput
-        label={t('Label.Field.ConfirmPassword')}
-        placeholder='Confirm password'
-        icon={<IconLock size='16' />}
-        {...form.getInputProps('passwordConfirm')}
-      />
-      <Text color='red' size='sm'>
-        {error}
-      </Text>
-      <Button onClick={handleSignUp}>{t('Common.Submit')}</Button>
-      <Link to='/sign-in'>
-        <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>
-      </Link>
-    </Stack>
+    <Center className='w-screen h-screen'>
+      <Stack sx={{ width: 320 }} mx='auto'>
+        <TextInput
+          label={t('Label.Field.FirstName')}
+          placeholder='John'
+          icon={<IconUser size='16' />}
+          {...form.getInputProps('firstName')}
+        />
+        <TextInput
+          label={t('Label.Field.LastName')}
+          placeholder='Doe'
+          icon={<IconUser size='16' />}
+          {...form.getInputProps('lastName')}
+        />
+        <TextInput
+          label={t('Label.Field.Email')}
+          placeholder='john.doe@gmail.com'
+          icon={<IconMail size='20' />}
+          {...form.getInputProps('email')}
+        />
+        <PasswordInput
+          label={t('Label.Field.Password')}
+          placeholder={t('Label.Field.Password')}
+          icon={<IconLock size='16' />}
+          {...form.getInputProps('password')}
+        />
+        <PasswordInput
+          label={t('Label.Field.ConfirmPassword')}
+          placeholder='Confirm password'
+          icon={<IconLock size='16' />}
+          {...form.getInputProps('passwordConfirm')}
+        />
+        <Text color='red' size='sm'>
+          {error}
+        </Text>
+        <Button onClick={handleSignUp}>{t('Common.Submit')}</Button>
+        <Link to='/sign-in'>
+          <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>
+        </Link>
+      </Stack>
+    </Center>
   );
 };
 

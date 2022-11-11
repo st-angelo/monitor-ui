@@ -52,6 +52,8 @@
   "Value": {
     "Ascending": "Ascendentă",
     "Descending": "Descendentă",
+    "Name": "Nume",
+    "Description": "Descriere",
     "Date": "Dată",
     "Amount": "Sumă",
     "Currency": "Valută",

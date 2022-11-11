@@ -3,12 +3,12 @@ import { IconEdit, IconTrash } from '@tabler/icons';
 import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
 import { MonitorErrorData } from '../../dto';
 import { Category } from '../../models/common';
 import { deleteCategory } from '../../repository/categoryRepository';
 import { useConfirmDialog } from '../common/confirm-dialog/useConfirmDialog';
 import { useLoader } from '../common/loader/useLoader';
+import { showError, showSuccess } from '../common/notifications';
 
 interface CategoryComponentProps {
   data: Category;
@@ -21,12 +21,16 @@ const CategoryComponent = ({ data }: CategoryComponentProps) => {
 
   const deleteCategoryMutation = useMutation(deleteCategory, {
     onError: (err: AxiosError<MonitorErrorData>) => {
-      toast.error(err.response?.data.message);
+      showError({
+        message: err.response?.data.message,
+      });
     },
     onSettled: closeLoader,
     onSuccess: () => {
       client.invalidateQueries(['user-categories']);
-      toast.success('Your category was deleted');
+      showSuccess({
+        message: 'Your category was deleted',
+      });
     },
   });
 

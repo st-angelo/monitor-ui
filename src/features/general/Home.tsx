@@ -1,13 +1,12 @@
 import TransactionsComponent from '../transaction/TransactionsComponent';
-import AddCategoryComponent from '../user/CategoryDetailComponent';
 import CategoriesComponent from '../user/CategoriesComponent';
-import TransactionDetailComponent from '../transaction/TransactionDetailComponent';
 import TransactionComponent from '../transaction/TransactionComponent';
+import SummaryContainer from '../summary/SummaryContainer';
 
 const Home = () => {
   return (
-    <div className='w-2/3 m-auto'>
-      <TransactionsComponent />
+    <div className='w-2/3 mx-auto my-10'>
+      <SummaryContainer />
     </div>
   );
 };
