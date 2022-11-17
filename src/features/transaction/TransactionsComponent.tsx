@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import ListBrowser from '../../components/common/list-browser/ListBrowser';
-import transactionsListStore from './transactionsListStore';
-import TransactionComponent from './TransactionComponent';
 import { getTransactions } from '../../repository/transactionRepository';
+import TransactionComponent from './TransactionComponent';
 import TransactionFiltersComponent from './TransactionFiltersComponent';
+import transactionsListStore from './transactionsListStore';
 
 const TransactionsComponent = () => {
   const queryData = useMemo(

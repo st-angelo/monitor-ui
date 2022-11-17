@@ -1,7 +1,7 @@
 import { Anchor, Container, Group } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import ColorSchemeToggler from './ColorSchemeToggler';
-import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import UserMenu from './UserMenu';
 
@@ -19,9 +19,9 @@ const Navigation = () => {
           <Anchor component={Link} to='/wallet'>
             {t('Navigation.ManageWallet')}
           </Anchor>
-          <UserMenu />
           <LanguageSelector />
           <ColorSchemeToggler />
+          <UserMenu />
         </Group>
       </Group>
     </Container>

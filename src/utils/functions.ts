@@ -1,4 +1,4 @@
-import { Updater } from 'react-use-svelte-store';
+import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns';
 import { ColorScheme } from './constants';
 
 export const parseJwt = (token: string) => {
@@ -36,3 +36,26 @@ export const setNestedProperty = (target: any, path: string, value: any) => {
 
 export const formatNumberWithCommas = (value: string | undefined) =>
   value ? value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : '';
+
+export const yyyy_mm_dd = (date: Date) => {
+  var mm = date.getMonth() + 1;
+  var dd = date.getDate();
+
+  return [
+    date.getFullYear(),
+    (mm > 9 ? '' : '0') + mm,
+    (dd > 9 ? '' : '0') + dd,
+  ].join('-');
+};
+
+export const roundNumber = (value: number, digits: number = 1) =>
+  Math.round(value * Math.pow(10, digits)) / Math.pow(10, digits);
+
+export const getDateRange = (from: Date, to: Date, chunks = 10) => {
+  const daysBetween = Math.abs(differenceInCalendarDays(from, to));
+  if (daysBetween < chunks) return eachDayOfInterval({ start: from, end: to });
+  return eachDayOfInterval(
+    { start: from, end: to },
+    { step: daysBetween / chunks }
+  );
+};

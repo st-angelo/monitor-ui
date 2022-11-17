@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getImplicitValues } from '../../../repository/userRepository';
+import { getImplicitValues } from '../../../repository/miscellaneousRepository';
 import { longCacheTime } from '../../../utils/constants';
 
 export const useImplicitValues = () => {

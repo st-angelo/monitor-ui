@@ -39,10 +39,13 @@
     },
     "Field": {
       "Email": "Email",
-      "FirstName": "First name",
-      "LastName": "Last name",
+      "Name": "Name",
+      "Nickname": "Nickname",
       "Password": "Password",
-      "ConfirmPassword": "Confirm password"
+      "ConfirmPassword": "Confirm password",
+      "Description": "Description",
+      "TransactionType": "Transaction type",
+      "Color": "Color"
     },
     "Button": {
       "GoToSignUp": "Go to sign up",

@@ -1,3 +1,4 @@
+import { Text } from '@mantine/core';
 import { useCallback, useState } from 'react';
 import { Pie, PieChart, Sector } from 'recharts';
 
@@ -91,7 +92,7 @@ const FloatingLabledPieChart = ({ data }: FloatingLabledPieChartProps) => {
     []
   );
 
-  return (
+  return data.length > 0 ? (
     <PieChart width={250} height={250} className='overflown-pie'>
       <Pie
         activeIndex={activeIndex}
@@ -102,9 +103,12 @@ const FloatingLabledPieChart = ({ data }: FloatingLabledPieChartProps) => {
         innerRadius={60}
         outerRadius={80}
         dataKey='value'
+        animationDuration={700}
         onMouseEnter={handlePieEnter}
       />
     </PieChart>
+  ) : (
+    <Text italic>No data</Text>
   );
 };
 

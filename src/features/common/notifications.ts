@@ -5,6 +5,11 @@ export const showInfo = ({ message, ...rest }: NotificationProps) =>
     title: 'Info',
     color: 'cyan',
     message,
+    styles: _ => ({
+      description: {
+        whiteSpace: 'pre-wrap',
+      },
+    }),
     ...rest,
   });
 
@@ -13,6 +18,11 @@ export const showSuccess = ({ message, ...rest }: NotificationProps) =>
     title: 'Success',
     color: 'teal',
     message,
+    styles: _ => ({
+      description: {
+        whiteSpace: 'pre-wrap',
+      },
+    }),
     ...rest,
   });
 
@@ -21,6 +31,11 @@ export const showWarning = ({ message, ...rest }: NotificationProps) =>
     title: 'Warning',
     color: 'yellow',
     message,
+    styles: _ => ({
+      description: {
+        whiteSpace: 'pre-wrap',
+      },
+    }),
     ...rest,
   });
 
@@ -29,5 +44,10 @@ export const showError = ({ message, ...rest }: NotificationProps) =>
     title: 'Error',
     color: 'red',
     message,
+    styles: _ => ({
+      description: {
+        whiteSpace: 'pre-wrap',
+      },
+    }),
     ...rest,
   });

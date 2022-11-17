@@ -6,19 +6,14 @@ import {
   SegmentedControl,
   Select,
   Stack,
-  Text,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { AxiosError } from 'axios';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { MonitorErrorData } from '../../dto';
-import {
-  getMutateTransactionInitialData,
-  MutateTransactionData,
-  Transaction,
-} from '../../models/transaction';
+import { MutateTransactionData, Transaction } from '../../models/transaction';
 import {
   getCategories,
   getCurrencies,
@@ -32,7 +27,7 @@ import { max, min, required, stopOnFirstFailure } from '../../utils/validation';
 import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
 import { useImplicitValues } from '../common/hooks/useImplicitValues';
 import { useLoader } from '../common/loader/useLoader';
-import { showSuccess } from '../common/notifications';
+import { showError, showSuccess } from '../common/notifications';
 
 const validate = {
   typeId: required,
@@ -44,21 +39,30 @@ const validate = {
 
 interface TransactionDetailComponentProps {
   transaction?: Transaction;
+  onEdit?: () => void;
 }
 
 const TransactionDetailComponent = ({
   transaction,
+  onEdit,
 }: TransactionDetailComponentProps) => {
   const client = useQueryClient();
   const [openLoader, closeLoader] = useLoader();
 
   const form = useForm<MutateTransactionData>({
-    initialValues: transaction
-      ? new MutateTransactionData(transaction)
-      : getMutateTransactionInitialData(),
+    initialValues: {
+      id: transaction?.id,
+      typeId:
+        transaction?.typeId ?? localStorage.getItem('lastTransactionTypeId'),
+      date: transaction ? new Date(transaction.date) : new Date(),
+      currencyId:
+        transaction?.currency?.id ?? localStorage.getItem('lastCurrencyId'),
+      amount: transaction?.amount ?? undefined,
+      categoryId: transaction?.category?.id,
+      isRecurrent: transaction?.isRecurrent ?? false,
+    },
     validate,
   });
-  const [error, setError] = useState<string>();
 
   // #region Load dictionaries and auxiliary data
 
@@ -96,9 +100,10 @@ const TransactionDetailComponent = ({
     !transaction ? addTransaction : updateTransaction,
     {
       onError: (err: AxiosError<MonitorErrorData>) =>
-        setError(err.response?.data.message),
+        showError({ message: err.response?.data.message }),
       onSettled: closeLoader,
       onSuccess: () => {
+        onEdit && onEdit();
         client.invalidateQueries(['transactions']);
         showSuccess({
           message: 'Your transaction was updated',
@@ -110,7 +115,6 @@ const TransactionDetailComponent = ({
   );
 
   const handleMutateTransaction = useCallback(() => {
-    setError('');
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     mutateTransaction.mutate(form.values);
@@ -125,11 +129,14 @@ const TransactionDetailComponent = ({
     [categories, form]
   );
 
+  const isNew = useMemo(() => !transaction, [transaction]);
+
   return (
-    <Stack>
+    <Stack sx={{ width: 500 }}>
       {transactionTypes.length > 0 && (
         <SegmentedControl
           {...form.getInputProps('typeId')}
+          disabled={!isNew}
           data={transactionTypes}
         />
       )}
@@ -138,6 +145,7 @@ const TransactionDetailComponent = ({
           <NumberInput
             label='Amount'
             placeholder='Amount'
+            precision={2}
             {...form.getInputProps('amount')}
           />
         </Grid.Col>
@@ -175,10 +183,6 @@ const TransactionDetailComponent = ({
           />
         </Grid.Col>
       </Grid>
-
-      <Text color='red' size='sm'>
-        {error}
-      </Text>
       <Button onClick={handleMutateTransaction}>Submit</Button>
     </Stack>
   );

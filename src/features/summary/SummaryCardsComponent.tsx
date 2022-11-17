@@ -1,3 +1,4 @@
+import { Loader } from '@mantine/core';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { TransactionForSummary } from '../../models/transaction';
@@ -10,10 +11,12 @@ const _colorClasses: Record<string, string> = {
 
 interface SummaryCardsComponentProps {
   transactions: TransactionForSummary[];
+  loading: boolean;
 }
 
 const SummaryCardsComponent = ({
   transactions,
+  loading,
 }: SummaryCardsComponentProps) => {
   const { data: transactionTypes } = useQuery(
     ['transactionTypes'],
@@ -41,7 +44,10 @@ const SummaryCardsComponent = ({
           }`}
         >
           <span>{summary.code}</span>
-          <span>{`${summary.amount.toFixed(1)} ${currencyCode}`}</span>
+          {loading && <Loader variant='bars' />}
+          {!loading && (
+            <span>{`${summary.amount.toFixed(1)} ${currencyCode}`}</span>
+          )}
         </div>
       ))}
     </div>

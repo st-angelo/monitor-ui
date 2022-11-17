@@ -21,7 +21,8 @@ import transactionsStore, {
 const TransactionFiltersComponent = () => {
   const { t } = useTranslation();
   const [$store, , $update] = useWritable(transactionsStore);
-  const { handleChange, addOrUpdateActions } = useListBrowserUtils(transactionsStore);
+  const { handleChange, addOrUpdateActions } =
+    useListBrowserUtils(transactionsStore);
   const [show, setShow] = useState(false);
 
   // #region Collections

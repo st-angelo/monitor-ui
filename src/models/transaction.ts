@@ -24,7 +24,7 @@ export interface TransactionForSummary {
   categoryId: string;
 }
 
-export class MutateTransactionData {
+export interface MutateTransactionData {
   id?: string;
   typeId: string | null;
   amount?: number;
@@ -32,24 +32,7 @@ export class MutateTransactionData {
   currencyId: string | null;
   categoryId?: string;
   isRecurrent?: boolean;
-
-  constructor(transaction: Transaction) {
-    this.id = transaction.id;
-    this.typeId = transaction.typeId;
-    this.amount = transaction.amount;
-    this.date = new Date(transaction.date);
-    this.currencyId = transaction.currency.id || '';
-    this.categoryId = transaction.category.id || '';
-    this.isRecurrent = transaction.isRecurrent;
-  }
 }
-
-export const getMutateTransactionInitialData = () => ({
-  typeId: localStorage.getItem('lastTransactionTypeId'),
-  date: new Date(),
-  currencyId: localStorage.getItem('lastCurrencyId'),
-  isRecurrent: false,
-});
 
 export interface GetTransactionsParams extends GetCollectionParams {
   dateFrom: Date;

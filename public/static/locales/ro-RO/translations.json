@@ -39,10 +39,13 @@
     },
     "Field": {
       "Email": "Email",
-      "FirstName": "Prenume",
-      "LastName": "Nume",
+      "Name": "Nume",
+      "Nickname": "Poreclă",
       "Password": "Parolă",
-      "ConfirmPassword": "Confirmare parolă"
+      "ConfirmPassword": "Confirmare parolă",
+      "Description": "Descriere",
+      "TransactionType": "Tip tranzacție",
+      "Color": "Culoare"
     },
     "Button": {
       "GoToSignUp": "Du-te la înregistrare",

@@ -12,7 +12,7 @@ const UserMenu = () => {
     <Menu>
       <Menu.Target>
         <Avatar
-          src={user?.photoUrl}
+          src={user?.avatarUrl}
           className='cursor-pointer'
         />
       </Menu.Target>

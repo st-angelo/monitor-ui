@@ -1,7 +1,7 @@
 import { CollectionResponse } from '../models/common';
 import {
-  MutateTransactionData,
   GetTransactionsParams,
+  MutateTransactionData,
   Transaction,
   TransactionForSummary,
 } from '../models/transaction';

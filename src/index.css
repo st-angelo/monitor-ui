@@ -1,9 +1,5 @@
 @tailwind base;
 
-:root {
-  --toastify-color-success: #38d9a9;
-}
-
 .overflown-pie > svg {
   overflow: visible !important;
 }

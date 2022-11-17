@@ -1,17 +1,18 @@
-import { Card, Checkbox, Text } from '@mantine/core';
+import { Card, Checkbox, Modal, Text } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { AxiosError } from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import useListBrowserUtils from '../../components/common/list-browser/useListBrowserUtils';
 import { MonitorErrorData } from '../../dto';
 import { Transaction } from '../../models/transaction';
 import { deleteTransaction } from '../../repository/transactionRepository';
 import { useConfirmDialog } from '../common/confirm-dialog/useConfirmDialog';
 import { useLoader } from '../common/loader/useLoader';
-import { getTranslatedCategory } from './utils';
-import transactionsListStore from './transactionsListStore';
-import useListBrowserUtils from '../../components/common/list-browser/useListBrowserUtils';
 import { showError, showSuccess } from '../common/notifications';
+import TransactionDetailComponent from './TransactionDetailComponent';
+import transactionsListStore from './transactionsListStore';
+import { getTranslatedCategory } from './utils';
 
 interface TransactionComponentProps {
   data: Transaction;
@@ -25,6 +26,8 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
     transactionsListStore
   );
 
+  const [inEdit, setInEdit] = useState(false);
+
   const deleteTransactionMutation = useMutation(deleteTransaction, {
     onError: (err: AxiosError<MonitorErrorData>) => {
       showError({
@@ -35,7 +38,7 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
     onSuccess: () => {
       client.invalidateQueries(['transactions']);
       showSuccess({
-        message: 'Your transaction was deleted',
+        message: 'Your transaction was mutated',
       });
     },
   });
@@ -46,30 +49,50 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
   }, [data.id, openLoader, deleteTransactionMutation]);
 
   return (
-    <Card p={'md'} className={'w-full shadow-md'}>
-      <div className='flex gap-3 items-center'>
-        <Checkbox
-          checked={getIsSelected(data.id)}
-          onChange={() => handleSelect(data.id)}
-        />
-        <div className='flex basis-full justify-between items-center'>
-          <div>
-            <Text weight={'bold'}>{`${getTranslatedCategory(
-              data.category
-            )}, ${data.amount.toLocaleString()} ${data.currency.code}`}</Text>
-            <Text size={'sm'}>{new Date(data.date).toLocaleString()}</Text>
-          </div>
-          <div className='flex gap-2'>
-            <IconEdit className='cursor-pointer text-teal-600' size={20} />
-            <IconTrash
-              className='cursor-pointer text-rose-600'
-              size={20}
-              onClick={() => openConfirmDialog(handleDeleteTransaction)}
-            />
+    <>
+      <Card p={'md'} className={'w-full shadow-md'}>
+        <div className='flex gap-3 items-center'>
+          <Checkbox
+            checked={getIsSelected(data.id)}
+            onChange={() => handleSelect(data.id)}
+          />
+          <div className='flex basis-full justify-between items-center'>
+            <div>
+              <Text weight={'bold'}>{`${getTranslatedCategory(
+                data.category
+              )}, ${data.amount.toLocaleString()} ${data.currency.code}`}</Text>
+              <Text size={'sm'}>{new Date(data.date).toLocaleString()}</Text>
+            </div>
+            <div className='flex gap-2'>
+              <IconEdit
+                className='cursor-pointer text-teal-600'
+                size={20}
+                onClick={() => setInEdit(true)}
+              />
+              <IconTrash
+                className='cursor-pointer text-rose-600'
+                size={20}
+                onClick={() => openConfirmDialog(handleDeleteTransaction)}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+      {inEdit && (
+        <Modal
+          opened={inEdit}
+          size={'auto'}
+          centered
+          onClose={() => setInEdit(false)}
+          closeOnClickOutside={false}
+        >
+          <TransactionDetailComponent
+            transaction={data}
+            onEdit={() => setInEdit(false)}
+          />
+        </Modal>
+      )}
+    </>
   );
 };
 

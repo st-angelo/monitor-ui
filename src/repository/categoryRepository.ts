@@ -1,6 +1,6 @@
-import axios from '../utils/axios';
-import { AddCategoryData, GetCategoriesParams } from '../models/userProfile';
 import { Category, CollectionResponse } from '../models/common';
+import { GetCategoriesParams, MutateCategoryData } from '../models/userProfile';
+import axios from '../utils/axios';
 
 export const getCategories = async () => {
   const response = await axios.get<Category[]>('/dictionary/category');
@@ -8,7 +8,7 @@ export const getCategories = async () => {
 };
 
 export const getUserCategories = async ({
-  name, 
+  name,
   description,
   transactionTypeId,
   orderBy,
@@ -17,13 +17,21 @@ export const getUserCategories = async ({
   size,
 }: GetCategoriesParams) => {
   const response = await axios.get<CollectionResponse<Category>>(
-    `/user/category?name=${name || ''}&description=${description || ''}&transactionTypeId=${transactionTypeId || ''}&$orderBy=${orderBy}&$direction=${direction}&$page=${page}&$size=${size}`
+    `/user/category?name=${name || ''}&description=${
+      description || ''
+    }&transactionTypeId=${
+      transactionTypeId || ''
+    }&$orderBy=${orderBy}&$direction=${direction}&$page=${page}&$size=${size}`
   );
   return response.data;
 };
 
-export const addCategory = (input: AddCategoryData) => {
+export const addCategory = (input: MutateCategoryData) => {
   return axios.post('/user/category', { ...input });
+};
+
+export const updateCategory = (input: MutateCategoryData) => {
+  return axios.patch(`/user/category/${input.id}`, { ...input });
 };
 
 export const deleteCategory = (categoryId: string) => {

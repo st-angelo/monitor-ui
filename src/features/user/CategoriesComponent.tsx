@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import ListBrowser from '../../components/common/list-browser/ListBrowser';
+import { getUserCategories } from '../../repository/categoryRepository';
 import categoriesListStore from './categoriesListStore';
 import CategoryComponent from './CategoryComponent';
-import { getUserCategories } from '../../repository/categoryRepository';
 import CategoryFiltersComponent from './CategoryFiltersComponent';
 
 const CategoriesComponent = () => {

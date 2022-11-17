@@ -58,7 +58,7 @@ const SignIn = () => {
       <Stack sx={{ width: 320 }} mx='auto'>
         <TextInput
           label={t('Label.Field.Email')}
-          placeholder='john.doe@gmail.com'
+          placeholder='angelo.demedici@gmail.com'
           withAsterisk
           icon={<IconMail size='20' />}
           {...form.getInputProps('email')}

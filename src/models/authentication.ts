@@ -1,7 +1,14 @@
+export interface UserPreferences {
+  baseCurrencyId: string;
+}
+
 export interface User {
   id: string;
   name: string;
-  photoUrl: string;
+  nickname: string;
+  email: string;
+  avatarUrl: string;
+  preferences: UserPreferences;
 }
 
 export interface SignInData {
@@ -10,8 +17,7 @@ export interface SignInData {
 }
 
 export interface SignUpData {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
 }

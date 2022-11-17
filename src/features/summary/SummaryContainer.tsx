@@ -7,7 +7,7 @@ import {
   IconChevronsRight,
   IconTallymark1,
 } from '@tabler/icons';
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { getTransactionsForSummary } from '../../repository/transactionRepository';
@@ -21,14 +21,14 @@ const SummaryContainer = () => {
   const [dateFrom, setDateFrom] = useState<Date>(
     new Date(_date.getFullYear(), _date.getMonth(), 1)
   );
-  const [dateTo, setDateTo] = useState<Date>(_date);
+  const [dateTo, setDateTo] = useState<Date>(
+    new Date(_date.getFullYear(), _date.getMonth(), _date.getDate(), 23, 59, 59)
+  );
 
-  const { data: transactions } = useQuery(
+  const { data: transactions, isLoading } = useQuery(
     ['light-transactions', dateFrom, dateTo],
     () => getTransactionsForSummary(dateFrom, dateTo)
   );
-
-  console.log(transactions);
 
   // #region Date modifiers
 
@@ -123,8 +123,16 @@ const SummaryContainer = () => {
         </div>
       </div>
       <div className='flex flex-col gap-5 mt-10'>
-        <SummaryCardsComponent transactions={transactions || []} />
-        <SummaryChartsComponent transactions={transactions || []} />
+        <SummaryCardsComponent
+          transactions={transactions || []}
+          loading={isLoading}
+        />
+        <SummaryChartsComponent
+          transactions={transactions || []}
+          loading={isLoading}
+          dateFrom={dateFrom}
+          dateTo={dateTo}
+        />
       </div>
       <div className='text-sm text-center'>
         * All prices are converted to the base currency, configurable in your

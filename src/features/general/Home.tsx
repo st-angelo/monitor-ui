@@ -1,4 +1,3 @@
-import TransactionsComponent from '../transaction/TransactionsComponent';
 import CategoriesComponent from '../user/CategoriesComponent';
 import TransactionComponent from '../transaction/TransactionComponent';
 import SummaryContainer from '../summary/SummaryContainer';

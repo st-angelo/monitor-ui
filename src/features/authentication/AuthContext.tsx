@@ -1,19 +1,19 @@
 import React, {
+  useCallback,
   useContext,
-  useState,
   useEffect,
   useMemo,
-  useCallback,
+  useState,
 } from 'react';
-import { SignInData, SignUpData, User } from '../../models/authentication';
-import { parseJwt } from '../../utils/functions';
-import { auth_jwtName } from '../../utils/constants';
-import axios from '../../utils/axios';
 import { useQueryClient } from 'react-query';
+import { SignInData, SignUpData, User } from '../../models/authentication';
+import axios from '../../utils/axios';
+import { auth_jwtName } from '../../utils/constants';
+import { parseJwt } from '../../utils/functions';
 
 interface AuthContextData {
   isAuthenticated: boolean;
-  token?: string | null;
+  updateToken: (newToken: string) => void;
   user?: User;
   signIn: (input: SignInData) => Promise<void>;
   signUp: (input: SignUpData) => Promise<void>;
@@ -22,6 +22,7 @@ interface AuthContextData {
 
 const AuthContext = React.createContext<AuthContextData>({
   isAuthenticated: true,
+  updateToken: () => {},
   signIn: Promise.resolve,
   signUp: Promise.resolve,
   signOut: () => {},
@@ -57,24 +58,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
   }, []);
 
-  const signUp = useCallback(
-    async ({ firstName, lastName, email, password }: SignUpData) => {
-      return axios
-        .post('signup', {
-          firstName,
-          lastName,
-          email,
-          password,
-        })
-        .then(result => {
-          if (result && result.data && result.data.token) {
-            setToken(result.data.token);
-            localStorage.setItem(auth_jwtName, result.data.token);
-          }
-        });
-    },
-    []
-  );
+  const signUp = useCallback(async ({ name, email, password }: SignUpData) => {
+    return axios
+      .post('signup', {
+        name,
+        email,
+        password,
+      })
+      .then(result => {
+        if (result && result.data && result.data.token) {
+          setToken(result.data.token);
+          localStorage.setItem(auth_jwtName, result.data.token);
+        }
+      });
+  }, []);
 
   const signOut = useCallback(() => {
     localStorage.removeItem(auth_jwtName);
@@ -103,16 +100,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
     [token]
   );
 
+  const updateToken = useCallback(
+    (newToken: string) => {
+      if (!newToken) return signOut();
+      setToken(newToken);
+      localStorage.setItem(auth_jwtName, newToken);
+    },
+    [signOut]
+  );
+
   const data = useMemo(
     () => ({
-      token,
+      updateToken,
       isAuthenticated: Boolean(user),
       user,
       signIn,
       signUp,
       signOut,
     }),
-    [user, token, signIn, signOut, signUp]
+    [user, updateToken, signIn, signOut, signUp]
   );
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

@@ -25,16 +25,14 @@ import { IconMail, IconLock, IconUser } from '@tabler/icons';
 import { useTranslation } from 'react-i18next';
 
 const initialValues = {
-  firstName: '',
-  lastName: '',
+  name: '',
   email: '',
   password: '',
   passwordConfirm: '',
 };
 
 const validate = {
-  firstName: stopOnFirstFailure([required, minLenght(2)]),
-  lastName: stopOnFirstFailure([required, minLenght(2)]),
+  name: stopOnFirstFailure([required, minLenght(2)]),
   email: stopOnFirstFailure([required, email]),
   password: stopOnFirstFailure([required, minLenght(8)]),
   passwordConfirm: stopOnFirstFailure([
@@ -68,20 +66,14 @@ const SignUp = () => {
     <Center className='w-screen h-screen'>
       <Stack sx={{ width: 320 }} mx='auto'>
         <TextInput
-          label={t('Label.Field.FirstName')}
-          placeholder='John'
+          label={t('Label.Field.Name')}
+          placeholder='Angelo de Medici'
           icon={<IconUser size='16' />}
-          {...form.getInputProps('firstName')}
-        />
-        <TextInput
-          label={t('Label.Field.LastName')}
-          placeholder='Doe'
-          icon={<IconUser size='16' />}
-          {...form.getInputProps('lastName')}
+          {...form.getInputProps('name')}
         />
         <TextInput
           label={t('Label.Field.Email')}
-          placeholder='john.doe@gmail.com'
+          placeholder='angelo.demedici@gmail.com'
           icon={<IconMail size='20' />}
           {...form.getInputProps('email')}
         />

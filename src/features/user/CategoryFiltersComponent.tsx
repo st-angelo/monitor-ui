@@ -13,7 +13,8 @@ import categoriesStore, { defaultCategoryFilters } from './categoriesListStore';
 const CategoryFiltersComponent = () => {
   const { t } = useTranslation();
   const [$store, , $update] = useWritable(categoriesStore);
-  const { handleChange, addOrUpdateActions } = useListBrowserUtils(categoriesStore);
+  const { handleChange, addOrUpdateActions } =
+    useListBrowserUtils(categoriesStore);
   const [show, setShow] = useState(true);
 
   // #region Collections
