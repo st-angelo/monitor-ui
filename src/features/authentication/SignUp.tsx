@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useForm } from '@mantine/form';
 import {
   email,
@@ -11,7 +11,6 @@ import {
   PasswordInput,
   Button,
   TextInput,
-  Text,
   Stack,
   Center,
 } from '@mantine/core';
@@ -23,6 +22,8 @@ import { MonitorErrorData } from '../../dto';
 import { Link } from 'react-router-dom';
 import { IconMail, IconLock, IconUser } from '@tabler/icons';
 import { useTranslation } from 'react-i18next';
+import { useLoader } from '../common/loader/useLoader';
+import { showError } from '../common/notifications';
 
 const initialValues = {
   name: '',
@@ -43,24 +44,25 @@ const validate = {
 
 const SignUp = () => {
   const { t } = useTranslation();
+  const [openLoader, closeLoader] = useLoader();
   const { signUp } = useAuthentication();
   const form = useForm<SignUpData & { passwordConfirm: string }>({
     initialValues,
     validate,
   });
-  const [error, setError] = useState<string>();
 
   const signUpMutation = useMutation(signUp, {
     onError: (err: AxiosError<MonitorErrorData>) =>
-      setError(err.response?.data.message),
+      showError({ message: err.response?.data.message }),
+    onSettled: closeLoader,
   });
 
   const handleSignUp = useCallback(async () => {
-    setError('');
     const { hasErrors } = form.validate();
     if (hasErrors) return;
+    openLoader();
     signUpMutation.mutate(form.values);
-  }, [form, signUpMutation]);
+  }, [form, openLoader, signUpMutation]);
 
   return (
     <Center className='w-screen h-screen'>
@@ -89,9 +91,6 @@ const SignUp = () => {
           icon={<IconLock size='16' />}
           {...form.getInputProps('passwordConfirm')}
         />
-        <Text color='red' size='sm'>
-          {error}
-        </Text>
         <Button onClick={handleSignUp}>{t('Common.Submit')}</Button>
         <Link to='/sign-in'>
           <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>

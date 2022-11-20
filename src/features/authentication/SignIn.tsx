@@ -1,27 +1,28 @@
-import { useCallback, useState } from 'react';
+import {
+  Button,
+  Center,
+  PasswordInput,
+  Stack,
+  TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { IconLock, IconMail } from '@tabler/icons';
+import { AxiosError } from 'axios';
+import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
+import { Link } from 'react-router-dom';
+import { MonitorErrorData } from '../../dto';
+import { SignInData } from '../../models/authentication';
 import {
   email,
   minLenght,
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import {
-  Stack,
-  PasswordInput,
-  Button,
-  TextInput,
-  Text,
-  Center,
-} from '@mantine/core';
-import { SignInData } from '../../models/authentication';
+import { useLoader } from '../common/loader/useLoader';
+import { showError } from '../common/notifications';
 import { useAuthentication } from './AuthContext';
-import { useMutation } from 'react-query';
-import { AxiosError } from 'axios';
-import { MonitorErrorData } from '../../dto';
-import { Link } from 'react-router-dom';
-import { IconMail, IconLock } from '@tabler/icons';
-import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   email: '',
@@ -35,23 +36,25 @@ const validate = {
 
 const SignIn = () => {
   const { t } = useTranslation();
+  const [openLoader, closeLoader] = useLoader();
   const { signIn } = useAuthentication();
   const form = useForm<SignInData>({
     initialValues,
     validate,
   });
-  const [error, setError] = useState<string>();
 
   const signInMutation = useMutation(signIn, {
     onError: (err: AxiosError<MonitorErrorData>) =>
-      setError(err.response?.data.message),
+      showError({ message: err.response?.data.message }),
+    onSettled: closeLoader,
   });
 
   const handleSignIn = useCallback(async () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
+    openLoader();
     signInMutation.mutate(form.values);
-  }, [form, signInMutation]);
+  }, [form, openLoader, signInMutation]);
 
   return (
     <Center className='w-screen h-screen'>
@@ -70,9 +73,6 @@ const SignIn = () => {
           icon={<IconLock size='16' />}
           {...form.getInputProps('password')}
         />
-        <Text color='red' size='sm'>
-          {error}
-        </Text>
         <Button onClick={handleSignIn}>{t('Common.Submit')}</Button>
         <Link to='/sign-up'>
           <Button className={'w-full'}>{t('Label.Button.GoToSignUp')}</Button>
