@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import { AxiosError } from 'axios';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { MonitorErrorData } from '../../dto';
 import { UpdateAccountData } from '../../models/userProfile';
 import { getCurrencies } from '../../repository/dictionaryRepository';
@@ -27,8 +27,9 @@ const validate = {
 
 const AccountDataComponent = () => {
   const { t } = useTranslation();
+  const client = useQueryClient();
   const [openLoader, closeLoader] = useLoader();
-  const { user, updateToken } = useAuthentication();
+  const { user } = useAuthentication();
 
   const form = useForm<UpdateAccountData>({ validate });
 
@@ -51,8 +52,8 @@ const AccountDataComponent = () => {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
     onSettled: closeLoader,
-    onSuccess: response => {
-      updateToken(response.data.token);
+    onSuccess: _ => {
+      client.invalidateQueries(['user']);
       form.setFieldValue('avatar', null);
       form.resetDirty();
       showSuccess({

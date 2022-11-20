@@ -1,7 +1,7 @@
 import { Avatar, Menu } from '@mantine/core';
+import { IconLogout, IconUser } from '@tabler/icons';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { IconLogout, IconUser } from '@tabler/icons';
 import { useAuthentication } from '../authentication/AuthContext';
 
 const UserMenu = () => {
@@ -11,16 +11,13 @@ const UserMenu = () => {
   return (
     <Menu>
       <Menu.Target>
-        <Avatar
-          src={user?.avatarUrl}
-          className='cursor-pointer'
-        />
+        <Avatar src={user?.avatarUrl} className='cursor-pointer' />
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
           component={Link}
           icon={<IconUser size={14} />}
-          to='/account-settings'
+          to='/account-settings#account-data'
         >
           {t('Navigation.AccountSettings')}
         </Menu.Item>

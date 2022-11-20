@@ -1,6 +1,7 @@
 import { Loader } from '@mantine/core';
-import { startOfDay } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import {
   CartesianGrid,
@@ -38,6 +39,7 @@ const SummaryChartsComponent = ({
   dateFrom,
   dateTo,
 }: SummaryChartsComponentProps) => {
+  const { t } = useTranslation();
   const { data: categories } = useQuery(['categories'], getCategories);
   const { data: transactionTypes } = useQuery(
     ['transactionTypes'],
@@ -96,8 +98,10 @@ const SummaryChartsComponent = ({
     <div className='flex justify-center'>
       <div className='flex flex-col items-center'>
         {(transactionTypes || []).map(type => (
-          <div className='flex flex-col items-center'>
-            <span className='font-bold text-lg mb-5'>{type.code}</span>
+          <div className='flex flex-col items-center' key={type.id}>
+            <span className='font-bold text-lg mb-5'>
+              {t(`Value.${type.code}`)}
+            </span>
             {loading && <Loader variant='bars' />}
             {!loading && (
               <FloatingLabledPieChart
@@ -125,12 +129,13 @@ const SummaryChartsComponent = ({
               domain={[dateFrom.getTime(), dateTo.getTime()]}
             />
             <YAxis />
-            <Tooltip />
+            <Tooltip labelFormatter={value => format(value, 'yyyy-MM-dd')} />
             <Legend />
             {transactionTypes?.map(type => (
               <Line
+                key={type.id}
                 type='monotone'
-                dataKey={type.code}
+                dataKey={t(`Value.${type.code}`)}
                 stroke={_colors[type.code]}
               />
             ))}

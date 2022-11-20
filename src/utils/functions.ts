@@ -59,3 +59,14 @@ export const getDateRange = (from: Date, to: Date, chunks = 10) => {
     { step: daysBetween / chunks }
   );
 };
+
+export const trimCharacter = (input: string, character: string) => {
+  var start = 0,
+    end = input.length;
+
+  while (start < end && input[start] === character) ++start;
+
+  while (end > start && input[end - 1] === character) --end;
+
+  return start > 0 || end < input.length ? input.substring(start, end) : input;
+};

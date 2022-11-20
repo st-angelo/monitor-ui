@@ -5,11 +5,11 @@ import confirmDialogStore from './confirmDialogStore';
 export const useConfirmDialog = () => {
   const [, , $update] = useWritable(confirmDialogStore);
 
-  const openConfirmDialog = useCallback(
+  const confirm = useCallback(
     (callback: () => void) =>
       $update(prev => ({ ...prev, open: true, callback })),
     [$update]
   );
 
-  return openConfirmDialog;
+  return confirm;
 };

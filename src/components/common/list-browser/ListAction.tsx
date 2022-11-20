@@ -1,18 +1,27 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconRefresh } from '@tabler/icons';
 import { ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface ListActionProps {
   icon: ReactNode;
   tooltip: string;
   handler: () => void;
+  disabled?: boolean;
 }
 
-const ListAction = ({ icon, tooltip, handler }: ListActionProps) => {
+const ListAction = ({
+  icon,
+  tooltip,
+  handler,
+  disabled = false,
+}: ListActionProps) => {
   return (
     <Tooltip label={tooltip}>
-      <ActionIcon variant='light' size='lg' onClick={handler}>
+      <ActionIcon
+        variant='light'
+        size='lg'
+        onClick={handler}
+        disabled={disabled}
+      >
         {icon}
       </ActionIcon>
     </Tooltip>
@@ -20,17 +29,3 @@ const ListAction = ({ icon, tooltip, handler }: ListActionProps) => {
 };
 
 export default ListAction;
-
-type RefreshProps = Pick<ListActionProps, 'handler'>;
-
-export const Refresh = ({ handler }: RefreshProps) => {
-  const { t } = useTranslation();
-  
-  return (
-    <ListAction
-      icon={<IconRefresh size={14} />}
-      tooltip={t('Refresh')}
-      handler={handler}
-    />
-  );
-};

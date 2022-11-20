@@ -1,11 +1,16 @@
 import { Container, Sx } from '@mantine/core';
+import { IconRefresh } from '@tabler/icons';
+import { AxiosError } from 'axios';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useWritable, Writable } from 'react-use-svelte-store';
+import { MonitorErrorData } from '../../../dto';
+import { showError } from '../../../features/common/notifications';
 import LoadingLines from '../loading/LoadingLines';
-import { Refresh } from './ListAction';
+import ListAction from './ListAction';
 import { ListBrowserStore, QueryData } from './metadata';
+import useListBrowserUtils from './useListBrowserUtils';
 
 interface ListContainerProps<T> {
   store: Writable<T>;
@@ -21,6 +26,7 @@ const ListContainer = <T extends ListBrowserStore>({
   listContainerStyles,
 }: ListContainerProps<T>) => {
   const { t } = useTranslation();
+  const { addOrUpdateActions } = useListBrowserUtils(store);
   const [
     {
       filters,
@@ -39,7 +45,11 @@ const ListContainer = <T extends ListBrowserStore>({
         direction,
         page,
         size,
-      })
+      }),
+    {
+      onError: (err: AxiosError<MonitorErrorData>) =>
+        showError({ message: err.response?.data.message }),
+    }
   );
 
   const values = useMemo(() => data?.values || [], [data]);
@@ -52,29 +62,40 @@ const ListContainer = <T extends ListBrowserStore>({
   );
 
   useEffect(() => {
-    $update(prev => ({ ...prev, data: values }));
+    $update(prev => ({
+      ...prev,
+      data: values,
+      selection: prev.selection.filter(key =>
+        values.some(({ id }) => key === id)
+      ),
+    }));
   }, [$update, values]);
-
-  useEffect(() => {
-    $update(prev => {
-      if (prev.actions.some(action => action.name === 'Refresh')) return prev;
-      return {
-        ...prev,
-        actions: [
-          ...prev.actions,
-          {
-            name: 'Refresh',
-            visible: true,
-            component: <Refresh handler={refetch} />,
-          },
-        ],
-      };
-    });
-  }, [$update, refetch]);
 
   useEffect(() => {
     $update(prev => ({ ...prev, total }));
   }, [$update, total]);
+
+  const actions = useMemo(
+    () => [
+      {
+        name: 'Refresh',
+        visible: true,
+        component: (
+          <ListAction
+            icon={<IconRefresh size={14} />}
+            tooltip={t('Refresh')}
+            handler={refetch}
+          />
+        ),
+        basic: true,
+      },
+    ],
+    [refetch, t]
+  );
+
+  useEffect(() => {
+    addOrUpdateActions(actions);
+  }, [actions, addOrUpdateActions]);
 
   return (
     <div className='my-4'>

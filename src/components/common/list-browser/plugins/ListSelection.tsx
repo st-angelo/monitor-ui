@@ -1,4 +1,4 @@
-import { Button, Checkbox, } from '@mantine/core';
+import { Button, Checkbox } from '@mantine/core';
 import { IconX } from '@tabler/icons';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -50,7 +50,7 @@ const ListSelection = <T extends ListBrowserStore>({
   );
 
   return (
-    <div className='flex items-center p-2 my-2 gap-5 leading-none'>
+    <div className='flex justify-between items-center p-2 my-2 leading-none'>
       <Checkbox
         checked={allSelected}
         label={t('Common.SelectPage', { selections: $store.selection.length })}

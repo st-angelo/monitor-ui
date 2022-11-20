@@ -23,6 +23,7 @@ export interface ListBrowserAction {
   name: string;
   visible: boolean;
   component: ReactNode;
+  basic?: boolean;
 }
 
 export class ListBrowserStore {

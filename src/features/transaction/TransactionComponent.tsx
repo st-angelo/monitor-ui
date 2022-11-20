@@ -20,7 +20,7 @@ interface TransactionComponentProps {
 
 const TransactionComponent = ({ data }: TransactionComponentProps) => {
   const client = useQueryClient();
-  const openConfirmDialog = useConfirmDialog();
+  const confirm = useConfirmDialog();
   const [openLoader, closeLoader] = useLoader();
   const { getIsSelected, handleSelect } = useListBrowserUtils(
     transactionsListStore
@@ -72,7 +72,7 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
               <IconTrash
                 className='cursor-pointer text-rose-600'
                 size={20}
-                onClick={() => openConfirmDialog(handleDeleteTransaction)}
+                onClick={() => confirm(handleDeleteTransaction)}
               />
             </div>
           </div>

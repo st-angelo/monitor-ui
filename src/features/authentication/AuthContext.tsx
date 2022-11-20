@@ -1,19 +1,16 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { useQueryClient } from 'react-query';
+import { Loader } from '@mantine/core';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import { SignInData, SignUpData, User } from '../../models/authentication';
-import axios from '../../utils/axios';
-import { auth_jwtName } from '../../utils/constants';
-import { parseJwt } from '../../utils/functions';
+import {
+  getUser,
+  signIn,
+  signOut,
+  signUp,
+} from '../../repository/authenticationRepository';
 
 interface AuthContextData {
   isAuthenticated: boolean;
-  updateToken: (newToken: string) => void;
   user?: User;
   signIn: (input: SignInData) => Promise<void>;
   signUp: (input: SignUpData) => Promise<void>;
@@ -21,8 +18,7 @@ interface AuthContextData {
 }
 
 const AuthContext = React.createContext<AuthContextData>({
-  isAuthenticated: true,
-  updateToken: () => {},
+  isAuthenticated: false,
   signIn: Promise.resolve,
   signUp: Promise.resolve,
   signOut: () => {},
@@ -38,88 +34,53 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const client = useQueryClient();
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem(auth_jwtName)
-  );
+  const [user, setUser] = useState<User>();
+
+  const { isFetched } = useQuery(['user'], getUser, {
+    onSuccess: result => setUser(result),
+  });
 
   //#region Handlers
 
-  const signIn = useCallback(async ({ email, password }: SignInData) => {
-    return await axios
-      .post('signin', {
-        email,
-        password,
-      })
-      .then(result => {
-        if (result && result.data && result.data.token) {
-          setToken(result.data.token);
-          localStorage.setItem(auth_jwtName, result.data.token);
-        }
-      });
+  const signInHandler = useCallback(async (input: SignInData) => {
+    const response = await signIn(input);
+    response && setUser(response);
   }, []);
 
-  const signUp = useCallback(async ({ name, email, password }: SignUpData) => {
-    return axios
-      .post('signup', {
-        name,
-        email,
-        password,
-      })
-      .then(result => {
-        if (result && result.data && result.data.token) {
-          setToken(result.data.token);
-          localStorage.setItem(auth_jwtName, result.data.token);
-        }
-      });
+  const signUpHandler = useCallback(async (input: SignUpData) => {
+    const response = await signUp(input);
+    response && setUser(response);
   }, []);
 
-  const signOut = useCallback(() => {
-    localStorage.removeItem(auth_jwtName);
-    setToken(null);
+  const signOutHandler = useCallback(async () => {
+    await signOut();
+    setUser(undefined);
     client.invalidateQueries();
   }, [client]);
 
   //#endregion
 
-  useEffect(() => {
-    let previousJwt: string | null;
-    const pollLocalStorage = () => {
-      const jwt = localStorage.getItem(auth_jwtName);
-      if (jwt === previousJwt) return;
-      previousJwt = jwt;
-      setToken(jwt);
-    };
-
-    const interval = setInterval(pollLocalStorage, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const user = useMemo(
-    () => (token ? (parseJwt(token) as User) : undefined),
-    [token]
-  );
-
-  const updateToken = useCallback(
-    (newToken: string) => {
-      if (!newToken) return signOut();
-      setToken(newToken);
-      localStorage.setItem(auth_jwtName, newToken);
-    },
-    [signOut]
-  );
-
   const data = useMemo(
     () => ({
-      updateToken,
       isAuthenticated: Boolean(user),
       user,
-      signIn,
-      signUp,
-      signOut,
+      signIn: signInHandler,
+      signUp: signUpHandler,
+      signOut: signOutHandler,
     }),
-    [user, updateToken, signIn, signOut, signUp]
+    [user, signInHandler, signOutHandler, signUpHandler]
   );
 
-  return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
+  console.log(data, 'AUTH');
+
+  return (
+    <AuthContext.Provider value={data}>
+      {!isFetched && (
+        <div className='w-screen h-screen flex justify-center items-center'>
+          <Loader variant='bars' />
+        </div>
+      )}
+      {isFetched && children}
+    </AuthContext.Provider>
+  );
 }

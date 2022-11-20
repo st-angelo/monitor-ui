@@ -1,4 +1,5 @@
 import { Card, Grid, Group } from '@mantine/core';
+import orderBy from 'lodash.orderby';
 import React from 'react';
 import { useReadable, Writable } from 'react-use-svelte-store';
 import ListFilers from './ListFilters';
@@ -21,13 +22,15 @@ const ListHeader = <T extends ListBrowserStore>({
         </Grid.Col>
         <Grid.Col span={4}>
           <Group spacing={'sm'} position='right'>
-            {$store.actions
-              .filter(action => action.visible)
-              .map(action => (
-                <React.Fragment key={action.name}>
-                  {action.component}
-                </React.Fragment>
-              ))}
+            {orderBy(
+              $store.actions.filter(action => action.visible),
+              'basic',
+              'desc'
+            ).map(action => (
+              <React.Fragment key={action.name}>
+                {action.component}
+              </React.Fragment>
+            ))}
           </Group>
         </Grid.Col>
       </Grid>

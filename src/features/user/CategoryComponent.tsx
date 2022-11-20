@@ -17,7 +17,7 @@ interface CategoryComponentProps {
 
 const CategoryComponent = ({ data }: CategoryComponentProps) => {
   const client = useQueryClient();
-  const openConfirmDialog = useConfirmDialog();
+  const confirm = useConfirmDialog();
   const [openLoader, closeLoader] = useLoader();
 
   const [inEdit, setInEdit] = useState(false);
@@ -59,7 +59,7 @@ const CategoryComponent = ({ data }: CategoryComponentProps) => {
             <IconTrash
               className='cursor-pointer text-rose-600'
               size={20}
-              onClick={() => openConfirmDialog(handleDeleteCategory)}
+              onClick={() => confirm(handleDeleteCategory)}
             />
           </div>
         </div>

@@ -1,6 +1,6 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import backend from 'i18next-http-backend';
+import { initReactI18next } from 'react-i18next';
 
 const language = localStorage.getItem('i18nextLng') || 'en-US';
 
@@ -9,7 +9,9 @@ i18n
   .use(backend)
   .init({
     lng: language,
+    fallbackLng: 'en-US',
     ns: ['translations'],
+    load: 'currentOnly',
     defaultNS: 'translations',
     debug: true,
     interpolation: {

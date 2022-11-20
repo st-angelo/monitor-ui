@@ -42,13 +42,17 @@ export const getTransactionsForSummary = async (
 };
 
 export const addTransaction = (input: MutateTransactionData) => {
-  return axios.post('/transaction', { ...input });
+  return axios.post('/transaction', input);
 };
 
 export const updateTransaction = (input: MutateTransactionData) => {
-  return axios.patch(`/transaction/${input.id}`, { ...input });
+  return axios.patch(`/transaction/${input.id}`, input);
 };
 
-export const deleteTransaction = (transactionId: string) => {
-  return axios.delete(`/transaction/${transactionId}`);
+export const deleteTransaction = (id: string) => {
+  return axios.delete(`/transaction/${id}`);
+};
+
+export const deleteTransactions = (ids: string[]) => {
+  return axios.delete('/transaction', { data: { ids } });
 };

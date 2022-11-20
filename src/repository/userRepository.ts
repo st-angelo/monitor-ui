@@ -2,7 +2,7 @@ import { UpdateAccountData, UpdatePasswordData } from '../models/userProfile';
 import axios from '../utils/axios';
 
 export const updatePassword = (input: UpdatePasswordData) => {
-  return axios.patch('/user/updatePassword', { ...input });
+  return axios.patch('/user/updatePassword', input);
 };
 
 export const updateAccountData = (input: UpdateAccountData) => {

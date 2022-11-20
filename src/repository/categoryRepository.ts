@@ -27,13 +27,13 @@ export const getUserCategories = async ({
 };
 
 export const addCategory = (input: MutateCategoryData) => {
-  return axios.post('/user/category', { ...input });
+  return axios.post('/user/category', input);
 };
 
 export const updateCategory = (input: MutateCategoryData) => {
-  return axios.patch(`/user/category/${input.id}`, { ...input });
+  return axios.patch(`/user/category/${input.id}`, input);
 };
 
-export const deleteCategory = (categoryId: string) => {
-  return axios.delete(`/user/category/${categoryId}`);
+export const deleteCategory = (id: string) => {
+  return axios.delete(`/user/category/${id}`);
 };

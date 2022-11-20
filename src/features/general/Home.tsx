@@ -1,5 +1,3 @@
-import CategoriesComponent from '../user/CategoriesComponent';
-import TransactionComponent from '../transaction/TransactionComponent';
 import SummaryContainer from '../summary/SummaryContainer';
 
 const Home = () => {
