@@ -7,6 +7,7 @@ export interface User {
   name: string;
   nickname: string;
   email: string;
+  isVerified: boolean;
   avatarUrl: string;
   preferences: UserPreferences;
 }

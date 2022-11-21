@@ -1,27 +1,40 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuthentication } from '../features/authentication/AuthContext';
-import Home from '../features/general/Home';
 import SignIn from '../features/authentication/SignIn';
 import SignUp from '../features/authentication/SignUp';
-import Wallet from '../features/general/Wallet';
 import AccountSettings from '../features/general/AccountSettings';
+import Home from '../features/general/Home';
+import UserNotVerified from '../features/general/UserNotVerified';
+import Wallet from '../features/general/Wallet';
 
 export default function AppRoutes() {
-  const { isAuthenticated } = useAuthentication();
-
+  const { isAuthenticated, isVerified } = useAuthentication();
+  console.log(isAuthenticated);
   return (
     <Routes>
       <Route path='/' element={<Navigate to='/home' replace />} />
       <Route
         path='/home'
         element={
-          !isAuthenticated ? <Navigate to='/sign-in' replace /> : <Home />
+          !isAuthenticated ? (
+            <Navigate to='/sign-in' replace />
+          ) : !isVerified ? (
+            <Navigate to='/not-verified' replace />
+          ) : (
+            <Home />
+          )
         }
       />
       <Route
         path='/wallet'
         element={
-          !isAuthenticated ? <Navigate to='/sign-in' replace /> : <Wallet />
+          !isAuthenticated ? (
+            <Navigate to='/sign-in' replace />
+          ) : !isVerified ? (
+            <Navigate to='/not-verified' replace />
+          ) : (
+            <Wallet />
+          )
         }
       />
       <Route
@@ -29,8 +42,22 @@ export default function AppRoutes() {
         element={
           !isAuthenticated ? (
             <Navigate to='/sign-in' replace />
+          ) : !isVerified ? (
+            <Navigate to='/not-verified' replace />
           ) : (
             <AccountSettings />
+          )
+        }
+      />
+      <Route
+        path='/not-verified'
+        element={
+          isVerified ? (
+            <Navigate to='/' replace />
+          ) : !isAuthenticated ? (
+            <Navigate to='/sign-in' replace />
+          ) : (
+            <UserNotVerified />
           )
         }
       />

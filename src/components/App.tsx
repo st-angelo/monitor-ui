@@ -1,14 +1,14 @@
 import { MantineProvider } from '@mantine/core';
-import AppRoutes from './Routes';
-import { useColorScheme } from '../features/common/hooks/useColorScheme';
+import { NotificationsProvider } from '@mantine/notifications';
 import { useAuthentication } from '../features/authentication/AuthContext';
+import { useColorScheme } from '../features/common/hooks/useColorScheme';
 import Navigation from '../features/common/Navigation';
 import GlobalComponents from './GlobalComponents';
-import { NotificationsProvider } from '@mantine/notifications';
+import AppRoutes from './Routes';
 
 function App() {
   const { colorScheme } = useColorScheme();
-  const { isAuthenticated } = useAuthentication();
+  const { isAuthenticated, isVerified } = useAuthentication();
 
   return (
     <MantineProvider
@@ -34,7 +34,7 @@ function App() {
     >
       <NotificationsProvider position='bottom-center'>
         <main className='min-h-screen'>
-          {isAuthenticated && <Navigation />}
+          {isAuthenticated && isVerified && <Navigation />}
           <AppRoutes />
           <GlobalComponents />
         </main>

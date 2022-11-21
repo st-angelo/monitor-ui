@@ -1,5 +1,10 @@
 @tailwind base;
 
+html,
+body {
+  margin: 0;
+}
+
 .overflown-pie > svg {
   overflow: visible !important;
 }

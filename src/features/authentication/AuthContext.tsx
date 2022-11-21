@@ -11,6 +11,7 @@ import {
 
 interface AuthContextData {
   isAuthenticated: boolean;
+  isVerified: boolean;
   user?: User;
   signIn: (input: SignInData) => Promise<void>;
   signUp: (input: SignUpData) => Promise<void>;
@@ -19,6 +20,7 @@ interface AuthContextData {
 
 const AuthContext = React.createContext<AuthContextData>({
   isAuthenticated: false,
+  isVerified: false,
   signIn: Promise.resolve,
   signUp: Promise.resolve,
   signOut: () => {},
@@ -38,6 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const { isFetched } = useQuery(['user'], getUser, {
     onSuccess: result => setUser(result),
+    retry: false,
   });
 
   //#region Handlers
@@ -63,6 +66,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const data = useMemo(
     () => ({
       isAuthenticated: Boolean(user),
+      isVerified: user?.isVerified ?? false,
       user,
       signIn: signInHandler,
       signUp: signUpHandler,
@@ -71,12 +75,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     [user, signInHandler, signOutHandler, signUpHandler]
   );
 
-  console.log(data, 'AUTH');
-
   return (
     <AuthContext.Provider value={data}>
       {!isFetched && (
-        <div className='w-screen h-screen flex justify-center items-center'>
+        <div className='min-h-screen flex justify-center items-center'>
           <Loader variant='bars' />
         </div>
       )}
