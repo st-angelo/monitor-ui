@@ -82,7 +82,7 @@ const CategoryDetailComponent = ({
   const isNew = useMemo(() => !category, [category]);
 
   return (
-    <Stack sx={{ width: 400 }}>
+    <Stack sx={{ maxWidth: 400 }}>
       <TextInput
         label={t('Label.Field.Name')}
         placeholder={t('Label.Field.Name')}

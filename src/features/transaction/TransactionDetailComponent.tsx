@@ -132,7 +132,7 @@ const TransactionDetailComponent = ({
   const isNew = useMemo(() => !transaction, [transaction]);
 
   return (
-    <Stack sx={{ width: 500 }}>
+    <Stack sx={{ maxWidth: 500 }}>
       {transactionTypes.length > 0 && (
         <SegmentedControl
           {...form.getInputProps('typeId')}

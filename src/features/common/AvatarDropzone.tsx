@@ -52,7 +52,7 @@ const AvatarDropzone = ({ value, file, onChange }: AvatarDropzoneProps) => {
         </div>
         {showCover && cover && (
           <img
-            className='absolute w-full h-full top-0'
+            className='absolute w-full h-full top-0 object-cover'
             src={cover}
             onLoad={() => file && URL.revokeObjectURL(cover)}
             alt='avatar'
