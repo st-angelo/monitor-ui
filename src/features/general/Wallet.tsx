@@ -8,7 +8,7 @@ const Wallet = () => {
 
   return (
     <>
-      <div className='w-1/2 m-auto'>
+      <div className='md:w-1/2 m-auto'>
         <div className='my-5 text-end'>
           <Button onClick={() => setInAdd(true)}>Add transaction</Button>
         </div>
