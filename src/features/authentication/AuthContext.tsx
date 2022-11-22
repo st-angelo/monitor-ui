@@ -1,9 +1,10 @@
 import { Loader } from '@mantine/core';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { SignInData, SignUpData, User } from '../../models/authentication';
+import { ResetPasswordData, SignInData, SignUpData, User } from '../../models/authentication';
 import {
   getUser,
+  resetPassword,
   signIn,
   signOut,
   signUp,
@@ -15,6 +16,7 @@ interface AuthContextData {
   user?: User;
   signIn: (input: SignInData) => Promise<void>;
   signUp: (input: SignUpData) => Promise<void>;
+  resetPassword: (input: ResetPasswordData) => Promise<void>;
   signOut: () => void;
 }
 
@@ -23,6 +25,7 @@ const AuthContext = React.createContext<AuthContextData>({
   isVerified: false,
   signIn: Promise.resolve,
   signUp: Promise.resolve,
+  resetPassword: Promise.resolve,
   signOut: () => {},
 });
 
@@ -55,6 +58,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     response && setUser(response);
   }, []);
 
+  const resetPasswordHandler = useCallback(async (input: ResetPasswordData) => {
+    const response = await resetPassword(input);
+    response && setUser(response);
+  }, []);
+
   const signOutHandler = useCallback(async () => {
     await signOut();
     setUser(undefined);
@@ -70,9 +78,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       user,
       signIn: signInHandler,
       signUp: signUpHandler,
+      resetPassword: resetPasswordHandler,
       signOut: signOutHandler,
     }),
-    [user, signInHandler, signOutHandler, signUpHandler]
+    [user, signInHandler, signUpHandler, resetPasswordHandler, signOutHandler]
   );
 
   return (

@@ -1,4 +1,5 @@
 import {
+  Anchor,
   Button,
   Center,
   PasswordInput,
@@ -73,6 +74,13 @@ const SignIn = () => {
           icon={<IconLock size='16' />}
           {...form.getInputProps('password')}
         />
+        <Anchor
+          component={Link}
+          to='/forgot-password'
+          className='text-sm text-right'
+        >
+          Forgot password?
+        </Anchor>
         <Button onClick={handleSignIn}>{t('Common.Submit')}</Button>
         <Link to='/sign-up'>
           <Button className={'w-full'}>{t('Label.Button.GoToSignUp')}</Button>

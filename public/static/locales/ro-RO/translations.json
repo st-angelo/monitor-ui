@@ -43,6 +43,7 @@
       "Nickname": "Poreclă",
       "Password": "Parolă",
       "ConfirmPassword": "Confirmare parolă",
+      "NewPassword": "Parolă nouă",
       "Description": "Descriere",
       "TransactionType": "Tip tranzacție",
       "Color": "Culoare"

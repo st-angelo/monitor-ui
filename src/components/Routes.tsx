@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuthentication } from '../features/authentication/AuthContext';
+import ForgotPassword from '../features/authentication/ForgotPassword';
+import ResetPassword from '../features/authentication/ResetPassword';
 import SignIn from '../features/authentication/SignIn';
 import SignUp from '../features/authentication/SignUp';
 import AccountSettings from '../features/general/AccountSettings';
@@ -9,7 +11,7 @@ import Wallet from '../features/general/Wallet';
 
 export default function AppRoutes() {
   const { isAuthenticated, isVerified } = useAuthentication();
-  console.log(isAuthenticated);
+
   return (
     <Routes>
       <Route path='/' element={<Navigate to='/home' replace />} />
@@ -68,6 +70,14 @@ export default function AppRoutes() {
       <Route
         path='/sign-up'
         element={isAuthenticated ? <Navigate to='/' replace /> : <SignUp />}
+      />
+       <Route
+        path='/forgot-password'
+        element={isAuthenticated ? <Navigate to='/' replace /> : <ForgotPassword />}
+      />
+      <Route
+        path='/reset-password/:token'
+        element={isAuthenticated ? <Navigate to='/' replace /> : <ResetPassword />}
       />
       <Route path='*' element={<Navigate to='/' replace />} />
     </Routes>

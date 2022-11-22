@@ -43,6 +43,7 @@
       "Nickname": "Nickname",
       "Password": "Password",
       "ConfirmPassword": "Confirm password",
+      "NewPassword": "New password",
       "Description": "Description",
       "TransactionType": "Transaction type",
       "Color": "Color"
