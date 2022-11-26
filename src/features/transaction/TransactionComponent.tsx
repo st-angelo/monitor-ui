@@ -1,7 +1,7 @@
-import { Card, Checkbox, Modal, Text } from '@mantine/core';
+import { Card, Checkbox, Text } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { AxiosError } from 'axios';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import useListBrowserUtils from '../../components/common/list-browser/useListBrowserUtils';
 import { MonitorErrorData } from '../../dto';
@@ -10,7 +10,7 @@ import { deleteTransaction } from '../../repository/transactionRepository';
 import { useConfirmDialog } from '../common/confirm-dialog/useConfirmDialog';
 import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
-import TransactionDetailComponent from './TransactionDetailComponent';
+import { useTransactionDetail } from './detail/useTransactionDetail';
 import transactionsListStore from './transactionsListStore';
 import { getTranslatedCategory } from './utils';
 
@@ -22,11 +22,10 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
   const client = useQueryClient();
   const confirm = useConfirmDialog();
   const [openLoader, closeLoader] = useLoader();
+  const openTransactionDetail = useTransactionDetail();
   const { getIsSelected, handleSelect } = useListBrowserUtils(
     transactionsListStore
   );
-
-  const [inEdit, setInEdit] = useState(false);
 
   const deleteTransactionMutation = useMutation(deleteTransaction, {
     onError: (err: AxiosError<MonitorErrorData>) => {
@@ -67,7 +66,7 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
               <IconEdit
                 className='cursor-pointer text-teal-600'
                 size={20}
-                onClick={() => setInEdit(true)}
+                onClick={() => openTransactionDetail(data)}
               />
               <IconTrash
                 className='cursor-pointer text-rose-600'
@@ -78,20 +77,6 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
           </div>
         </div>
       </Card>
-      {inEdit && (
-        <Modal
-          opened={inEdit}
-          size={'auto'}
-          centered
-          onClose={() => setInEdit(false)}
-          closeOnClickOutside={false}
-        >
-          <TransactionDetailComponent
-            transaction={data}
-            onEdit={() => setInEdit(false)}
-          />
-        </Modal>
-      )}
     </>
   );
 };

@@ -1,6 +1,6 @@
-import { Card, Collapse, Grid, Select } from '@mantine/core';
+import { Card, Checkbox, Collapse, Grid, Select } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
-import { IconArrowDown, IconArrowUp, IconX } from '@tabler/icons';
+import { IconArrowBackUp, IconArrowDown, IconArrowUp } from '@tabler/icons';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWritable } from 'react-use-svelte-store';
@@ -65,7 +65,7 @@ const TransactionFiltersComponent = () => {
         visible: show,
         component: (
           <ListAction
-            icon={<IconX size={14} />}
+            icon={<IconArrowBackUp size={14} />}
             tooltip={'Reset filters'}
             handler={resetFilters}
           />
@@ -109,7 +109,7 @@ const TransactionFiltersComponent = () => {
   return (
     <Collapse in={show}>
       <Card p={'xs'} className='shadow-md mt-3 overflow-visible'>
-        <Grid>
+        <Grid align={'end'}>
           <Grid.Col span={4}>
             <DatePicker
               label={t('Label.Filter.DateFrom')}
@@ -176,6 +176,15 @@ const TransactionFiltersComponent = () => {
               onChange={handleChange('filters.amountTo')}
               parser={value => value && value.replace(/,/g, '')}
               formatter={value => formatNumberWithCommas(value)}
+            />
+          </Grid.Col>
+          <Grid.Col span={4}>
+            <Checkbox
+              value={$store.filters.isRecurrent}
+              label={t('Label.Filter.IsRecurrent')}
+              onChange={ev =>
+                handleChange('filters.isRecurrent')(ev?.currentTarget.checked)
+              }
             />
           </Grid.Col>
         </Grid>

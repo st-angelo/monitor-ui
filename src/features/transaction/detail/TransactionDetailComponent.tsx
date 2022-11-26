@@ -2,32 +2,45 @@ import {
   Button,
   Checkbox,
   Grid,
+  Group,
   NumberInput,
   SegmentedControl,
   Select,
   Stack,
+  Text,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { AxiosError } from 'axios';
+import { format } from 'date-fns';
 import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
-import { MonitorErrorData } from '../../dto';
-import { MutateTransactionData, Transaction } from '../../models/transaction';
+import { MonitorErrorData } from '../../../dto';
+import {
+  getRecurrenceTypes,
+  MutateTransactionData,
+  Transaction,
+} from '../../../models/transaction';
 import {
   getCategories,
   getCurrencies,
   getTransactionTypes,
-} from '../../repository/dictionaryRepository';
+} from '../../../repository/dictionaryRepository';
 import {
   addTransaction,
   updateTransaction,
-} from '../../repository/transactionRepository';
-import { max, min, required, stopOnFirstFailure } from '../../utils/validation';
-import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
-import { useImplicitValues } from '../common/hooks/useImplicitValues';
-import { useLoader } from '../common/loader/useLoader';
-import { showError, showSuccess } from '../common/notifications';
+} from '../../../repository/transactionRepository';
+import {
+  max,
+  min,
+  required,
+  stopOnFirstFailure,
+} from '../../../utils/validation';
+import { useDictionaryWithTranslation } from '../../common/hooks/useDictionary';
+import { useImplicitValues } from '../../common/hooks/useImplicitValues';
+import { useLoader } from '../../common/loader/useLoader';
+import { showError, showSuccess } from '../../common/notifications';
 
 const validate = {
   typeId: required,
@@ -38,7 +51,7 @@ const validate = {
 };
 
 interface TransactionDetailComponentProps {
-  transaction?: Transaction;
+  transaction?: Partial<Transaction>;
   onEdit?: () => void;
 }
 
@@ -46,6 +59,7 @@ const TransactionDetailComponent = ({
   transaction,
   onEdit,
 }: TransactionDetailComponentProps) => {
+  const { t } = useTranslation();
   const client = useQueryClient();
   const [openLoader, closeLoader] = useLoader();
 
@@ -54,12 +68,15 @@ const TransactionDetailComponent = ({
       id: transaction?.id,
       typeId:
         transaction?.typeId ?? localStorage.getItem('lastTransactionTypeId'),
-      date: transaction ? new Date(transaction.date) : new Date(),
+      date:
+        transaction && transaction.date
+          ? new Date(transaction.date)
+          : new Date(),
       currencyId:
-        transaction?.currency?.id ?? localStorage.getItem('lastCurrencyId'),
+        transaction?.currencyId ?? localStorage.getItem('lastCurrencyId'),
       amount: transaction?.amount ?? undefined,
-      categoryId: transaction?.category?.id,
-      isRecurrent: transaction?.isRecurrent ?? false,
+      categoryId: transaction?.categoryId,
+      recurrence: transaction?.recurrence,
     },
     validate,
   });
@@ -97,7 +114,7 @@ const TransactionDetailComponent = ({
   }, [implicitValues]);
 
   const mutateTransaction = useMutation(
-    !transaction ? addTransaction : updateTransaction,
+    !transaction?.id ? addTransaction : updateTransaction,
     {
       onError: (err: AxiosError<MonitorErrorData>) =>
         showError({ message: err.response?.data.message }),
@@ -129,7 +146,9 @@ const TransactionDetailComponent = ({
     [categories, form]
   );
 
-  const isNew = useMemo(() => !transaction, [transaction]);
+  const isNew = useMemo(() => !transaction?.id, [transaction]);
+
+  console.log(form.values.date);
 
   return (
     <Stack sx={{ maxWidth: 500 }}>
@@ -177,10 +196,35 @@ const TransactionDetailComponent = ({
           />
         </Grid.Col>
         <Grid.Col>
-          <Checkbox
-            label='Is recurrent'
-            {...form.getInputProps('isRecurrent')}
-          />
+          <Text size='sm' mb={10}>
+            Recurrent?
+          </Text>
+          <Group spacing={'sm'}>
+            {getRecurrenceTypes().map(recurrence => (
+              <Checkbox
+                key={recurrence}
+                label={t(`Recurrence.${recurrence}`)}
+                checked={form.values.recurrence === recurrence}
+                size='sm'
+                onClick={() =>
+                  form.setFieldValue(
+                    'recurrence',
+                    form.values.recurrence === recurrence ? null : recurrence
+                  )
+                }
+              />
+            ))}
+          </Group>
+          {form.values.recurrence && form.values.date && (
+            <Text size='xs'>
+              {t('Info.RecurrenceType', {
+                recurrence: t(
+                  `Recurrence.${form.values.recurrence}`
+                ).toLowerCase(),
+                date: format(form.values.date, 'yyyy-MM-dd'),
+              })}
+            </Text>
+          )}
         </Grid.Col>
       </Grid>
       <Button onClick={handleMutateTransaction}>Submit</Button>

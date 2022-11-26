@@ -20,6 +20,15 @@
     "AccountSettings": "Account settings",
     "LogOut": "Log Out"
   },
+  "Recurrence": {
+    "Weekly": "Weekly",
+    "Monthly": "Monthly",
+    "Quarterly": "Quarterly",
+    "Yearly": "Yearly"
+  },
+  "Info": {
+    "RecurrenceType": "This transaction will be applied {{recurrence}} starting from {{date}}."
+  },
   "Label": {
     "Sort": {
       "OrderBy": "Order by",
@@ -35,7 +44,8 @@
       "Category": "Category",
       "Currency": "Currency",
       "AmountFrom": "Amount from",
-      "AmountTo": "Amount to"
+      "AmountTo": "Amount to",
+      "IsRecurrent": "Recurrent"
     },
     "Field": {
       "Email": "Email",

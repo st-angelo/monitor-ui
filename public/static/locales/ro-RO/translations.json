@@ -20,6 +20,15 @@
     "AccountSettings": "Setări cont",
     "LogOut": "Deconectare"
   },
+  "Recurrence": {
+    "Weekly": "Săptămânal",
+    "Monthly": "Lunar",
+    "Quarterly": "Trimerstrial",
+    "Yearly": "Anual"
+  },
+  "Info": {
+    "RecurrenceType": "Această tranzacție va fi aplicată {{recurrence}} începând cu {{date}}."
+  },
   "Label": {
     "Sort": {
       "OrderBy": "Ordonează după",
@@ -35,7 +44,8 @@
       "Category": "Categorie",
       "Currency": "Valută",
       "AmountFrom": "Sumă de la",
-      "AmountTo": "Sumă până la"
+      "AmountTo": "Sumă până la",
+      "IsRecurrent": "Recurentă"
     },
     "Field": {
       "Email": "Email",

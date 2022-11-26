@@ -9,6 +9,7 @@ interface TransactionFilters {
   currencyId: string | null;
   amountFrom: number | null;
   amountTo: number | null;
+  isRecurrent: boolean;
 }
 
 export const defaultTransactionFilters: TransactionFilters = {
@@ -19,6 +20,7 @@ export const defaultTransactionFilters: TransactionFilters = {
   currencyId: null,
   amountFrom: null,
   amountTo: null,
+  isRecurrent: false,
 };
 
 class TransactionListStore extends ListBrowserStore {

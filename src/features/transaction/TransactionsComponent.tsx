@@ -18,20 +18,11 @@ import TransactionComponent from './TransactionComponent';
 import TransactionFiltersComponent from './TransactionFiltersComponent';
 import transactionsListStore from './transactionsListStore';
 
-const TransactionsComponent = () => {
+const DeleteTransactionsAction = () => {
   const [openLoader, closeLoader] = useLoader();
   const client = useQueryClient();
   const confirm = useConfirmDialog();
-  const { addOrUpdateActions } = useListBrowserUtils(transactionsListStore);
   const $store = useReadable(transactionsListStore);
-
-  const queryData = useMemo(
-    () => ({
-      name: 'transactions',
-      getter: getTransactions,
-    }),
-    []
-  );
 
   const deleteTransactionsMutation = useMutation(deleteTransactions, {
     onError: (err: AxiosError<MonitorErrorData>) =>
@@ -50,22 +41,36 @@ const TransactionsComponent = () => {
     deleteTransactionsMutation.mutate($store.selection);
   }, [$store, deleteTransactionsMutation, openLoader]);
 
+  return (
+    <ListAction
+      icon={<IconTrash size={14} />}
+      tooltip={'Delete all selection'}
+      handler={() => confirm(handleDeleteTransactions)}
+      disabled={$store.selection.length === 0}
+    />
+  );
+};
+
+const TransactionsComponent = () => {
+  const { addOrUpdateActions } = useListBrowserUtils(transactionsListStore);
+
+  const queryData = useMemo(
+    () => ({
+      name: 'transactions',
+      getter: getTransactions,
+    }),
+    []
+  );
+
   const actions = useMemo(
     () => [
       {
         name: 'DeleteTransactions',
         visible: true,
-        component: (
-          <ListAction
-            icon={<IconTrash size={14} />}
-            tooltip={'Delete all selection'}
-            handler={() => confirm(handleDeleteTransactions)}
-            disabled={$store.selection.length === 0}
-          />
-        ),
+        component: <DeleteTransactionsAction />,
       },
     ],
-    [confirm, handleDeleteTransactions, $store]
+    []
   );
 
   useEffect(() => {

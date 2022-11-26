@@ -13,6 +13,7 @@ import { useQuery } from 'react-query';
 import { getTransactionsForSummary } from '../../repository/transactionRepository';
 import SummaryCardsComponent from './SummaryCardsComponent';
 import SummaryChartsComponent from './SummaryChartsComponent';
+import SummaryLatestComponent from './SummaryLatestComponent';
 
 const SummaryContainer = () => {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ const SummaryContainer = () => {
   );
 
   const { data: transactions, isLoading } = useQuery(
-    ['light-transactions', dateFrom, dateTo],
+    ['transaction-summary', dateFrom, dateTo],
     () => getTransactionsForSummary(dateFrom, dateTo)
   );
 
@@ -69,7 +70,7 @@ const SummaryContainer = () => {
   // #endregion
 
   return (
-    <div>
+    <div className='flex flex-col gap-10'>
       <div className='flex items-center gap-3 justify-center'>
         <div className='flex mt-7'>
           <Tooltip label={'Last year'}>
@@ -138,6 +139,7 @@ const SummaryContainer = () => {
         * All prices are converted to the base currency, configurable in your
         account settings. Values are approximate.
       </div>
+      <SummaryLatestComponent />
     </div>
   );
 };
