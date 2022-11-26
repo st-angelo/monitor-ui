@@ -1,7 +1,12 @@
-import { Loader } from '@mantine/core';
+import { Loader, Text } from '@mantine/core';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { ResetPasswordData, SignInData, SignUpData, User } from '../../models/authentication';
+import {
+  ResetPasswordData,
+  SignInData,
+  SignUpData,
+  User,
+} from '../../models/authentication';
 import {
   getUser,
   resetPassword,
@@ -87,8 +92,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return (
     <AuthContext.Provider value={data}>
       {!isFetched && (
-        <div className='min-h-screen flex justify-center items-center'>
-          <Loader variant='bars' />
+        <div className='min-h-screen flex flex-col justify-center items-center'>
+          <Text size={50} weight='bolder' className='animate-bounce'>
+            Monitor
+          </Text>
+          <Loader variant='dots' />
         </div>
       )}
       {isFetched && children}

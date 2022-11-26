@@ -9,7 +9,7 @@ const Loader = () => {
     <Portal>
       <LoadingOverlay
         visible={$store.open}
-        loaderProps={{ size: 'lg', variant: 'bars' }}
+        loaderProps={{ size: 'lg', variant: 'dots' }}
       />
     </Portal>
   );

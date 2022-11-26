@@ -85,14 +85,17 @@ const SummaryLatestComponent = () => {
           </Text>
         </Card.Section>
         <Card.Section inheritPadding py='sm'>
-          {!topCategoriesData && <Loader variant='bars' />}
+          {!topCategoriesData && <Loader variant='dots' />}
           {topCategoriesData && topCategoriesData.length === 0 && (
             <Text>{t('Common.NoEntries')}</Text>
           )}
           {topCategoriesData &&
             topCategoriesData.length > 0 &&
-            topCategoriesData.map(categoryData => (
-              <div className='flex py-2 justify-between items-center'>
+            topCategoriesData.map((categoryData, index) => (
+              <div
+                className='flex py-2 justify-between items-center'
+                key={index}
+              >
                 <div className='flex flex-col'>
                   <Text>{categoryData.category}</Text>
                   <Text size='xs'>{`Added ${categoryData.count} time(s)`}</Text>
@@ -123,14 +126,17 @@ const SummaryLatestComponent = () => {
           </Text>
         </Card.Section>
         <Card.Section inheritPadding py='sm'>
-          {!lastTransactionsData && <Loader variant='bars' />}
+          {!lastTransactionsData && <Loader variant='dots' />}
           {lastTransactionsData && lastTransactionsData.length === 0 && (
             <Text>{t('Common.NoEntries')}</Text>
           )}
           {lastTransactionsData &&
             lastTransactionsData.length > 0 &&
-            lastTransactionsData.map(transactionData => (
-              <div className='flex py-2 justify-between items-center'>
+            lastTransactionsData.map((transactionData, index) => (
+              <div
+                className='flex py-2 justify-between items-center'
+                key={index}
+              >
                 <div className='flex flex-col'>
                   <Text>{`${transactionData.category}, ${transactionData.amount} ${transactionData.currency}`}</Text>
                   <Text size='xs'>

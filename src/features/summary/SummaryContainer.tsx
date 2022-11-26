@@ -123,7 +123,7 @@ const SummaryContainer = () => {
           </Tooltip>
         </div>
       </div>
-      <div className='flex flex-col gap-5 mt-10'>
+      <div className='flex flex-col gap-5'>
         <SummaryCardsComponent
           transactions={transactions || []}
           loading={isLoading}

@@ -102,7 +102,7 @@ const SummaryChartsComponent = ({
             <span className='font-bold text-lg mb-5'>
               {t(`Value.${type.code}`)}
             </span>
-            {loading && <Loader variant='bars' />}
+            {loading && <Loader variant='dots' />}
             {!loading && (
               <FloatingLabledPieChart
                 data={pieData.filter(item => item.typeId === type.id)}
@@ -112,7 +112,7 @@ const SummaryChartsComponent = ({
         ))}
       </div>
       <div>
-        {loading && <Loader variant='bars' />}
+        {loading && <Loader variant='dots' />}
         {!loading && (
           <LineChart
             width={730}

@@ -47,7 +47,7 @@ const SummaryCardsComponent = ({
           }`}
         >
           <span>{t(`Value.${summary.code}`)}</span>
-          {loading && <Loader variant='bars' />}
+          {loading && <Loader variant='dots' />}
           {!loading && (
             <span>
               {summary.amount
