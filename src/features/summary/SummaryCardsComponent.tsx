@@ -49,7 +49,10 @@ const SummaryCardsComponent = ({
           <span>{t(`Value.${summary.code}`)}</span>
           {loading && <Loader variant='bars' />}
           {!loading && (
-            <span>{`${summary.amount.toFixed(1)} ${currencyCode}`}</span>
+            <span>
+              {summary.amount && `${summary.amount.toFixed(1)} ${currencyCode}`}
+              {!summary.amount && 'No data'}
+            </span>
           )}
         </div>
       ))}

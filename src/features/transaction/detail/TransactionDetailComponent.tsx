@@ -41,6 +41,7 @@ import { useDictionaryWithTranslation } from '../../common/hooks/useDictionary';
 import { useImplicitValues } from '../../common/hooks/useImplicitValues';
 import { useLoader } from '../../common/loader/useLoader';
 import { showError, showSuccess } from '../../common/notifications';
+import { useTransactionDetail } from './useTransactionDetail';
 
 const validate = {
   typeId: required,
@@ -52,16 +53,15 @@ const validate = {
 
 interface TransactionDetailComponentProps {
   transaction?: Partial<Transaction>;
-  onEdit?: () => void;
 }
 
 const TransactionDetailComponent = ({
   transaction,
-  onEdit,
 }: TransactionDetailComponentProps) => {
   const { t } = useTranslation();
   const client = useQueryClient();
   const [openLoader, closeLoader] = useLoader();
+  const [, closeTransactionDetail] = useTransactionDetail();
 
   const form = useForm<MutateTransactionData>({
     initialValues: {
@@ -120,8 +120,10 @@ const TransactionDetailComponent = ({
         showError({ message: err.response?.data.message }),
       onSettled: closeLoader,
       onSuccess: () => {
-        onEdit && onEdit();
+        closeTransactionDetail();
         client.invalidateQueries(['transactions']);
+        client.invalidateQueries(['transaction-summary']);
+        client.invalidateQueries(['latest-transaction-data']);
         showSuccess({
           message: 'Your transaction was updated',
         });

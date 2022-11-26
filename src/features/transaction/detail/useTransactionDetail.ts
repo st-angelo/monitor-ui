@@ -12,5 +12,10 @@ export const useTransactionDetail = () => {
     [$update]
   );
 
-  return open;
+  const close = useCallback(
+    () => $update(prev => ({ ...prev, open: false })),
+    [$update]
+  );
+
+  return [open, close];
 };

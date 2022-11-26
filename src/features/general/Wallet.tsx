@@ -3,7 +3,7 @@ import { useTransactionDetail } from '../transaction/detail/useTransactionDetail
 import TransactionsComponent from '../transaction/TransactionsComponent';
 
 const Wallet = () => {
-  const openTransactionDetail = useTransactionDetail();
+  const [openTransactionDetail] = useTransactionDetail();
 
   return (
     <>

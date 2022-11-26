@@ -57,7 +57,7 @@ const AccountDataComponent = () => {
       form.setFieldValue('avatar', null);
       form.resetDirty();
       showSuccess({
-        message: 'Your password was updated!',
+        message: 'Your account data was updated!',
       });
     },
   });

@@ -22,7 +22,7 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
   const client = useQueryClient();
   const confirm = useConfirmDialog();
   const [openLoader, closeLoader] = useLoader();
-  const openTransactionDetail = useTransactionDetail();
+  const [openTransactionDetail] = useTransactionDetail();
   const { getIsSelected, handleSelect } = useListBrowserUtils(
     transactionsListStore
   );
@@ -36,6 +36,8 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
     onSettled: closeLoader,
     onSuccess: () => {
       client.invalidateQueries(['transactions']);
+      client.invalidateQueries(['transaction-summary']);
+      client.invalidateQueries(['latest-transaction-data']);
       showSuccess({
         message: 'Your transaction was mutated',
       });

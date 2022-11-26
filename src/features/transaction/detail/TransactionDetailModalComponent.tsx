@@ -20,10 +20,7 @@ const TransactionDetailModalComponent = () => {
       onClose={close}
       closeOnClickOutside={false}
     >
-      <TransactionDetailComponent
-        transaction={$store.transaction}
-        onEdit={close}
-      />
+      <TransactionDetailComponent transaction={$store.transaction} />
     </Modal>
   );
 };

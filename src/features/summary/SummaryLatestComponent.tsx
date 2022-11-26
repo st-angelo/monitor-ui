@@ -15,7 +15,7 @@ import { getTranslatedCategory } from '../transaction/utils';
 
 const SummaryLatestComponent = () => {
   const { t } = useTranslation();
-  const openTransactionDetail = useTransactionDetail();
+  const [openTransactionDetail] = useTransactionDetail();
 
   const { data: categories } = useQuery(['categories'], getCategories);
   const { data: currencies } = useQuery(['currencies'], getCurrencies);
@@ -87,7 +87,7 @@ const SummaryLatestComponent = () => {
         <Card.Section inheritPadding py='sm'>
           {!topCategoriesData && <Loader variant='bars' />}
           {topCategoriesData && topCategoriesData.length === 0 && (
-            <Text>No data</Text>
+            <Text>{t('Common.NoEntries')}</Text>
           )}
           {topCategoriesData &&
             topCategoriesData.length > 0 &&
@@ -125,7 +125,7 @@ const SummaryLatestComponent = () => {
         <Card.Section inheritPadding py='sm'>
           {!lastTransactionsData && <Loader variant='bars' />}
           {lastTransactionsData && lastTransactionsData.length === 0 && (
-            <Text>No data</Text>
+            <Text>{t('Common.NoEntries')}</Text>
           )}
           {lastTransactionsData &&
             lastTransactionsData.length > 0 &&

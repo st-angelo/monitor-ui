@@ -30,6 +30,8 @@ const DeleteTransactionsAction = () => {
     onSettled: closeLoader,
     onSuccess: () => {
       client.invalidateQueries(['transactions']);
+      client.invalidateQueries(['transaction-summary']);
+      client.invalidateQueries(['latest-transaction-data']);
       showSuccess({
         message: 'Your transactions were deleted',
       });
