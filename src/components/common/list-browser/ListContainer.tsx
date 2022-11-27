@@ -62,13 +62,7 @@ const ListContainer = <T extends ListBrowserStore>({
   );
 
   useEffect(() => {
-    $update(prev => ({
-      ...prev,
-      data: values,
-      selection: prev.selection.filter(key =>
-        values.some(({ id }) => key === id)
-      ),
-    }));
+    $update(prev => ({ ...prev, data: values }));
   }, [$update, values]);
 
   useEffect(() => {

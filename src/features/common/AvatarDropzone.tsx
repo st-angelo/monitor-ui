@@ -8,9 +8,10 @@ interface AvatarDropzoneProps {
   value?: string;
   file?: FileWithPath | null;
   onChange?: (file: FileWithPath | null) => void;
+  disabled?: boolean;
 }
 
-const AvatarDropzone = ({ value, file, onChange }: AvatarDropzoneProps) => {
+const AvatarDropzone = ({ value, file, onChange, disabled }: AvatarDropzoneProps) => {
   const [showCover, setShowCover] = useState(true);
 
   const cover = useMemo(
@@ -36,8 +37,9 @@ const AvatarDropzone = ({ value, file, onChange }: AvatarDropzoneProps) => {
         className='w-24 h-24 rounded-md p-0 relative overflow-hidden'
         styles={{ inner: { height: '100%' } }}
         multiple={false}
-        onMouseEnter={() => setShowCover(false)}
-        onMouseLeave={() => setShowCover(true)}
+        disabled={disabled}
+        onMouseEnter={() => !disabled && setShowCover(false)}
+        onMouseLeave={() => !disabled && setShowCover(true)}
       >
         <div className='w-full h-full flex justify-center items-center'>
           <Dropzone.Accept>

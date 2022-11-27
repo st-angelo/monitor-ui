@@ -1,7 +1,11 @@
 import { Button, ColorInput, Select, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { AxiosError } from 'axios';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { MonitorErrorData } from '../../dto';
@@ -18,7 +22,6 @@ import {
   stopOnFirstFailure,
 } from '../../utils/validation';
 import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
-import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
 
 const validate = {
@@ -39,7 +42,7 @@ const CategoryDetailComponent = ({
 }: CategoryDetailComponentProps) => {
   const { t } = useTranslation();
   const client = useQueryClient();
-  const [openLoader, closeLoader] = useLoader();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<MutateCategoryData>({
     initialValues: {
@@ -61,7 +64,10 @@ const CategoryDetailComponent = ({
   const mutateCategory = useMutation(!category ? addCategory : updateCategory, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
     onSuccess: () => {
       onEdit && onEdit();
       client.invalidateQueries(['user-categories']);
@@ -76,39 +82,45 @@ const CategoryDetailComponent = ({
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     mutateCategory.mutate(form.values);
-    openLoader();
-  }, [form, openLoader, mutateCategory]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, mutateCategory]);
 
   const isNew = useMemo(() => !category, [category]);
 
   return (
-    <Stack sx={{ maxWidth: 400 }}>
+    <Stack sx={{ width: 350 }}>
       <TextInput
         label={t('Label.Field.Name')}
         placeholder={t('Label.Field.Name')}
+        disabled={loading}
         withAsterisk
         {...form.getInputProps('name')}
       />
       <TextInput
         label={t('Label.Field.Description')}
         placeholder={t('Label.Field.Description')}
+        disabled={loading}
         {...form.getInputProps('description')}
       />
       <Select
         label={t('Label.Field.TransactionType')}
         placeholder={t('Label.Field.TransactionType')}
         clearable
-        disabled={!isNew}
+        disabled={!isNew || loading}
         {...form.getInputProps('transactionTypeId')}
         data={transactionTypes}
       />
       <ColorInput
         label={t('Label.Field.Color')}
         placeholder={t('Label.Field.Color')}
+        disabled={loading}
         withAsterisk
         {...form.getInputProps('color')}
       />
-      <Button onClick={handleMutateCategory}>Submit</Button>
+      <Button onClick={handleMutateCategory} disabled={loading}>
+        Submit
+      </Button>
     </Stack>
   );
 };

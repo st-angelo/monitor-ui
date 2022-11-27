@@ -1,14 +1,17 @@
-import { Card, Checkbox, Text } from '@mantine/core';
+import { ActionIcon, Card, Checkbox, Text } from '@mantine/core';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { AxiosError } from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import useListBrowserUtils from '../../components/common/list-browser/useListBrowserUtils';
 import { MonitorErrorData } from '../../dto';
 import { Transaction } from '../../models/transaction';
 import { deleteTransaction } from '../../repository/transactionRepository';
 import { useConfirmDialog } from '../common/confirm-dialog/useConfirmDialog';
-import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
 import { useTransactionDetail } from './detail/useTransactionDetail';
 import transactionsListStore from './transactionsListStore';
@@ -21,11 +24,11 @@ interface TransactionComponentProps {
 const TransactionComponent = ({ data }: TransactionComponentProps) => {
   const client = useQueryClient();
   const confirm = useConfirmDialog();
-  const [openLoader, closeLoader] = useLoader();
   const [openTransactionDetail] = useTransactionDetail();
-  const { getIsSelected, handleSelect } = useListBrowserUtils(
+  const { getIsSelected, handleSelect, removeSelections } = useListBrowserUtils(
     transactionsListStore
   );
+  const [loading, setLoading] = useState(false);
 
   const deleteTransactionMutation = useMutation(deleteTransaction, {
     onError: (err: AxiosError<MonitorErrorData>) => {
@@ -33,11 +36,15 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
         message: err.response?.data.message,
       });
     },
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
     onSuccess: () => {
       client.invalidateQueries(['transactions']);
       client.invalidateQueries(['transaction-summary']);
       client.invalidateQueries(['latest-transaction-data']);
+      removeSelections([data.id]);
       showSuccess({
         message: 'Your transaction was mutated',
       });
@@ -46,14 +53,16 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
 
   const handleDeleteTransaction = useCallback(() => {
     deleteTransactionMutation.mutate(data.id);
-    openLoader();
-  }, [data.id, openLoader, deleteTransactionMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [data.id, deleteTransactionMutation]);
 
   return (
     <>
       <Card p={'md'} className={'w-full shadow-md'}>
         <div className='flex gap-3 items-center'>
           <Checkbox
+            disabled={loading}
             checked={getIsSelected(data.id)}
             onChange={() => handleSelect(data.id)}
           />
@@ -65,16 +74,21 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
               <Text size={'sm'}>{new Date(data.date).toLocaleString()}</Text>
             </div>
             <div className='flex gap-2'>
-              <IconEdit
-                className='cursor-pointer text-teal-600'
-                size={20}
+              <ActionIcon
+                variant='filled'
+                disabled={loading}
                 onClick={() => openTransactionDetail(data)}
-              />
-              <IconTrash
-                className='cursor-pointer text-rose-600'
-                size={20}
+              >
+                <IconEdit size={20} />
+              </ActionIcon>
+              <ActionIcon
+                variant='filled'
+                color='orange'
+                disabled={loading}
                 onClick={() => confirm(handleDeleteTransaction)}
-              />
+              >
+                <IconTrash size={20} />
+              </ActionIcon>
             </div>
           </div>
         </div>

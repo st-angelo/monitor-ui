@@ -61,7 +61,9 @@
     "Button": {
       "GoToSignUp": "Go to sign up",
       "GoToSignIn": "Go to sign in"
-    }
+    },
+    "TotalSpending": "Total spending",
+    "TotalEarning": "Total earning"
   },
   "Value": {
     "Ascending": "Ascending",

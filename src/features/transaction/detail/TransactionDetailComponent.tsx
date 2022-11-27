@@ -11,9 +11,13 @@ import {
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { AxiosError } from 'axios';
 import { format } from 'date-fns';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { MonitorErrorData } from '../../../dto';
@@ -39,7 +43,6 @@ import {
 } from '../../../utils/validation';
 import { useDictionaryWithTranslation } from '../../common/hooks/useDictionary';
 import { useImplicitValues } from '../../common/hooks/useImplicitValues';
-import { useLoader } from '../../common/loader/useLoader';
 import { showError, showSuccess } from '../../common/notifications';
 import { useTransactionDetail } from './useTransactionDetail';
 
@@ -60,8 +63,8 @@ const TransactionDetailComponent = ({
 }: TransactionDetailComponentProps) => {
   const { t } = useTranslation();
   const client = useQueryClient();
-  const [openLoader, closeLoader] = useLoader();
   const [, closeTransactionDetail] = useTransactionDetail();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<MutateTransactionData>({
     initialValues: {
@@ -118,7 +121,10 @@ const TransactionDetailComponent = ({
     {
       onError: (err: AxiosError<MonitorErrorData>) =>
         showError({ message: err.response?.data.message }),
-      onSettled: closeLoader,
+      onSettled: () => {
+        completeNavigationProgress();
+        setLoading(false);
+      },
       onSuccess: () => {
         closeTransactionDetail();
         client.invalidateQueries(['transactions']);
@@ -137,8 +143,9 @@ const TransactionDetailComponent = ({
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     mutateTransaction.mutate(form.values);
-    openLoader();
-  }, [form, openLoader, mutateTransaction]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, mutateTransaction]);
 
   const categoriesByTransactionId = useMemo(
     () =>
@@ -155,7 +162,7 @@ const TransactionDetailComponent = ({
       {transactionTypes.length > 0 && (
         <SegmentedControl
           {...form.getInputProps('typeId')}
-          disabled={!isNew}
+          disabled={!isNew || loading}
           data={transactionTypes}
         />
       )}
@@ -165,6 +172,8 @@ const TransactionDetailComponent = ({
             label='Amount'
             placeholder='Amount'
             precision={2}
+            disabled={loading}
+            withAsterisk
             {...form.getInputProps('amount')}
           />
         </Grid.Col>
@@ -172,6 +181,8 @@ const TransactionDetailComponent = ({
           <DatePicker
             label='Date'
             placeholder='Date from'
+            disabled={loading}
+            withAsterisk
             {...form.getInputProps('date')}
           />
         </Grid.Col>
@@ -180,8 +191,10 @@ const TransactionDetailComponent = ({
             label='Category'
             placeholder='Category'
             clearable
-            {...form.getInputProps('categoryId')}
             searchable
+            disabled={loading}
+            withAsterisk
+            {...form.getInputProps('categoryId')}
             data={categoriesByTransactionId}
           />
         </Grid.Col>
@@ -190,8 +203,10 @@ const TransactionDetailComponent = ({
             label='Currency'
             placeholder='Currency'
             clearable
-            {...form.getInputProps('currencyId')}
             searchable
+            disabled={loading}
+            withAsterisk
+            {...form.getInputProps('currencyId')}
             data={currencies}
           />
         </Grid.Col>
@@ -206,6 +221,7 @@ const TransactionDetailComponent = ({
                 label={t(`Recurrence.${recurrence}`)}
                 checked={form.values.recurrence === recurrence}
                 size='sm'
+                disabled={loading}
                 onChange={() => {}} // get rid of console warning
                 onClick={() =>
                   form.setFieldValue(
@@ -228,7 +244,9 @@ const TransactionDetailComponent = ({
           )}
         </Grid.Col>
       </Grid>
-      <Button onClick={handleMutateTransaction}>Submit</Button>
+      <Button onClick={handleMutateTransaction} disabled={loading}>
+        Submit
+      </Button>
     </Stack>
   );
 };

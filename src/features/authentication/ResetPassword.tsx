@@ -1,8 +1,12 @@
 import { Button, Center, PasswordInput, Stack } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { IconLock } from '@tabler/icons';
 import { AxiosError } from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link, useParams } from 'react-router-dom';
@@ -14,7 +18,6 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import { useLoader } from '../common/loader/useLoader';
 import { showError } from '../common/notifications';
 import { useAuthentication } from './AuthContext';
 
@@ -33,8 +36,8 @@ const validate = {
 
 const ResetPassword = () => {
   const { t } = useTranslation();
-  const [openLoader, closeLoader] = useLoader();
   const { resetPassword } = useAuthentication();
+  const [loading, setLoading] = useState(false);
   const { token } = useParams();
   const form = useForm<ResetPasswordData>({
     initialValues,
@@ -44,15 +47,20 @@ const ResetPassword = () => {
   const resetPasswordMutation = useMutation(resetPassword, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
+    onSuccess: () => form.reset(),
   });
 
   const handleResetPassword = useCallback(async () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
-    openLoader();
     resetPasswordMutation.mutate({ ...form.values, token });
-  }, [form, openLoader, token, resetPasswordMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, token, resetPasswordMutation]);
 
   return (
     <Center className='w-screen h-screen'>
@@ -62,6 +70,7 @@ const ResetPassword = () => {
           placeholder={t('Label.Field.NewPassword')}
           withAsterisk
           icon={<IconLock size='16' />}
+          disabled={loading}
           {...form.getInputProps('password')}
         />
         <PasswordInput
@@ -69,9 +78,12 @@ const ResetPassword = () => {
           placeholder={t('Label.Field.ConfirmPassword')}
           withAsterisk
           icon={<IconLock size='16' />}
+          disabled={loading}
           {...form.getInputProps('passwordConfirm')}
         />
-        <Button onClick={handleResetPassword}>{t('Common.Submit')}</Button>
+        <Button onClick={handleResetPassword} disabled={loading}>
+          {t('Common.Submit')}
+        </Button>
         <Link to='/sign-in'>
           <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>
         </Link>

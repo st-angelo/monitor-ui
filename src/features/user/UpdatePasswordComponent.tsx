@@ -1,7 +1,11 @@
 import { Button, PasswordInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { AxiosError } from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation } from 'react-query';
 import { MonitorErrorData } from '../../dto';
 import { UpdatePasswordData } from '../../models/userProfile';
@@ -12,7 +16,6 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
 
 const validate = {
@@ -21,15 +24,22 @@ const validate = {
 };
 
 const UpdatePasswordComponent = () => {
-  const [openLoader, closeLoader] = useLoader();
+  const [loading, setLoading] = useState(false);
 
-  const form = useForm<UpdatePasswordData>({ validate });
+  const form = useForm<UpdatePasswordData>({
+    initialValues: { currentPassword: '', newPassword: '' },
+    validate,
+  });
 
   const updatePasswordMutation = useMutation(updatePassword, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
     onSuccess: () => {
+      form.reset();
       showSuccess({
         message: 'Your password was updated!',
       });
@@ -40,20 +50,25 @@ const UpdatePasswordComponent = () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     updatePasswordMutation.mutate(form.values);
-    openLoader();
-  }, [form, openLoader, updatePasswordMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, updatePasswordMutation]);
 
   return (
     <div className='flex flex-col gap-5 max-w-[400px] my-5 mx-10'>
       <PasswordInput
         label={'Current password'}
+        disabled={loading}
         {...form.getInputProps('currentPassword')}
       />
       <PasswordInput
         label={'New password'}
+        disabled={loading}
         {...form.getInputProps('newPassword')}
       />
-      <Button onClick={handleUpdatePassword}>Submit</Button>
+      <Button onClick={handleUpdatePassword} disabled={loading}>
+        Submit
+      </Button>
     </div>
   );
 };

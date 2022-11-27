@@ -1,5 +1,6 @@
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { NavigationProgress } from '@mantine/nprogress';
 import { AuthProvider } from '../features/authentication/AuthContext';
 import { useColorScheme } from '../features/common/hooks/useColorScheme';
 import Navigation from '../features/common/Navigation';
@@ -32,6 +33,7 @@ function App() {
       }}
     >
       <AuthProvider>
+        <NavigationProgress autoReset={true} />
         <NotificationsProvider position='bottom-center'>
           <main className='min-h-screen'>
             <Navigation />

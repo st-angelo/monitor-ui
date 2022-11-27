@@ -1,8 +1,12 @@
 import { Button, Center, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { IconMail } from '@tabler/icons';
 import { AxiosError } from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
@@ -10,7 +14,6 @@ import { MonitorErrorData } from '../../dto';
 import { ForgotPasswordData } from '../../models/authentication';
 import { forgotPassword } from '../../repository/authenticationRepository';
 import { email, required, stopOnFirstFailure } from '../../utils/validation';
-import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
 
 const initialValues = {
@@ -23,7 +26,7 @@ const validate = {
 
 const ForgotPassword = () => {
   const { t } = useTranslation();
-  const [openLoader, closeLoader] = useLoader();
+  const [loading, setLoading] = useState(false);
   const form = useForm<ForgotPasswordData>({
     initialValues,
     validate,
@@ -32,17 +35,23 @@ const ForgotPassword = () => {
   const forgotPaswordMutation = useMutation(forgotPassword, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
-    onSuccess: () =>
-      showSuccess({ message: 'Check your email for resetting the password.' }),
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
+    onSuccess: () => {
+      showSuccess({ message: 'Check your email for resetting the password.' });
+      form.reset();
+    },
   });
 
   const handleForgotPassword = useCallback(async () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
-    openLoader();
     forgotPaswordMutation.mutate(form.values);
-  }, [form, openLoader, forgotPaswordMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, forgotPaswordMutation]);
 
   return (
     <Center className='w-screen h-screen'>
@@ -52,9 +61,12 @@ const ForgotPassword = () => {
           placeholder='angelo.demedici@gmail.com'
           withAsterisk
           icon={<IconMail size='20' />}
+          disabled={loading}
           {...form.getInputProps('email')}
         />
-        <Button onClick={handleForgotPassword}>{t('Common.Submit')}</Button>
+        <Button onClick={handleForgotPassword} disabled={loading}>
+          {t('Common.Submit')}
+        </Button>
         <Link to='/sign-in'>
           <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>
         </Link>

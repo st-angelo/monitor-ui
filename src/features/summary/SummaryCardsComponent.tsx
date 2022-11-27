@@ -6,8 +6,8 @@ import { TransactionForSummary } from '../../models/transaction';
 import { getTransactionTypes } from '../../repository/dictionaryRepository';
 
 const _colorClasses: Record<string, string> = {
-  Spending: 'bg-amber-600',
-  Earning: 'bg-teal-700',
+  Spending: 'bg-gradient-to-tr from-amber-600 to-amber-800',
+  Earning: 'bg-gradient-to-tr from-teal-600 to-teal-800',
 };
 
 interface SummaryCardsComponentProps {
@@ -38,7 +38,7 @@ const SummaryCardsComponent = ({
   );
 
   return (
-    <div className='flex flex-col md:flex-row justify-center items-center gap-5'>
+    <div className='flex flex-col md:flex-row justify-center items-center gap-5 md:gap-10'>
       {summaryByType.map(summary => (
         <Card
           key={summary.code}
@@ -47,15 +47,15 @@ const SummaryCardsComponent = ({
           className={_colorClasses[summary.code]}
           sx={{ width: '250px' }}
         >
-          <Card.Section withBorder py='sm'>
-            <Text size={'xl'} weight='bolder' align='center'>
-              {t(`Value.${summary.code}`)}
-            </Text>
-          </Card.Section>
           <Card.Section
-            className='flex items-center justify-center'
-            sx={{ height: '80px' }}
+            py='sm'
+            px='lg'
+            sx={{ height: '120px' }}
+            className='flex flex-col justify-between'
           >
+            <Text size={'xl'} weight='bolder'>
+              {t(`Label.Total${summary.code}`)}
+            </Text>
             {loading && <Loader variant='dots' />}
             {!loading && (
               <Text size={25} weight='bolder'>

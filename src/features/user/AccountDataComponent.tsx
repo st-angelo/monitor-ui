@@ -1,7 +1,11 @@
 import { Button, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { AxiosError } from 'axios';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { MonitorErrorData } from '../../dto';
@@ -16,7 +20,6 @@ import {
 import { useAuthentication } from '../authentication/AuthContext';
 import AvatarDropzone from '../common/AvatarDropzone';
 import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
-import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
 
 const validate = {
@@ -28,8 +31,8 @@ const validate = {
 const AccountDataComponent = () => {
   const { t } = useTranslation();
   const client = useQueryClient();
-  const [openLoader, closeLoader] = useLoader();
   const { user } = useAuthentication();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<UpdateAccountData>({ validate });
 
@@ -51,7 +54,10 @@ const AccountDataComponent = () => {
   const updateAccountDataMutation = useMutation(updateAccountData, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
     onSuccess: _ => {
       client.invalidateQueries(['user']);
       form.setFieldValue('avatar', null);
@@ -66,8 +72,9 @@ const AccountDataComponent = () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
     updateAccountDataMutation.mutate(form.values);
-    openLoader();
-  }, [form, openLoader, updateAccountDataMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, updateAccountDataMutation]);
 
   return (
     <div className='flex my-5 mx-10 gap-10'>
@@ -79,19 +86,27 @@ const AccountDataComponent = () => {
         />
         <TextInput
           label={t('Label.Field.Name')}
+          disabled={loading}
+          withAsterisk
           {...form.getInputProps('name')}
         />
         <TextInput
           label={t('Label.Field.Nickname')}
+          disabled={loading}
           {...form.getInputProps('nickname')}
         />
         <Select
           label='Currency'
           searchable
+          disabled={loading}
+          withAsterisk
           data={currencies}
           {...form.getInputProps('baseCurrencyId')}
         />
-        <Button disabled={!form.isDirty()} onClick={handleUpdateAccountData}>
+        <Button
+          disabled={!form.isDirty() || loading}
+          onClick={handleUpdateAccountData}
+        >
           Save
         </Button>
       </div>
@@ -99,6 +114,7 @@ const AccountDataComponent = () => {
         value={user?.avatarUrl}
         file={form.values.avatar}
         onChange={file => form.setFieldValue('avatar', file)}
+        disabled={loading}
       />
     </div>
   );

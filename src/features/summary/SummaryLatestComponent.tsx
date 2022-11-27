@@ -73,7 +73,7 @@ const SummaryLatestComponent = () => {
   }, [data, categories, transactionTypes, isLoadingData]);
 
   return (
-    <div className='flex flex-col md:flex-row justify-center items-center gap-5 md:gap-10'>
+    <div className='flex flex-col md:flex-row justify-center items-center md:items-stretch gap-5 md:gap-10'>
       <Card
         shadow='md'
         radius='md'

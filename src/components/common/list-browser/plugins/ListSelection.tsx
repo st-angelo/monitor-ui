@@ -4,6 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWritable, Writable } from 'react-use-svelte-store';
 import { ListBrowserStore } from '../metadata';
+import useListBrowserUtils from '../useListBrowserUtils';
 
 interface ListSelectionProps<T> {
   store: Writable<T>;
@@ -14,6 +15,7 @@ const ListSelection = <T extends ListBrowserStore>({
 }: ListSelectionProps<T>) => {
   const { t } = useTranslation();
   const [$store, , $update] = useWritable(store);
+  const { deselectAll } = useListBrowserUtils(store);
 
   const allSelected = useMemo(
     () =>
@@ -42,11 +44,6 @@ const ListSelection = <T extends ListBrowserStore>({
         };
       }),
     [$update, allSelected]
-  );
-
-  const deselectAll = useCallback(
-    () => $update(prev => ({ ...prev, selection: [] })),
-    [$update]
   );
 
   return (

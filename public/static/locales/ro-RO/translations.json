@@ -61,7 +61,9 @@
     "Button": {
       "GoToSignUp": "Du-te la înregistrare",
       "GoToSignIn": "Du-te la logare"
-    }
+    },
+    "TotalSpending": "Cheltuieli totale",
+    "TotalEarning": "Câștiguri totale"
   },
   "Value": {
     "Ascending": "Ascendentă",

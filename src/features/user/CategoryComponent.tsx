@@ -1,4 +1,8 @@
-import { Card, Modal, Text } from '@mantine/core';
+import { ActionIcon, Card, Modal, Text } from '@mantine/core';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
@@ -7,7 +11,6 @@ import { MonitorErrorData } from '../../dto';
 import { Category } from '../../models/common';
 import { deleteCategory } from '../../repository/categoryRepository';
 import { useConfirmDialog } from '../common/confirm-dialog/useConfirmDialog';
-import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
 import CategoryDetailComponent from './CategoryDetailComponent';
 
@@ -18,7 +21,7 @@ interface CategoryComponentProps {
 const CategoryComponent = ({ data }: CategoryComponentProps) => {
   const client = useQueryClient();
   const confirm = useConfirmDialog();
-  const [openLoader, closeLoader] = useLoader();
+  const [loading, setLoading] = useState(false);
 
   const [inEdit, setInEdit] = useState(false);
 
@@ -28,7 +31,10 @@ const CategoryComponent = ({ data }: CategoryComponentProps) => {
         message: err.response?.data.message,
       });
     },
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
     onSuccess: () => {
       client.invalidateQueries(['user-categories']);
       showSuccess({
@@ -39,8 +45,9 @@ const CategoryComponent = ({ data }: CategoryComponentProps) => {
 
   const handleDeleteCategory = useCallback(() => {
     deleteCategoryMutation.mutate(data.id);
-    openLoader();
-  }, [data.id, openLoader, deleteCategoryMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [data.id, deleteCategoryMutation]);
 
   return (
     <>
@@ -51,16 +58,21 @@ const CategoryComponent = ({ data }: CategoryComponentProps) => {
             <Text size={'sm'}>{data.description}</Text>
           </div>
           <div className='flex gap-2'>
-            <IconEdit
-              className='cursor-pointer text-teal-600'
-              size={20}
+            <ActionIcon
+              variant='filled'
+              disabled={loading}
               onClick={() => setInEdit(true)}
-            />
-            <IconTrash
-              className='cursor-pointer text-rose-600'
-              size={20}
+            >
+              <IconEdit size={20} />
+            </ActionIcon>
+            <ActionIcon
+              variant='filled'
+              color='orange'
+              disabled={loading}
               onClick={() => confirm(handleDeleteCategory)}
-            />
+            >
+              <IconTrash size={20} />
+            </ActionIcon>
           </div>
         </div>
       </Card>

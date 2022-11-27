@@ -7,9 +7,13 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { IconLock, IconMail } from '@tabler/icons';
 import { AxiosError } from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
@@ -21,7 +25,6 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import { useLoader } from '../common/loader/useLoader';
 import { showError } from '../common/notifications';
 import { useAuthentication } from './AuthContext';
 
@@ -37,8 +40,8 @@ const validate = {
 
 const SignIn = () => {
   const { t } = useTranslation();
-  const [openLoader, closeLoader] = useLoader();
   const { signIn } = useAuthentication();
+  const [loading, setLoading] = useState(false);
   const form = useForm<SignInData>({
     initialValues,
     validate,
@@ -47,15 +50,20 @@ const SignIn = () => {
   const signInMutation = useMutation(signIn, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
+    onSuccess: () => form.reset(),
   });
 
   const handleSignIn = useCallback(async () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
-    openLoader();
     signInMutation.mutate(form.values);
-  }, [form, openLoader, signInMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, signInMutation]);
 
   return (
     <Center className='w-screen h-screen'>
@@ -63,6 +71,7 @@ const SignIn = () => {
         <TextInput
           label={t('Label.Field.Email')}
           placeholder='angelo.demedici@gmail.com'
+          disabled={loading}
           withAsterisk
           icon={<IconMail size='20' />}
           {...form.getInputProps('email')}
@@ -70,6 +79,7 @@ const SignIn = () => {
         <PasswordInput
           label={t('Label.Field.Password')}
           placeholder={t('Label.Field.Password')}
+          disabled={loading}
           withAsterisk
           icon={<IconLock size='16' />}
           {...form.getInputProps('password')}
@@ -81,7 +91,9 @@ const SignIn = () => {
         >
           Forgot password?
         </Anchor>
-        <Button onClick={handleSignIn}>{t('Common.Submit')}</Button>
+        <Button onClick={handleSignIn} disabled={loading}>
+          {t('Common.Submit')}
+        </Button>
         <Link to='/sign-up'>
           <Button className={'w-full'}>{t('Label.Button.GoToSignUp')}</Button>
         </Link>

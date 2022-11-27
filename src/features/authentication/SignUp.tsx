@@ -1,5 +1,18 @@
-import { useCallback } from 'react';
+import { Button, Center, PasswordInput, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
+import { IconLock, IconMail, IconUser } from '@tabler/icons';
+import { AxiosError } from 'axios';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
+import { Link } from 'react-router-dom';
+import { MonitorErrorData } from '../../dto';
+import { useAuthentication } from '../../features/authentication/AuthContext';
+import { SignUpData } from '../../models/authentication';
 import {
   email,
   matches,
@@ -7,22 +20,6 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import {
-  PasswordInput,
-  Button,
-  TextInput,
-  Stack,
-  Center,
-} from '@mantine/core';
-import { SignUpData } from '../../models/authentication';
-import { useAuthentication } from '../../features/authentication/AuthContext';
-import { useMutation } from 'react-query';
-import { AxiosError } from 'axios';
-import { MonitorErrorData } from '../../dto';
-import { Link } from 'react-router-dom';
-import { IconMail, IconLock, IconUser } from '@tabler/icons';
-import { useTranslation } from 'react-i18next';
-import { useLoader } from '../common/loader/useLoader';
 import { showError } from '../common/notifications';
 
 const initialValues = {
@@ -44,8 +41,8 @@ const validate = {
 
 const SignUp = () => {
   const { t } = useTranslation();
-  const [openLoader, closeLoader] = useLoader();
   const { signUp } = useAuthentication();
+  const [loading, setLoading] = useState(false);
   const form = useForm<SignUpData & { passwordConfirm: string }>({
     initialValues,
     validate,
@@ -54,15 +51,20 @@ const SignUp = () => {
   const signUpMutation = useMutation(signUp, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
+    onSuccess: () => form.reset(),
   });
 
   const handleSignUp = useCallback(async () => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
-    openLoader();
     signUpMutation.mutate(form.values);
-  }, [form, openLoader, signUpMutation]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [form, signUpMutation]);
 
   return (
     <Center className='w-screen h-screen'>
@@ -71,27 +73,33 @@ const SignUp = () => {
           label={t('Label.Field.Name')}
           placeholder='Angelo de Medici'
           icon={<IconUser size='16' />}
+          disabled={loading}
           {...form.getInputProps('name')}
         />
         <TextInput
           label={t('Label.Field.Email')}
           placeholder='angelo.demedici@gmail.com'
           icon={<IconMail size='20' />}
+          disabled={loading}
           {...form.getInputProps('email')}
         />
         <PasswordInput
           label={t('Label.Field.Password')}
           placeholder={t('Label.Field.Password')}
           icon={<IconLock size='16' />}
+          disabled={loading}
           {...form.getInputProps('password')}
         />
         <PasswordInput
           label={t('Label.Field.ConfirmPassword')}
           placeholder='Confirm password'
           icon={<IconLock size='16' />}
+          disabled={loading}
           {...form.getInputProps('passwordConfirm')}
         />
-        <Button onClick={handleSignUp}>{t('Common.Submit')}</Button>
+        <Button onClick={handleSignUp} disabled={loading}>
+          {t('Common.Submit')}
+        </Button>
         <Link to='/sign-in'>
           <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>
         </Link>

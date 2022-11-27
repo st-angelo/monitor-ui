@@ -55,7 +55,32 @@ const useListBrowserUtils = <T extends ListBrowserStore>(
     [$update, getIsSelected]
   );
 
-  return { handleChange, addOrUpdateActions, getIsSelected, handleSelect };
+  const removeSelections = useCallback(
+    (keys: string[]) =>
+      $update(prev => ({
+        ...prev,
+        selection: prev.selection.filter(key => !keys.includes(key)),
+      })),
+    [$update]
+  );
+
+  const deselectAll = useCallback(
+    () =>
+      $update(prev => ({
+        ...prev,
+        selection: [],
+      })),
+    [$update]
+  );
+
+  return {
+    handleChange,
+    addOrUpdateActions,
+    getIsSelected,
+    handleSelect,
+    removeSelections,
+    deselectAll,
+  };
 };
 
 export default useListBrowserUtils;

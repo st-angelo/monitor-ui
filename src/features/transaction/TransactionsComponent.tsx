@@ -1,6 +1,10 @@
+import {
+  completeNavigationProgress,
+  startNavigationProgress,
+} from '@mantine/nprogress';
 import { IconTrash } from '@tabler/icons';
 import { AxiosError } from 'axios';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useReadable } from 'react-use-svelte-store';
 import ListAction from '../../components/common/list-browser/ListAction';
@@ -12,26 +16,30 @@ import {
   getTransactions,
 } from '../../repository/transactionRepository';
 import { useConfirmDialog } from '../common/confirm-dialog/useConfirmDialog';
-import { useLoader } from '../common/loader/useLoader';
 import { showError, showSuccess } from '../common/notifications';
 import TransactionComponent from './TransactionComponent';
 import TransactionFiltersComponent from './TransactionFiltersComponent';
 import transactionsListStore from './transactionsListStore';
 
 const DeleteTransactionsAction = () => {
-  const [openLoader, closeLoader] = useLoader();
   const client = useQueryClient();
   const confirm = useConfirmDialog();
   const $store = useReadable(transactionsListStore);
+  const { deselectAll } = useListBrowserUtils(transactionsListStore);
+  const [loading, setLoading] = useState(false);
 
   const deleteTransactionsMutation = useMutation(deleteTransactions, {
     onError: (err: AxiosError<MonitorErrorData>) =>
       showError({ message: err.response?.data.message }),
-    onSettled: closeLoader,
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
     onSuccess: () => {
       client.invalidateQueries(['transactions']);
       client.invalidateQueries(['transaction-summary']);
       client.invalidateQueries(['latest-transaction-data']);
+      deselectAll();
       showSuccess({
         message: 'Your transactions were deleted',
       });
@@ -39,16 +47,17 @@ const DeleteTransactionsAction = () => {
   });
 
   const handleDeleteTransactions = useCallback(() => {
-    openLoader();
     deleteTransactionsMutation.mutate($store.selection);
-  }, [$store, deleteTransactionsMutation, openLoader]);
+    setLoading(true);
+    startNavigationProgress();
+  }, [$store, deleteTransactionsMutation]);
 
   return (
     <ListAction
       icon={<IconTrash size={14} />}
       tooltip={'Delete all selection'}
       handler={() => confirm(handleDeleteTransactions)}
-      disabled={$store.selection.length === 0}
+      disabled={$store.selection.length === 0 || loading}
     />
   );
 };

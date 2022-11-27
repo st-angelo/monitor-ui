@@ -1,4 +1,4 @@
-import { Loader } from '@mantine/core';
+import { Loader, Text } from '@mantine/core';
 import { format, startOfDay } from 'date-fns';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -99,16 +99,18 @@ const SummaryChartsComponent = ({
     <div className='flex flex-col md:flex-row justify-center'>
       <div className='flex flex-col items-center'>
         {(transactionTypes || []).map(type => (
-          <div className='flex flex-col items-center' key={type.id}>
-            <span className='font-bold text-lg mb-5'>
+          <div className='flex flex-col' key={type.id}>
+            <Text size='lg' weight='bold' align='center'>
               {t(`Value.${type.code}`)}
-            </span>
-            {loading && <Loader variant='dots' />}
-            {!loading && (
-              <FloatingLabledPieChart
-                data={pieData.filter(item => item.typeId === type.id)}
-              />
-            )}
+            </Text>
+            <div className='flex items-center justify-center min-h-[250px]'>
+              {loading && <Loader variant='dots' />}
+              {!loading && (
+                <FloatingLabledPieChart
+                  data={pieData.filter(item => item.typeId === type.id)}
+                />
+              )}
+            </div>
           </div>
         ))}
       </div>
