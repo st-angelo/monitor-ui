@@ -1,8 +1,6 @@
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
-import {
-  AuthProvider,
-} from '../features/authentication/AuthContext';
+import { AuthProvider } from '../features/authentication/AuthContext';
 import { useColorScheme } from '../features/common/hooks/useColorScheme';
 import Navigation from '../features/common/Navigation';
 import GlobalComponents from './GlobalComponents';

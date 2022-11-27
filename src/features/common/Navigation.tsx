@@ -12,8 +12,10 @@ const Navigation = () => {
 
   return isAuthenticated && isVerified ? (
     <Container py={'sm'} size={'lg'}>
-      <Group position='apart'>
-        <img alt='logo' src='/logo.svg' className='w-16' />
+      <Group position='apart' align={'center'}>
+        <Link to='/home'>
+          <img src='/logo.svg' alt='logo' className='h-5' />
+        </Link>
         <Group>
           <Anchor component={Link} to='/home'>
             {t('Navigation.Home')}
