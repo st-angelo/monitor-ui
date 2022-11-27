@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
 import { ActionIcon, Avatar, Menu } from '@mantine/core';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supportedLanguages } from '../../utils/constants';
 
@@ -14,7 +14,7 @@ const LanguageSelector = () => {
   return (
     <Menu>
       <Menu.Target>
-        <ActionIcon variant='light' size='lg'>
+        <ActionIcon variant='outline' size='lg'>
           {icon}
         </ActionIcon>
       </Menu.Target>

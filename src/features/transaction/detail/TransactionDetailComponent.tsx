@@ -150,8 +150,6 @@ const TransactionDetailComponent = ({
 
   const isNew = useMemo(() => !transaction?.id, [transaction]);
 
-  console.log(form.values.date);
-
   return (
     <Stack sx={{ maxWidth: 500 }}>
       {transactionTypes.length > 0 && (
@@ -208,6 +206,7 @@ const TransactionDetailComponent = ({
                 label={t(`Recurrence.${recurrence}`)}
                 checked={form.values.recurrence === recurrence}
                 size='sm'
+                onChange={() => {}} // get rid of console warning
                 onClick={() =>
                   form.setFieldValue(
                     'recurrence',

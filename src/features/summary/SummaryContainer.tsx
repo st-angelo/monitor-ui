@@ -5,7 +5,6 @@ import {
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
-  IconTallymark1,
 } from '@tabler/icons';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -91,7 +90,6 @@ const SummaryContainer = () => {
           clearable={false}
           onChange={value => setDateFrom(value ?? _date)}
         />
-        <IconTallymark1 className='rotate-90 mt-6' />
         <DatePicker
           label={t('Label.Filter.DateTo')}
           placeholder={t('Label.Filter.DateTo')}

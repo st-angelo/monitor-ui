@@ -16,7 +16,7 @@
   },
   "Navigation": {
     "Home": "Home",
-    "ManageWallet": "Manage Wallet",
+    "Wallet": "Wallet",
     "AccountSettings": "Account settings",
     "LogOut": "Log Out"
   },

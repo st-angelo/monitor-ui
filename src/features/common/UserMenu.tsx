@@ -21,7 +21,11 @@ const UserMenu = () => {
         >
           {t('Navigation.AccountSettings')}
         </Menu.Item>
-        <Menu.Item icon={<IconLogout size={14} />} onClick={signOut}>
+        <Menu.Item
+          component='a'
+          icon={<IconLogout size={14} />}
+          onClick={signOut}
+        >
           {t('Navigation.LogOut')}
         </Menu.Item>
       </Menu.Dropdown>

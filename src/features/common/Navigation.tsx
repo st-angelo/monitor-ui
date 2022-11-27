@@ -11,17 +11,25 @@ const Navigation = () => {
   const { isAuthenticated, isVerified } = useAuthentication();
 
   return isAuthenticated && isVerified ? (
-    <Container py={'sm'} size={'lg'}>
+    <Container py={'sm'} size={'lg'} className='font-bold'>
       <Group position='apart' align={'center'}>
         <Link to='/home'>
           <img src='/logo.svg' alt='logo' className='h-5' />
         </Link>
         <Group>
-          <Anchor component={Link} to='/home'>
+          <Anchor
+            component={Link}
+            to='/home'
+            sx={{ textUnderlineOffset: '5px' }}
+          >
             {t('Navigation.Home')}
           </Anchor>
-          <Anchor component={Link} to='/wallet'>
-            {t('Navigation.ManageWallet')}
+          <Anchor
+            component={Link}
+            to='/wallet'
+            sx={{ textUnderlineOffset: '5px' }}
+          >
+            {t('Navigation.Wallet')}
           </Anchor>
           <LanguageSelector />
           <ColorSchemeToggler />

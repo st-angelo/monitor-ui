@@ -16,7 +16,7 @@
   },
   "Navigation": {
     "Home": "Acasă",
-    "ManageWallet": "Gestionează portofel",
+    "Wallet": "Portofel",
     "AccountSettings": "Setări cont",
     "LogOut": "Deconectare"
   },

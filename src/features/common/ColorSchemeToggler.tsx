@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
 import { ActionIcon } from '@mantine/core';
-import { IconSun, IconMoon } from '@tabler/icons';
+import { IconMoon, IconSun } from '@tabler/icons';
+import { useMemo } from 'react';
 import { ColorScheme } from '../../utils/constants';
 import { useColorScheme } from './hooks/useColorScheme';
 
@@ -13,7 +13,7 @@ const ColorSchemeToggler = () => {
   );
 
   return (
-    <ActionIcon variant='light' size='lg' onClick={toggle}>
+    <ActionIcon variant='outline' size='lg' onClick={toggle}>
       {icon}
     </ActionIcon>
   );

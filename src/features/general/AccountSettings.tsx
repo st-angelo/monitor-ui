@@ -27,7 +27,7 @@ const AccountSettings = () => {
   );
 
   return (
-    <div className='md:w-2/3 m-auto'>
+    <div className='lg:w-2/3 m-auto'>
       <Tabs
         color='teal'
         variant='pills'

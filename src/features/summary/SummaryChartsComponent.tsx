@@ -8,6 +8,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -18,7 +19,7 @@ import {
   getCategories,
   getTransactionTypes,
 } from '../../repository/dictionaryRepository';
-import { roundNumber, yyyy_mm_dd } from '../../utils/functions';
+import { roundNumber } from '../../utils/functions';
 import { getTranslatedCategory } from '../transaction/utils';
 
 const _colors: Record<string, string> = {
@@ -95,7 +96,7 @@ const SummaryChartsComponent = ({
   }, [transactionTypes, transactions]);
 
   return (
-    <div className='flex justify-center'>
+    <div className='flex flex-col md:flex-row justify-center'>
       <div className='flex flex-col items-center'>
         {(transactionTypes || []).map(type => (
           <div className='flex flex-col items-center' key={type.id}>
@@ -111,35 +112,33 @@ const SummaryChartsComponent = ({
           </div>
         ))}
       </div>
-      <div>
+      <div className='grow max-w-4xl max-h-[36rem] md:p-10 p-5'>
         {loading && <Loader variant='dots' />}
         {!loading && (
-          <LineChart
-            width={730}
-            height={250}
-            data={lineData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray='3 3' />
-            <XAxis
-              dataKey='date'
-              type='number'
-              scale='time'
-              tickFormatter={date => yyyy_mm_dd(new Date(date))}
-              domain={[dateFrom.getTime(), dateTo.getTime()]}
-            />
-            <YAxis />
-            <Tooltip labelFormatter={value => format(value, 'yyyy-MM-dd')} />
-            <Legend />
-            {transactionTypes?.map(type => (
-              <Line
-                key={type.id}
-                type='monotone'
-                dataKey={t(`Value.${type.code}`)}
-                stroke={_colors[type.code]}
+          <ResponsiveContainer>
+            <LineChart data={lineData}>
+              <CartesianGrid strokeDasharray='5 5' />
+              <XAxis
+                dataKey='date'
+                type='number'
+                scale='time'
+                tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')}
+                domain={[dateFrom.getTime(), dateTo.getTime()]}
               />
-            ))}
-          </LineChart>
+              <YAxis />
+              <Tooltip labelFormatter={value => format(value, 'yyyy-MM-dd')} />
+              <Legend />
+              {transactionTypes?.map(type => (
+                <Line
+                  key={type.id}
+                  type='monotone'
+                  dataKey={type.code}
+                  name={t(`Value.${type.code}`)}
+                  stroke={_colors[type.code]}
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
         )}
       </div>
     </div>
