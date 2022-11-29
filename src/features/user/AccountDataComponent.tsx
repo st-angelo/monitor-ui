@@ -9,26 +9,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from 'react-query';
 import { MonitorErrorData } from '../../dto';
-import { UpdateAccountData } from '../../models/userProfile';
+import { accountDataValidate, UpdateAccountData } from '../../models/userProfile';
 import { getCurrencies } from '../../repository/dictionaryRepository';
 import { updateAccountData } from '../../repository/userRepository';
-import {
-  email,
-  maxLength,
-  required,
-  stopOnFirstFailure,
-} from '../../utils/validation';
 import { useAuthentication } from '../authentication/AuthContext';
 import AvatarDropzone from '../common/AvatarDropzone';
 import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
 import { showError, showSuccess } from '../common/notifications';
-
-const validate = {
-  email: stopOnFirstFailure([required, email]),
-  name: stopOnFirstFailure([required, maxLength(100)]),
-  nickname: maxLength(20),
-  baseCurrencyId: required,
-};
 
 const AccountDataComponent = () => {
   const { t } = useTranslation();
@@ -36,7 +23,7 @@ const AccountDataComponent = () => {
   const { user } = useAuthentication();
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<UpdateAccountData>({ validate });
+  const form = useForm<UpdateAccountData>({ validate: accountDataValidate });
 
   useEffect(() => {
     if (form.isDirty()) return;

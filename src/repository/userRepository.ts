@@ -15,4 +15,8 @@ export const updateAccountData = (input: UpdateAccountData) => {
   return axios.patch('/user/updateAccountData', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-};
+}; 
+
+export const resendVerificationEmail = () => {
+  return axios.post('/user/resendVerificationEmail');
+}

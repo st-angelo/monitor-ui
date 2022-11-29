@@ -1,9 +1,10 @@
 import {
   Anchor,
   Button,
-  Center,
+  Card,
+  Container,
   PasswordInput,
-  Stack,
+  Text,
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -25,6 +26,8 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
+import ColorSchemeToggler from '../common/ColorSchemeToggler';
+import LanguageSelector from '../common/LanguageSelector';
 import { showError } from '../common/notifications';
 import { useAuthentication } from './AuthContext';
 
@@ -41,6 +44,7 @@ const validate = {
 const SignIn = () => {
   const { t } = useTranslation();
   const { signIn } = useAuthentication();
+  //const matches = useMediaQuery('(max-width: 576px)');
   const [loading, setLoading] = useState(false);
   const form = useForm<SignInData>({
     initialValues,
@@ -66,39 +70,64 @@ const SignIn = () => {
   }, [form, signInMutation]);
 
   return (
-    <Center className='w-screen h-screen'>
-      <Stack sx={{ width: 320 }} mx='auto'>
-        <TextInput
-          label={t('Label.Field.Email')}
-          placeholder='angelo.demedici@gmail.com'
-          disabled={loading}
-          withAsterisk
-          icon={<IconMail size='20' />}
-          {...form.getInputProps('email')}
-        />
-        <PasswordInput
-          label={t('Label.Field.Password')}
-          placeholder={t('Label.Field.Password')}
-          disabled={loading}
-          withAsterisk
-          icon={<IconLock size='16' />}
-          {...form.getInputProps('password')}
-        />
-        <Anchor
-          component={Link}
-          to='/forgot-password'
-          className='text-sm text-right'
-        >
-          Forgot password?
-        </Anchor>
-        <Button onClick={handleSignIn} disabled={loading}>
-          {t('Common.Submit')}
-        </Button>
-        <Link to='/sign-up'>
-          <Button className={'w-full'}>{t('Label.Button.GoToSignUp')}</Button>
-        </Link>
-      </Stack>
-    </Center>
+    <div className='h-screen flex items-center justify-center'>
+      <Container size={'lg'}>
+        <Card className='bg-transparent'>
+          <Card.Section>
+            <div className='grid lg:grid-cols-2 items-center'>
+              <img
+                src='/illustrations/signIn.svg'
+                alt='sign in'
+                className='w-[300px] lg:w-[480px]'
+              />
+              <div className='flex flex-col gap-4 p-3 md:pl-0 min-w-[320px]'>
+                <div className='w-full flex gap-4 justify-end'>
+                  <LanguageSelector />
+                  <ColorSchemeToggler />
+                </div>
+                <div className='flex flex-col items-center'>
+                  <Text size={30} weight='bold'>
+                    Hi there!
+                  </Text>
+                  <Text>
+                    Don't have an account?{' '}
+                    <Anchor component={Link} to='/sign-up'>
+                      Sign up
+                    </Anchor>
+                  </Text>
+                </div>
+                <TextInput
+                  label={t('Label.Field.Email')}
+                  placeholder='angelo.demedici@gmail.com'
+                  disabled={loading}
+                  withAsterisk
+                  icon={<IconMail size='20' />}
+                  {...form.getInputProps('email')}
+                />
+                <PasswordInput
+                  label={t('Label.Field.Password')}
+                  placeholder={t('Label.Field.Password')}
+                  disabled={loading}
+                  withAsterisk
+                  icon={<IconLock size='20' />}
+                  {...form.getInputProps('password')}
+                />
+                <Anchor
+                  component={Link}
+                  to='/forgot-password'
+                  className='text-sm text-right'
+                >
+                  Forgot password?
+                </Anchor>
+                <Button onClick={handleSignIn} disabled={loading}>
+                  {t('Common.Submit')}
+                </Button>
+              </div>
+            </div>
+          </Card.Section>
+        </Card>
+      </Container>
+    </div>
   );
 };
 

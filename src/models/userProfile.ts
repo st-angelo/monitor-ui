@@ -1,3 +1,4 @@
+import { email, maxLength, required, stopOnFirstFailure } from '../utils/validation';
 import { GetCollectionParams } from './common';
 
 export interface MutateCategoryData {
@@ -27,3 +28,10 @@ export interface UpdateAccountData {
   avatar?: File | null;
   baseCurrencyId?: string;
 }
+
+export const accountDataValidate = {
+  email: stopOnFirstFailure([required, email]),
+  name: stopOnFirstFailure([required, maxLength(100)]),
+  nickname: maxLength(20),
+  baseCurrencyId: required,
+};

@@ -16,7 +16,7 @@ const Navigation = () => {
         <Link to='/home'>
           <img src='/logo.svg' alt='logo' className='h-5' />
         </Link>
-        <Group> 
+        <Group>
           <Anchor
             component={Link}
             to='/home'

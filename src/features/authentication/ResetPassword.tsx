@@ -1,4 +1,11 @@
-import { Button, Center, PasswordInput, Stack } from '@mantine/core';
+import {
+  Anchor,
+  Button,
+  Card,
+  Container,
+  PasswordInput,
+  Text,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {
   completeNavigationProgress,
@@ -18,6 +25,8 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
+import ColorSchemeToggler from '../common/ColorSchemeToggler';
+import LanguageSelector from '../common/LanguageSelector';
 import { showError } from '../common/notifications';
 import { useAuthentication } from './AuthContext';
 
@@ -63,32 +72,57 @@ const ResetPassword = () => {
   }, [form, token, resetPasswordMutation]);
 
   return (
-    <Center className='w-screen h-screen'>
-      <Stack sx={{ width: 320 }} mx='auto'>
-        <PasswordInput
-          label={t('Label.Field.NewPassword')}
-          placeholder={t('Label.Field.NewPassword')}
-          withAsterisk
-          icon={<IconLock size='16' />}
-          disabled={loading}
-          {...form.getInputProps('password')}
-        />
-        <PasswordInput
-          label={t('Label.Field.ConfirmPassword')}
-          placeholder={t('Label.Field.ConfirmPassword')}
-          withAsterisk
-          icon={<IconLock size='16' />}
-          disabled={loading}
-          {...form.getInputProps('passwordConfirm')}
-        />
-        <Button onClick={handleResetPassword} disabled={loading}>
-          {t('Common.Submit')}
-        </Button>
-        <Link to='/sign-in'>
-          <Button className={'w-full'}>{t('Label.Button.GoToSignIn')}</Button>
-        </Link>
-      </Stack>
-    </Center>
+    <div className='h-screen flex items-center justify-center'>
+      <Container size={'lg'}>
+        <Card className='bg-transparent'>
+          <Card.Section>
+            <div className='flex flex-col md:flex-row items-center md:gap-10'>
+              <img
+                src='/illustrations/resetPassword.svg'
+                alt='sign in'
+                className='w-[300px]'
+              />
+              <div className='flex flex-col gap-4 p-3 md:pl-0 min-w-[320px]'>
+                <div className='w-full flex gap-4 justify-end'>
+                  <LanguageSelector />
+                  <ColorSchemeToggler />
+                </div>
+                <div className='flex flex-col items-center'>
+                  <Text size={30} weight='bold'>
+                    Set a new one
+                  </Text>
+                  <Text>
+                    Or go to{' '}
+                    <Anchor component={Link} to='/sign-in'>
+                      sign in
+                    </Anchor>
+                  </Text>
+                </div>
+                <PasswordInput
+                  label={t('Label.Field.NewPassword')}
+                  placeholder={t('Label.Field.NewPassword')}
+                  withAsterisk
+                  icon={<IconLock size='16' />}
+                  disabled={loading}
+                  {...form.getInputProps('password')}
+                />
+                <PasswordInput
+                  label={t('Label.Field.ConfirmPassword')}
+                  placeholder={t('Label.Field.ConfirmPassword')}
+                  withAsterisk
+                  icon={<IconLock size='16' />}
+                  disabled={loading}
+                  {...form.getInputProps('passwordConfirm')}
+                />
+                <Button onClick={handleResetPassword} disabled={loading}>
+                  {t('Common.Submit')}
+                </Button>
+              </div>
+            </div>
+          </Card.Section>
+        </Card>
+      </Container>
+    </div>
   );
 };
 
