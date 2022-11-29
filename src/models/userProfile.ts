@@ -21,6 +21,7 @@ export interface UpdatePasswordData {
 }
 
 export interface UpdateAccountData {
+  email: string;
   name: string;
   nickname?: string;
   avatar?: File | null;

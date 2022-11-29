@@ -7,6 +7,7 @@ export const updatePassword = (input: UpdatePasswordData) => {
 
 export const updateAccountData = (input: UpdateAccountData) => {
   const formData = new FormData();
+  formData.append('email', input.email ?? '');
   formData.append('name', input.name ?? '');
   formData.append('nickname', input.nickname ?? '');
   formData.append('baseCurrencyId', input.baseCurrencyId ?? '');

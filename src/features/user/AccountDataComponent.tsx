@@ -13,6 +13,7 @@ import { UpdateAccountData } from '../../models/userProfile';
 import { getCurrencies } from '../../repository/dictionaryRepository';
 import { updateAccountData } from '../../repository/userRepository';
 import {
+  email,
   maxLength,
   required,
   stopOnFirstFailure,
@@ -23,6 +24,7 @@ import { useDictionaryWithTranslation } from '../common/hooks/useDictionary';
 import { showError, showSuccess } from '../common/notifications';
 
 const validate = {
+  email: stopOnFirstFailure([required, email]),
   name: stopOnFirstFailure([required, maxLength(100)]),
   nickname: maxLength(20),
   baseCurrencyId: required,
@@ -81,7 +83,8 @@ const AccountDataComponent = () => {
       <div className='flex flex-col gap-5 w-[400px]'>
         <TextInput
           value={user?.email}
-          disabled
+          description={form.isDirty('email') ? 'New emails must be verified' : ''}
+          disabled={loading}
           label={t('Label.Field.Email')}
         />
         <TextInput
