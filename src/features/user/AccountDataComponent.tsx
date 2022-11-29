@@ -41,6 +41,7 @@ const AccountDataComponent = () => {
   useEffect(() => {
     if (form.isDirty()) return;
     form.setValues({
+      email: user?.email,
       name: user?.name,
       nickname: user?.nickname,
       baseCurrencyId: user?.preferences?.baseCurrencyId,
@@ -82,10 +83,10 @@ const AccountDataComponent = () => {
     <div className='flex my-5 mx-10 gap-10'>
       <div className='flex flex-col gap-5 w-[400px]'>
         <TextInput
-          value={user?.email}
+          label={t('Label.Field.Email')}
           description={form.isDirty('email') ? 'New emails must be verified' : ''}
           disabled={loading}
-          label={t('Label.Field.Email')}
+          {...form.getInputProps('email')}
         />
         <TextInput
           label={t('Label.Field.Name')}
