@@ -23,7 +23,10 @@ import {
   accountDataValidate,
   UpdateAccountData,
 } from '../../models/userProfile';
-import { updateAccountData } from '../../repository/userRepository';
+import {
+  resendVerificationEmail,
+  updateAccountData,
+} from '../../repository/userRepository';
 import { useAuthentication } from '../authentication/AuthContext';
 import ColorSchemeToggler from '../common/ColorSchemeToggler';
 import LanguageSelector from '../common/LanguageSelector';
@@ -58,7 +61,6 @@ const UserNotVerified = () => {
     },
     onSuccess: _ => {
       client.invalidateQueries(['user']);
-      form.setFieldValue('avatar', null);
       form.resetDirty();
       showSuccess({
         message: 'Your email was updated!',
@@ -73,6 +75,26 @@ const UserNotVerified = () => {
     setLoading(true);
     startNavigationProgress();
   }, [form, updateAccountDataMutation]);
+
+  const resendVerificationEmailMutation = useMutation(resendVerificationEmail, {
+    onError: (err: AxiosError<MonitorErrorData>) =>
+      showError({ message: err.response?.data.message }),
+    onSettled: () => {
+      completeNavigationProgress();
+      setLoading(false);
+    },
+    onSuccess: _ => {
+      showSuccess({
+        message: "We've sent you another email!",
+      });
+    },
+  });
+
+  const handleResendVerificationEmail = useCallback(async () => {
+    resendVerificationEmailMutation.mutate();
+    setLoading(true);
+    startNavigationProgress();
+  }, [resendVerificationEmailMutation]);
 
   return (
     <div className='h-screen flex items-center justify-center'>
@@ -101,11 +123,17 @@ const UserNotVerified = () => {
                 <Text size={matches ? 'sm' : 'md'} italic>
                   We've sent you a verification email at {user?.email}.
                 </Text>
+                <Button
+                  disabled={loading}
+                  onClick={handleResendVerificationEmail}
+                >
+                  Send another one
+                </Button>
                 <Text size={matches ? 'xs' : 'sm'}>
                   In order to access our services, we need to verify your email
                   address first. If you did not receive an email, check if it's
-                  correct. You can change it below. Although unlikely, kindly
-                  check your spam folder as well.
+                  correct. You can change it below, or, alternatively, send
+                  another one.
                 </Text>
                 <TextInput
                   className='w-full'
