@@ -39,10 +39,16 @@
       "SignYouIn": "Autentifică-te",
       "SignIn": "Autentificare",
       "ForgotPassword": "Ai uitat parola?",
-      "ItHappens": "Se întâmplă",
+      "ItHappens": "Se mai întâmplă",
       "RememberedIt": "Ți-ai amintit-o?",
       "SetANewOne": "Setează una nouă",
       "OrGoTo": "Sau du-te la"
+    },
+    "Verification": {
+      "NotVerified": "Nu ești verificat!",
+      "SentEmailAt": "Ți-am trimis un email de verificare la {{email}}.",
+      "SendAnotherOne": "Mai trimite unul",
+      "VerifyInfo": "Ca să accesezi serviciile noastre, trebuie mai întâi să-ți confirmăm adresa email. Dacă nu ai primit un email, verifică dacă e corect. Îl poți schimba mai jos, sau, alternativ, mai trimite unul."
     }
   },
   "Label": {

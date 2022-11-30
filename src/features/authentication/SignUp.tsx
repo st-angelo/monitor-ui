@@ -1,12 +1,4 @@
-import {
-  Anchor,
-  Button,
-  Card,
-  Container,
-  PasswordInput,
-  Text,
-  TextInput,
-} from '@mantine/core';
+import { Anchor, Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {
   completeNavigationProgress,
@@ -28,9 +20,8 @@ import {
   required,
   stopOnFirstFailure,
 } from '../../utils/validation';
-import ColorSchemeToggler from '../common/ColorSchemeToggler';
-import LanguageSelector from '../common/LanguageSelector';
 import { showError } from '../common/notifications';
+import AuthContainer from './AuthContainer';
 
 const initialValues = {
   name: '',
@@ -77,69 +68,50 @@ const SignUp = () => {
   }, [form, signUpMutation]);
 
   return (
-    <div className='h-screen flex items-center justify-center'>
-      <Container size={'lg'}>
-        <Card className='bg-transparent'>
-          <Card.Section>
-            <div className='grid lg:grid-cols-2 items-center'>
-              <img
-                src='/illustrations/signUp.svg'
-                alt='sign in'
-                className='w-[300px] lg:w-[480px]'
-              />
-              <div className='flex flex-col gap-4 p-3 md:pl-0 min-w-[320px]'>
-                <div className='w-full flex gap-4 justify-end'>
-                  <LanguageSelector />
-                  <ColorSchemeToggler />
-                </div>
-                <div className='flex flex-col items-center'>
-                  <Text size={30} weight='bold'>
-                    {t('Message.Authentication.GetStarted')}
-                  </Text>
-                  <Text>
-                    {t('Message.Authentication.HaveAccount')}{' '}
-                    <Anchor component={Link} to='/sign-in'>
-                      {t('Message.Authentication.SignYouIn')}
-                    </Anchor>
-                  </Text>
-                </div>
-                <TextInput
-                  label={t('Label.Field.Name')}
-                  placeholder='Rodica Cimpoi'
-                  icon={<IconUser size='20' />}
-                  disabled={loading}
-                  {...form.getInputProps('name')}
-                />
-                <TextInput
-                  label={t('Label.Field.Email')}
-                  placeholder='rodica.cimpoi@example.com'
-                  icon={<IconMail size='20' />}
-                  disabled={loading}
-                  {...form.getInputProps('email')}
-                />
-                <PasswordInput
-                  label={t('Label.Field.Password')}
-                  placeholder={t('Label.Field.Password')}
-                  icon={<IconLock size='20' />}
-                  disabled={loading}
-                  {...form.getInputProps('password')}
-                />
-                <PasswordInput
-                  label={t('Label.Field.ConfirmPassword')}
-                  placeholder={t('Label.Field.ConfirmPassword')}
-                  icon={<IconLock size='20' />}
-                  disabled={loading}
-                  {...form.getInputProps('passwordConfirm')}
-                />
-                <Button onClick={handleSignUp} disabled={loading} mt='sm'>
-                  {t('Common.Submit')}
-                </Button>
-              </div>
-            </div>
-          </Card.Section>
-        </Card>
-      </Container>
-    </div>
+    <AuthContainer illustration='signUp'>
+      <div className='flex flex-col items-center'>
+        <Text size={30} weight='bold'>
+          {t('Message.Authentication.GetStarted')}
+        </Text>
+        <Text>
+          {t('Message.Authentication.HaveAccount')}{' '}
+          <Anchor component={Link} to='/sign-in'>
+            {t('Message.Authentication.SignYouIn')}
+          </Anchor>
+        </Text>
+      </div>
+      <TextInput
+        label={t('Label.Field.Name')}
+        placeholder='Rodica Cimpoi'
+        icon={<IconUser size='20' />}
+        disabled={loading}
+        {...form.getInputProps('name')}
+      />
+      <TextInput
+        label={t('Label.Field.Email')}
+        placeholder='rodica.cimpoi@example.com'
+        icon={<IconMail size='20' />}
+        disabled={loading}
+        {...form.getInputProps('email')}
+      />
+      <PasswordInput
+        label={t('Label.Field.Password')}
+        placeholder={t('Label.Field.Password')}
+        icon={<IconLock size='20' />}
+        disabled={loading}
+        {...form.getInputProps('password')}
+      />
+      <PasswordInput
+        label={t('Label.Field.ConfirmPassword')}
+        placeholder={t('Label.Field.ConfirmPassword')}
+        icon={<IconLock size='20' />}
+        disabled={loading}
+        {...form.getInputProps('passwordConfirm')}
+      />
+      <Button onClick={handleSignUp} disabled={loading} mt='sm'>
+        {t('Common.Submit')}
+      </Button>
+    </AuthContainer>
   );
 };
 

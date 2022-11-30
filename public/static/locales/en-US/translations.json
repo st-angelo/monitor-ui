@@ -43,6 +43,12 @@
       "RememberedIt": "Remembered it?",
       "SetANewOne": "Set a new one",
       "OrGoTo": "Or go to"
+    },
+    "Verification": {
+      "NotVerified": "You are not verified!",
+      "SentEmailAt": "We've sent you a verification email at {{email}}",
+      "SendAnotherOne": "Send another one",
+      "VerifyInfo": "In order to access our services, we need to verify your email address first. If you did not receive an email, check if it's correct. You can change it below, or, alternatively, send another one."
     }
   },
   "Label": {
