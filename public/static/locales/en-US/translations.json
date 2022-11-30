@@ -106,5 +106,14 @@
     "Entertainment": "Entertainment",
     "Investment": "Investment",
     "Salary": "Salary"
+  },
+  "Notification": {
+    "Info": "Info",
+    "Success": "Success",
+    "Warning": "Warning",
+    "Error": "Error",
+    "EmailUpdated": "Your email was updated",
+    "AccountDataUpdated": "Your account data was updated",
+    "SentAnotherEmail": "We've sent you another email"
   }
 }

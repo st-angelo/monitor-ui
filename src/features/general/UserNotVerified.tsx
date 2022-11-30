@@ -1,70 +1,31 @@
 import { Button, Text, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import {
   completeNavigationProgress,
   startNavigationProgress,
 } from '@mantine/nprogress';
 import { AxiosError } from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { MonitorErrorData } from '../../dto';
-import {
-  accountDataValidate,
-  UpdateAccountData,
-} from '../../models/userProfile';
-import {
-  resendVerificationEmail,
-  updateAccountData,
-} from '../../repository/userRepository';
+import { resendVerificationEmail } from '../../repository/userRepository';
 import AuthContainer from '../authentication/AuthContainer';
 import { useAuthentication } from '../authentication/AuthContext';
+import useAccountDataForm from '../common/hooks/useAccountDataForm';
 import { showError, showSuccess } from '../common/notifications';
 
 const UserNotVerified = () => {
   const { t } = useTranslation();
-  const client = useQueryClient();
   const matches = useMediaQuery('(max-width: 576px)');
   const { user } = useAuthentication();
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<UpdateAccountData>({ validate: accountDataValidate });
-
-  useEffect(() => {
-    if (form.isDirty()) return;
-    form.setValues({
-      email: user?.email,
-      name: user?.name,
-      nickname: user?.nickname,
-      baseCurrencyId: user?.preferences?.baseCurrencyId,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  const updateAccountDataMutation = useMutation(updateAccountData, {
-    onError: (err: AxiosError<MonitorErrorData>) =>
-      showError({ message: err.response?.data.message }),
-    onSettled: () => {
-      completeNavigationProgress();
-      setLoading(false);
-    },
-    onSuccess: _ => {
-      client.invalidateQueries(['user']);
-      form.resetDirty();
-      showSuccess({
-        message: 'Your email was updated!',
-      });
-    },
-  });
-
-  const handleUpdateAccountData = useCallback(async () => {
-    const { hasErrors } = form.validate();
-    if (hasErrors) return;
-    updateAccountDataMutation.mutate(form.values);
-    setLoading(true);
-    startNavigationProgress();
-  }, [form, updateAccountDataMutation]);
+  const { form, handleUpdateAccountData } = useAccountDataForm(
+    t('Notification.EmailUpdated'),
+    () => setLoading(true),
+    () => setLoading(false)
+  );
 
   const resendVerificationEmailMutation = useMutation(resendVerificationEmail, {
     onError: (err: AxiosError<MonitorErrorData>) =>
@@ -75,7 +36,7 @@ const UserNotVerified = () => {
     },
     onSuccess: _ => {
       showSuccess({
-        message: "We've sent you another email!",
+        message: t('Notification.SentAnotherEmail'),
       });
     },
   });

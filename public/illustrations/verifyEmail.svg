@@ -1,4 +1,22 @@
 <svg width="900" height="600" viewBox="0 0 900 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      .c1 {
+        fill: #E1E4E5;
+        stroke: #E1E4E5;
+      }
+      .c2 {
+        stop-color: #E1E4E5;
+      }
+      @media (prefers-color-scheme: dark) {
+        .c1 {
+            fill: #45464b;
+            stroke: #45464b;
+        }
+        .c2 {
+          stop-color: #45464b;
+        }
+      }
+    </style>
     <path fill="transparent" d="M0 0h900v600H0z" />
     <rect x="372.838" y="116.039" width="238.028" height="91.282" rx="20" fill="#fff" stroke="#E1E4E5" stroke-width="4" />
     <rect x="452.662" y="144.451" width="133.942" height="10.824" rx="5.412" fill="#E1E4E5" />
@@ -68,30 +86,30 @@
     <circle cx="319.79" cy="487.373" r="8.072" transform="rotate(180 319.79 487.373)" fill="#28c56f" />
     <circle r="6" transform="matrix(-1 0 0 1 130 337.533)" fill="#28c56f" />
     <circle r="6.359" transform="matrix(-1 0 0 1 369.971 240.025)" fill="#28c56f" />
-    <ellipse rx="9.432" ry="8.646" transform="matrix(-1 0 0 1 586.388 520.237)" fill="#E1E4E5" />
-    <circle r="5.5" transform="matrix(-1 0 0 1 166.5 437.033)" fill="#E1E4E5" />
-    <circle r="7.507" transform="matrix(-1 0 0 1 147.397 222.723)" fill="#E1E4E5" />
-    <ellipse rx="7.63" ry="8.266" transform="matrix(-1 0 0 1 512.297 56.266)" fill="#E1E4E5" />
-    <circle r="10.48" transform="scale(1 -1) rotate(-75 -47.385 -389.076)" fill="#E1E4E5" />
-    <circle r="10.174" transform="matrix(-1 0 0 1 189.273 116.674)" fill="#E1E4E5" />
-    <ellipse rx="10.725" ry="8.58" transform="matrix(-1 0 0 1 765.275 391.011)" fill="#E1E4E5" />
-    <circle r="21.811" transform="scale(1 -1) rotate(-75 125.241 -617.212)" fill="#E1E4E5" />
+    <ellipse rx="9.432" ry="8.646" transform="matrix(-1 0 0 1 586.388 520.237)" class="c1" />
+    <circle r="5.5" transform="matrix(-1 0 0 1 166.5 437.033)" class="c1" />
+    <circle r="7.507" transform="matrix(-1 0 0 1 147.397 222.723)" class="c1" />
+    <ellipse rx="7.63" ry="8.266" transform="matrix(-1 0 0 1 512.297 56.266)" class="c1" />
+    <circle r="10.48" transform="scale(1 -1) rotate(-75 -47.385 -389.076)" class="c1" />
+    <circle r="10.174" transform="matrix(-1 0 0 1 189.273 116.674)" class="c1" />
+    <ellipse rx="10.725" ry="8.58" transform="matrix(-1 0 0 1 765.275 391.011)" class="c1" />
+    <circle r="21.811" transform="scale(1 -1) rotate(-75 125.241 -617.212)" class="c1" />
     <path
         d="M638.123 87.21h.203c1.204 17.445 13.89 17.714 13.89 17.714s-13.989.279-13.989 20.438c0-20.159-13.989-20.438-13.989-20.438s12.681-.269 13.885-17.715zM376.747 48h.212c1.259 18.028 14.522 18.305 14.522 18.305s-14.625.289-14.625 21.12c0-20.831-14.625-21.12-14.625-21.12s13.257-.277 14.516-18.305z"
-        fill="#E1E4E5"
+        class="c1"
     />
     <defs>
         <linearGradient id="a" x1="287.131" y1="143.974" x2="377.174" y2="101.799" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#fff" />
-            <stop offset="1" stop-color="#EEE" />
+            <stop class="c2" />
+            <stop offset="1" class="c2" />
         </linearGradient>
         <linearGradient id="b" x1="747.13" y1="497.705" x2="648.98" y2="394.209" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#fff" />
-            <stop offset="1" stop-color="#EEE" />
+            <stop class="c2" />
+            <stop offset="1" class="c2" />
         </linearGradient>
         <linearGradient id="c" x1="658.66" y1="263.462" x2="752.391" y2="116.532" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#fff" />
-            <stop offset="1" stop-color="#EEE" />
+            <stop class="c2" />
+            <stop offset="1" class="c2" />
         </linearGradient>
     </defs>
 </svg>

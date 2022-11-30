@@ -1,8 +1,9 @@
 import { NotificationProps, showNotification } from '@mantine/notifications';
+import i18n from 'i18next';
 
 export const showInfo = ({ message, ...rest }: NotificationProps) =>
   showNotification({
-    title: 'Info',
+    title: i18n.t('Notification.Info') as string,
     color: 'cyan',
     message,
     styles: _ => ({
@@ -15,7 +16,7 @@ export const showInfo = ({ message, ...rest }: NotificationProps) =>
 
 export const showSuccess = ({ message, ...rest }: NotificationProps) =>
   showNotification({
-    title: 'Success',
+    title: i18n.t('Notification.Success') as string,
     color: 'teal',
     message,
     styles: _ => ({
@@ -28,7 +29,7 @@ export const showSuccess = ({ message, ...rest }: NotificationProps) =>
 
 export const showWarning = ({ message, ...rest }: NotificationProps) =>
   showNotification({
-    title: 'Warning',
+    title: i18n.t('Notification.Warning') as string,
     color: 'yellow',
     message,
     styles: _ => ({
@@ -41,7 +42,7 @@ export const showWarning = ({ message, ...rest }: NotificationProps) =>
 
 export const showError = ({ message, ...rest }: NotificationProps) =>
   showNotification({
-    title: 'Error',
+    title: i18n.t('Notification.Error') as string,
     color: 'red',
     message,
     styles: _ => ({

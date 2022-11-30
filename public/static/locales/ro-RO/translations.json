@@ -110,5 +110,14 @@
     "Entertainment": "Divertisment",
     "Investment": "Investiție",
     "Salary": "Salariu"
+  },
+  "Notification": {
+    "Info": "Info",
+    "Success": "Succes",
+    "Warning": "Atenționare",
+    "Error": "Eroare",
+    "EmailUpdated": "Email-ul a fost actualizat",
+    "AccountDataUpdated": "Datele contului au fost actualizate",
+    "SentAnotherEmail": "Ți-am trimis un nou email"
   }
 }

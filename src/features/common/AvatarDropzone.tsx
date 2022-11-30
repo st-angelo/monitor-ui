@@ -10,8 +10,13 @@ interface AvatarDropzoneProps {
   onChange?: (file: FileWithPath | null) => void;
   disabled?: boolean;
 }
-
-const AvatarDropzone = ({ value, file, onChange, disabled }: AvatarDropzoneProps) => {
+// TODO fix small issue where old avatar appears briefly after save
+const AvatarDropzone = ({
+  value,
+  file,
+  onChange,
+  disabled,
+}: AvatarDropzoneProps) => {
   const [showCover, setShowCover] = useState(true);
 
   const cover = useMemo(
@@ -61,14 +66,15 @@ const AvatarDropzone = ({ value, file, onChange, disabled }: AvatarDropzoneProps
           />
         )}
       </Dropzone>
-      {file && (
-        <div
-          className='flex gap-1 text-red-600 items-center cursor-pointer mt-1'
-          onClick={() => onChange && onChange(null)}
+      {file && !disabled && (
+        <Text
+          size={'xs'}
+          color='red'
+          align='center'
+          className='cursor-pointer mt-1 hover:underline'
         >
-          <IconX size={18} />
-          <Text size={'xs'}>Remove photo</Text>
-        </div>
+          Remove photo
+        </Text>
       )}
     </div>
   );
