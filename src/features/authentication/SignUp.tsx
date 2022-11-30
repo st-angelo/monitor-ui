@@ -87,32 +87,32 @@ const SignUp = () => {
                 alt='sign in'
                 className='w-[300px] lg:w-[480px]'
               />
-              <div className='flex flex-col gap-4 p-3 md:pl-0 min-w-[350px]'>
+              <div className='flex flex-col gap-4 p-3 md:pl-0 min-w-[320px]'>
                 <div className='w-full flex gap-4 justify-end'>
                   <LanguageSelector />
                   <ColorSchemeToggler />
                 </div>
                 <div className='flex flex-col items-center'>
                   <Text size={30} weight='bold'>
-                    Get started
+                    {t('Message.Authentication.GetStarted')}
                   </Text>
                   <Text>
-                    Already have an account?{' '}
+                    {t('Message.Authentication.HaveAccount')}{' '}
                     <Anchor component={Link} to='/sign-in'>
-                      Sign in
+                      {t('Message.Authentication.SignYouIn')}
                     </Anchor>
                   </Text>
                 </div>
                 <TextInput
                   label={t('Label.Field.Name')}
-                  placeholder='Angelo de Medici'
+                  placeholder='Rodica Cimpoi'
                   icon={<IconUser size='20' />}
                   disabled={loading}
                   {...form.getInputProps('name')}
                 />
                 <TextInput
                   label={t('Label.Field.Email')}
-                  placeholder='angelo.demedici@gmail.com'
+                  placeholder='rodica.cimpoi@example.com'
                   icon={<IconMail size='20' />}
                   disabled={loading}
                   {...form.getInputProps('email')}
@@ -126,7 +126,7 @@ const SignUp = () => {
                 />
                 <PasswordInput
                   label={t('Label.Field.ConfirmPassword')}
-                  placeholder='Confirm password'
+                  placeholder={t('Label.Field.ConfirmPassword')}
                   icon={<IconLock size='20' />}
                   disabled={loading}
                   {...form.getInputProps('passwordConfirm')}

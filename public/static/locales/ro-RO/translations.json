@@ -29,6 +29,22 @@
   "Info": {
     "RecurrenceType": "Această tranzacție va fi aplicată {{recurrence}} începând cu {{date}}."
   },
+  "Message": {
+    "Authentication": {
+      "GetStarted": "Să începem",
+      "HiThere": "Salutare!",
+      "HaveAccount": "Ai deja un cont?",
+      "DoNotHaveAccount": "Nu ai un cont?",
+      "SignYouUp": "Înregistrează-te",
+      "SignYouIn": "Autentifică-te",
+      "SignIn": "Autentificare",
+      "ForgotPassword": "Ai uitat parola?",
+      "ItHappens": "Se întâmplă",
+      "RememberedIt": "Ți-ai amintit-o?",
+      "SetANewOne": "Setează una nouă",
+      "OrGoTo": "Sau du-te la"
+    }
+  },
   "Label": {
     "Sort": {
       "OrderBy": "Ordonează după",

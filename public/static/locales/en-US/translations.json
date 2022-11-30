@@ -29,6 +29,22 @@
   "Info": {
     "RecurrenceType": "This transaction will be applied {{recurrence}} starting from {{date}}."
   },
+  "Message": {
+    "Authentication": {
+      "GetStarted": "Get started",
+      "HiThere": "Hi there!",
+      "HaveAccount": "Already have an account?",
+      "DoNotHaveAccount": "Don't have an account?",
+      "SignYouUp": "Sign up",
+      "SignYouIn": "Sign in",
+      "SignIn": "Sign in",
+      "ForgotPassword": "Forgot password?",
+      "ItHappens": "It happens",
+      "RememberedIt": "Remembered it?",
+      "SetANewOne": "Set a new one",
+      "OrGoTo": "Or go to"
+    }
+  },
   "Label": {
     "Sort": {
       "OrderBy": "Order by",
@@ -57,10 +73,6 @@
       "Description": "Description",
       "TransactionType": "Transaction type",
       "Color": "Color"
-    },
-    "Button": {
-      "GoToSignUp": "Go to sign up",
-      "GoToSignIn": "Go to sign in"
     },
     "TotalSpending": "Total spending",
     "TotalEarning": "Total earning"

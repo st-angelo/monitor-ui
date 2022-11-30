@@ -80,18 +80,18 @@ const ForgotPassword = () => {
                 </div>
                 <div className='flex flex-col items-center'>
                   <Text size={30} weight='bold'>
-                    It happens
+                    {t('Message.Authentication.ItHappens')}
                   </Text>
                   <Text>
-                    Remembered it?{' '}
+                    {t('Message.Authentication.RememberedIt')}{' '}
                     <Anchor component={Link} to='/sign-in'>
-                      Sign in
+                      {t('Message.Authentication.SignYouIn')}
                     </Anchor>
                   </Text>
                 </div>
                 <TextInput
                   label={t('Label.Field.Email')}
-                  placeholder='angelo.demedici@gmail.com'
+                  placeholder='cristi.pin@example.com'
                   withAsterisk
                   icon={<IconMail size='20' />}
                   disabled={loading}

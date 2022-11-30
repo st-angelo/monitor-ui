@@ -87,18 +87,18 @@ const SignIn = () => {
                 </div>
                 <div className='flex flex-col items-center'>
                   <Text size={30} weight='bold'>
-                    Hi there!
+                    {t('Message.Authentication.HiThere')}
                   </Text>
                   <Text>
-                    Don't have an account?{' '}
+                    {t('Message.Authentication.DoNotHaveAccount')}{' '}
                     <Anchor component={Link} to='/sign-up'>
-                      Sign up
+                      {t('Message.Authentication.SignYouUp')}
                     </Anchor>
                   </Text>
                 </div>
                 <TextInput
                   label={t('Label.Field.Email')}
-                  placeholder='angelo.demedici@gmail.com'
+                  placeholder='ionel.branzica@example.com'
                   disabled={loading}
                   withAsterisk
                   icon={<IconMail size='20' />}
@@ -117,7 +117,7 @@ const SignIn = () => {
                   to='/forgot-password'
                   className='text-sm text-right'
                 >
-                  Forgot password?
+                  {t('Message.Authentication.ForgotPassword')}
                 </Anchor>
                 <Button onClick={handleSignIn} disabled={loading}>
                   {t('Common.Submit')}

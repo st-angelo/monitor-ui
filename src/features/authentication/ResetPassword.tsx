@@ -89,12 +89,12 @@ const ResetPassword = () => {
                 </div>
                 <div className='flex flex-col items-center'>
                   <Text size={30} weight='bold'>
-                    Set a new one
+                    {t('Message.Authentication.SetANewOne')}
                   </Text>
                   <Text>
-                    Or go to{' '}
+                    {t('Message.Authentication.OrGoTo')}{' '}
                     <Anchor component={Link} to='/sign-in'>
-                      sign in
+                      {t('Message.Authentication.SignIn').toLowerCase()}
                     </Anchor>
                   </Text>
                 </div>
