@@ -41,7 +41,7 @@ const ForgotPassword = () => {
       setLoading(false);
     },
     onSuccess: () => {
-      showSuccess({ message: 'Check your email for resetting the password.' });
+      showSuccess({ message: t('Message.Authentication.CheckEmailReset') });
       form.reset();
     },
   });

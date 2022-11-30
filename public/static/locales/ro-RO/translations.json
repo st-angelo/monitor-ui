@@ -42,7 +42,8 @@
       "ItHappens": "Se mai întâmplă",
       "RememberedIt": "Ți-ai amintit-o?",
       "SetANewOne": "Setează una nouă",
-      "OrGoTo": "Sau du-te la"
+      "OrGoTo": "Sau du-te la",
+      "CheckEmailReset": "Verifică-ți email-ul ca să îți resetezi parola"
     },
     "Verification": {
       "NotVerified": "Nu ești verificat!",

@@ -35,7 +35,6 @@ const validate = {
 const SignIn = () => {
   const { t } = useTranslation();
   const { signIn } = useAuthentication();
-  //const matches = useMediaQuery('(max-width: 576px)');
   const [loading, setLoading] = useState(false);
   const form = useForm<SignInData>({
     initialValues,

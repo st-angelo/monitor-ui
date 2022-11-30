@@ -42,7 +42,8 @@
       "ItHappens": "It happens",
       "RememberedIt": "Remembered it?",
       "SetANewOne": "Set a new one",
-      "OrGoTo": "Or go to"
+      "OrGoTo": "Or go to",
+      "CheckEmailReset": "Check your email to reset your password"
     },
     "Verification": {
       "NotVerified": "You are not verified!",
