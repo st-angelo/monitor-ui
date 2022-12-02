@@ -114,7 +114,7 @@ const SummaryChartsComponent = ({
           </div>
         ))}
       </div>
-      <div className='grow max-w-4xl max-h-[36rem] md:p-10 p-5'>
+      <div className='grow min-w-[320px] max-w-[100vw] max-h-[36rem] md:p-10 p-5'>
         {loading && <Loader variant='dots' />}
         {!loading && (
           <ResponsiveContainer>

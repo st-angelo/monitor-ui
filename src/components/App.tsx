@@ -4,6 +4,7 @@ import { NavigationProgress } from '@mantine/nprogress';
 import { AuthProvider } from '../features/authentication/AuthContext';
 import { useColorScheme } from '../features/common/hooks/useColorScheme';
 import Navigation from '../features/common/Navigation';
+import Footer from './Footer';
 import GlobalComponents from './GlobalComponents';
 import AppRoutes from './Routes';
 
@@ -35,11 +36,14 @@ function App() {
       <AuthProvider>
         <NavigationProgress autoReset={true} />
         <NotificationsProvider position='bottom-center'>
-          <main className='min-h-screen'>
-            <Navigation />
-            <AppRoutes />
-            <GlobalComponents />
-          </main>
+          <div className='min-h-screen grid grid-rows-[1fr,auto]'>
+            <main>
+              <Navigation />
+              <AppRoutes />
+              <GlobalComponents />
+            </main>
+            <Footer />
+          </div>
         </NotificationsProvider>
       </AuthProvider>
     </MantineProvider>

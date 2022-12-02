@@ -34,7 +34,7 @@ const AuthContainer = ({
   }, [gap]);
 
   return (
-    <div className='h-screen flex items-center justify-center p-10'>
+    <div className='h-full flex items-center justify-center p-10'>
       <div className='grid lg:grid-cols-2 items-center'>
         <img
           src={`/illustrations/${illustration}.svg`}
