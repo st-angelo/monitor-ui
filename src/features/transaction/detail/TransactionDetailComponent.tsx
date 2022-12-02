@@ -8,6 +8,7 @@ import {
   Select,
   Stack,
   Text,
+  Textarea,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
@@ -75,6 +76,7 @@ const TransactionDetailComponent = ({
         transaction && transaction.date
           ? new Date(transaction.date)
           : new Date(),
+      description: transaction?.description,
       currencyId:
         transaction?.currencyId ?? localStorage.getItem('lastCurrencyId'),
       amount: transaction?.amount ?? undefined,
@@ -184,6 +186,14 @@ const TransactionDetailComponent = ({
             disabled={loading}
             withAsterisk
             {...form.getInputProps('date')}
+          />
+        </Grid.Col>
+        <Grid.Col>
+          <Textarea
+            label='Description'
+            placeholder='Description'
+            disabled={loading}
+            {...form.getInputProps('description')}
           />
         </Grid.Col>
         <Grid.Col>

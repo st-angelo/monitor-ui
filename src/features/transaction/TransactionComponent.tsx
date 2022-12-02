@@ -71,7 +71,12 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
               <Text weight={'bold'}>{`${getTranslatedCategory(
                 data.category
               )}, ${data.amount.toLocaleString()} ${data.currency.code}`}</Text>
-              <Text size={'sm'}>{new Date(data.date).toLocaleString()}</Text>
+              <Text italic size='sm'>
+                {data.description}
+              </Text>
+              <Text size={'sm'}>
+                {new Date(data.date).toLocaleDateString()}
+              </Text>
             </div>
             <div className='flex gap-2'>
               <ActionIcon

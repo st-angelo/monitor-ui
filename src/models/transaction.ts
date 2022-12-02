@@ -19,6 +19,7 @@ export interface Transaction {
   typeId: string;
   amount: number;
   date: string;
+  description: string;
   currencyId: string;
   currency: Currency;
   categoryId: string;
@@ -48,6 +49,7 @@ export interface MutateTransactionData {
   typeId: string | null;
   amount?: number;
   date?: Date;
+  description?: string;
   currencyId: string | null;
   categoryId?: string;
   recurrence?: Recurrence | null;
