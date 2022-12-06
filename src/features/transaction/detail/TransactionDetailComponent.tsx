@@ -158,13 +158,15 @@ const TransactionDetailComponent = ({
   );
 
   const isNew = useMemo(() => !transaction?.id, [transaction]);
+  const isPropagated = useMemo(() => Boolean(transaction?.propagated), [transaction]);
+  const hasSource = useMemo(() => Boolean(transaction?.sourceId), [transaction]);
 
   return (
     <Stack sx={{ maxWidth: 500 }}>
       {transactionTypes.length > 0 && (
         <SegmentedControl
           {...form.getInputProps('typeId')}
-          disabled={!isNew || loading}
+          disabled={!isNew || loading || isPropagated || hasSource}
           data={transactionTypes}
         />
       )}
@@ -174,7 +176,7 @@ const TransactionDetailComponent = ({
             label='Amount'
             placeholder='Amount'
             precision={2}
-            disabled={loading}
+            disabled={loading || isPropagated}
             withAsterisk
             {...form.getInputProps('amount')}
           />
@@ -182,8 +184,8 @@ const TransactionDetailComponent = ({
         <Grid.Col>
           <DatePicker
             label='Date'
-            placeholder='Date from'
-            disabled={loading}
+            placeholder='Date'
+            disabled={loading || isPropagated}
             withAsterisk
             {...form.getInputProps('date')}
           />
@@ -192,7 +194,7 @@ const TransactionDetailComponent = ({
           <Textarea
             label='Description'
             placeholder='Description'
-            disabled={loading}
+            disabled={loading || isPropagated}
             {...form.getInputProps('description')}
           />
         </Grid.Col>
@@ -202,7 +204,7 @@ const TransactionDetailComponent = ({
             placeholder='Category'
             clearable
             searchable
-            disabled={loading}
+            disabled={loading || isPropagated || hasSource}
             withAsterisk
             {...form.getInputProps('categoryId')}
             data={categoriesByTransactionId}
@@ -214,7 +216,7 @@ const TransactionDetailComponent = ({
             placeholder='Currency'
             clearable
             searchable
-            disabled={loading}
+            disabled={loading || isPropagated}
             withAsterisk
             {...form.getInputProps('currencyId')}
             data={currencies}
@@ -231,7 +233,7 @@ const TransactionDetailComponent = ({
                 label={t(`Recurrence.${recurrence}`)}
                 checked={form.values.recurrence === recurrence}
                 size='sm'
-                disabled={loading}
+                disabled={loading || isPropagated}
                 onChange={() => {}} // get rid of console warning
                 onClick={() =>
                   form.setFieldValue(
@@ -254,7 +256,7 @@ const TransactionDetailComponent = ({
           )}
         </Grid.Col>
       </Grid>
-      <Button onClick={handleMutateTransaction} disabled={loading}>
+      <Button onClick={handleMutateTransaction} disabled={loading || isPropagated}>
         Submit
       </Button>
     </Stack>

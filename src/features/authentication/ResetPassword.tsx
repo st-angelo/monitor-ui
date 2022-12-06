@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link, useParams } from 'react-router-dom';
+import LockCheck from '../../components/common/illustrations/LockCheck';
 import { MonitorErrorData } from '../../dto';
 import { ResetPasswordData } from '../../models/authentication';
 import {
@@ -64,7 +65,7 @@ const ResetPassword = () => {
   }, [form, token, resetPasswordMutation]);
 
   return (
-    <AuthContainer illustration='resetPassword'>
+    <AuthContainer illustration={<LockCheck />}>
       <div className='flex flex-col items-center'>
         <Text size={30} weight='bold'>
           {t('Message.Authentication.SetANewOne')}

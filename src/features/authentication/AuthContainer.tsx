@@ -7,7 +7,7 @@ import LanguageSelector from '../common/LanguageSelector';
 import { useAuthentication } from './AuthContext';
 
 interface AuthContainerProps {
-  illustration: string;
+  illustration: React.ReactNode;
   withLogout?: boolean;
   gap?: 'sm' | 'md';
   children: React.ReactNode;
@@ -36,11 +36,9 @@ const AuthContainer = ({
   return (
     <div className='h-full flex items-center justify-center p-10'>
       <div className='grid lg:grid-cols-2 items-center'>
-        <img
-          src={`/illustrations/${illustration}.svg`}
-          alt={illustration}
-          className='w-[250px] lg:w-[450px] justify-self-center'
-        />
+        <div className='w-[250px] lg:w-[450px] justify-self-center'>
+          {illustration}
+        </div>
         <div
           className={`flex flex-col ${gapClass} p-3 md:pl-0 min-w-[320px] max-w-[550px]`}
         >

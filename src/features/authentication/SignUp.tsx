@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
+import Study from '../../components/common/illustrations/Study';
 import { MonitorErrorData } from '../../dto';
 import { useAuthentication } from '../../features/authentication/AuthContext';
 import { SignUpData } from '../../models/authentication';
@@ -68,7 +69,7 @@ const SignUp = () => {
   }, [form, signUpMutation]);
 
   return (
-    <AuthContainer illustration='signUp'>
+    <AuthContainer illustration={<Study />}>
       <div className='flex flex-col items-center'>
         <Text size={30} weight='bold'>
           {t('Message.Authentication.GetStarted')}

@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
+import Knowledge from '../../components/common/illustrations/Knowledge';
 import { MonitorErrorData } from '../../dto';
 import { SignInData } from '../../models/authentication';
 import {
@@ -60,7 +61,7 @@ const SignIn = () => {
   }, [form, signInMutation]);
 
   return (
-    <AuthContainer illustration='signIn'>
+    <AuthContainer illustration={<Knowledge />}>
       <div className='flex flex-col items-center'>
         <Text size={30} weight='bold'>
           {t('Message.Authentication.HiThere')}

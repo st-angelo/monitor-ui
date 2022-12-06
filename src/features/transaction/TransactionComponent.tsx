@@ -70,7 +70,9 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
             <div>
               <Text weight={'bold'}>{`${getTranslatedCategory(
                 data.category
-              )}, ${data.amount.toLocaleString()} ${data.currency.code}`}</Text>
+              )}, ${data.amount.toLocaleString()} ${
+                data.currency?.code
+              }`}</Text>
               <Text italic size='sm'>
                 {data.description}
               </Text>
@@ -88,7 +90,7 @@ const TransactionComponent = ({ data }: TransactionComponentProps) => {
               </ActionIcon>
               <ActionIcon
                 variant='filled'
-                color='orange'
+                color='red'
                 disabled={loading}
                 onClick={() => confirm(handleDeleteTransaction)}
               >

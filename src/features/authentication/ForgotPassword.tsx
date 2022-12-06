@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';
+import Key from '../../components/common/illustrations/Key';
 import { MonitorErrorData } from '../../dto';
 import { ForgotPasswordData } from '../../models/authentication';
 import { forgotPassword } from '../../repository/authenticationRepository';
@@ -55,7 +56,7 @@ const ForgotPassword = () => {
   }, [form, forgotPaswordMutation]);
 
   return (
-    <AuthContainer illustration='forgotPassword'>
+    <AuthContainer illustration={<Key />}>
       <div className='flex flex-col items-center'>
         <Text size={30} weight='bold'>
           {t('Message.Authentication.ItHappens')}

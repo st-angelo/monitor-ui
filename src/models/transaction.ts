@@ -19,12 +19,14 @@ export interface Transaction {
   typeId: string;
   amount: number;
   date: string;
-  description: string;
+  description: string | null;
   currencyId: string;
-  currency: Currency;
+  currency?: Currency;
   categoryId: string;
-  category: Category;
-  recurrence?: Recurrence;
+  category?: Category;
+  recurrence: Recurrence | null;
+  propagated: boolean | null;
+  sourceId: string | null;
 }
 
 export interface TransactionForSummary {
@@ -49,7 +51,7 @@ export interface MutateTransactionData {
   typeId: string | null;
   amount?: number;
   date?: Date;
-  description?: string;
+  description?: string | null;
   currencyId: string | null;
   categoryId?: string;
   recurrence?: Recurrence | null;

@@ -7,7 +7,7 @@ const Wallet = () => {
 
   return (
     <>
-      <div className='md:w-1/2 m-auto p-10 md:p-0'>
+      <div className='md:w-2/3 m-auto p-10 md:p-0'>
         <div className='my-5 text-end'>
           <Button onClick={() => openTransactionDetail()}>
             Add transaction

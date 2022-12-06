@@ -16,6 +16,7 @@
   },
   "Navigation": {
     "Home": "Acasă",
+    "Dashboard": "Bord",
     "Wallet": "Portofel",
     "AccountSettings": "Setări cont",
     "LogOut": "Deconectare"

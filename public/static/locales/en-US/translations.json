@@ -16,6 +16,7 @@
   },
   "Navigation": {
     "Home": "Home",
+    "Dashboard": "Dashboard",
     "Wallet": "Wallet",
     "AccountSettings": "Account settings",
     "LogOut": "Log Out"

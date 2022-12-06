@@ -8,6 +8,7 @@ import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
+import Checklist from '../../components/common/illustrations/Checklist';
 import { MonitorErrorData } from '../../dto';
 import { resendVerificationEmail } from '../../repository/userRepository';
 import AuthContainer from '../authentication/AuthContainer';
@@ -48,7 +49,7 @@ const UserNotVerified = () => {
   }, [resendVerificationEmailMutation]);
 
   return (
-    <AuthContainer illustration='verifyEmail' withLogout gap='md'>
+    <AuthContainer illustration={<Checklist />} withLogout gap='md'>
       <Text weight='bolder' className='text-xl md:text-3xl'>
         {t('Message.Verification.NotVerified')}
       </Text>

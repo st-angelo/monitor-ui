@@ -1,9 +1,11 @@
-import SummaryContainer from '../summary/SummaryContainer';
+import FeaturesComponent from '../about/FeaturesComponent';
+import TestimonialsComponent from '../about/TestimonialsComponent';
 
 const Home = () => {
   return (
-    <div className='lg:w-2/3 mx-auto my-10'>
-      <SummaryContainer />
+    <div className='flex flex-col gap-5'>
+      <FeaturesComponent />
+      <TestimonialsComponent />
     </div>
   );
 };

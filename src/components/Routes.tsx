@@ -5,6 +5,7 @@ import ResetPassword from '../features/authentication/ResetPassword';
 import SignIn from '../features/authentication/SignIn';
 import SignUp from '../features/authentication/SignUp';
 import AccountSettings from '../features/general/AccountSettings';
+import Dashboard from '../features/general/Dashboard';
 import Home from '../features/general/Home';
 import UserNotVerified from '../features/general/UserNotVerified';
 import Wallet from '../features/general/Wallet';
@@ -24,6 +25,18 @@ export default function AppRoutes() {
             <Navigate to='/not-verified' replace />
           ) : (
             <Home />
+          )
+        }
+      />
+      <Route
+        path='/dashboard'
+        element={
+          !isAuthenticated ? (
+            <Navigate to='/sign-in' replace />
+          ) : !isVerified ? (
+            <Navigate to='/not-verified' replace />
+          ) : (
+            <Dashboard />
           )
         }
       />

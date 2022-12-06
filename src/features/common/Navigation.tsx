@@ -26,6 +26,13 @@ const Navigation = () => {
           </Anchor>
           <Anchor
             component={Link}
+            to='/dashboard'
+            sx={{ textUnderlineOffset: '5px' }}
+          >
+            {t('Navigation.Dashboard')}
+          </Anchor>
+          <Anchor
+            component={Link}
             to='/wallet'
             sx={{ textUnderlineOffset: '5px' }}
           >
