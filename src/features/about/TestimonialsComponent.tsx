@@ -38,9 +38,9 @@ const TestimonialsComponent = () => {
                 cite={`- ${testimonial.author}`}
                 sx={{
                   padding: 0,
-                  '& cite': { color: '#000' },
-                  '& .mantine-Blockquote-body': { color: '#000' },
-                  '& .mantine-Blockquote-icon': { color: '#000' },
+                  '& cite': { color: 'white' },
+                  '& .mantine-Blockquote-body': { color: 'white' },
+                  '& .mantine-Blockquote-icon': { color: 'white' },
                 }}
                 color='black'
               >
@@ -49,7 +49,7 @@ const TestimonialsComponent = () => {
             </Carousel.Slide>
           ))}
         </Carousel>
-        <Text align='right' size='xs' italic>
+        <Text align='right' size='xs' italic color='white'>
           * These are, evidently, fake testimonials.
         </Text>
       </div>

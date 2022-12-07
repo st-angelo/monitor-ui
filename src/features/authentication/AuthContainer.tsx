@@ -34,7 +34,7 @@ const AuthContainer = ({
   }, [gap]);
 
   return (
-    <div className='h-full flex items-center justify-center p-10'>
+    <div className='h-full flex items-center justify-center'>
       <div className='grid lg:grid-cols-2 items-center'>
         <div className='w-[250px] lg:w-[450px] justify-self-center'>
           {illustration}
